@@ -1,5 +1,6 @@
 package net.kemitix.dependency.digraph.maven.plugin;
 
+import org.apache.maven.model.Build;
 import org.apache.maven.project.MavenProject;
 
 import java.nio.file.Files;
@@ -15,16 +16,34 @@ import java.util.List;
 public class DefaultSourceDirectoryProvider implements SourceDirectoryProvider {
 
     @Override
-    public List<String> getSourceDirectories(
-            final List<MavenProject> projects) {
-        final List<String> sourceDirectories = new ArrayList<>();
+    public List<String> getDirectories(
+            final List<MavenProject> projects,
+            final boolean includeTests) {
+        final List<String> directories = new ArrayList<>();
         projects.forEach((final MavenProject project) -> {
-            final String directory = project.getBuild().getSourceDirectory();
-            if (Files.isDirectory(Paths.get(directory))) {
-                sourceDirectories.add(directory);
-            }
+            addProject(directories, project, includeTests);
         });
-        return sourceDirectories;
+        return directories;
+    }
+
+    private void addProject(
+            final List<String> directories,
+            final MavenProject project,
+            final boolean includeTests) {
+        final Build build = project.getBuild();
+        addDirectoryIfExists(directories, build.getSourceDirectory());
+        if (includeTests) {
+            addDirectoryIfExists(directories,
+                    build.getTestSourceDirectory());
+        }
+    }
+
+    private void addDirectoryIfExists(
+            final List<String> directories,
+            final String directory) {
+        if (Files.isDirectory(Paths.get(directory))) {
+            directories.add(directory);
+        }
     }
 
 }

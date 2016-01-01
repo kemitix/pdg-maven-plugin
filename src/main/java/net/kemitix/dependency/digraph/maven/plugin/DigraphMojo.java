@@ -18,6 +18,9 @@ public class DigraphMojo extends AbstractMojo {
     @Parameter(defaultValue = "${reactorProjects}", readonly = true)
     private List<MavenProject> projects;
 
+    @Parameter(name = "includeTests", defaultValue = "true")
+    private boolean includeTests;
+
     /**
      * Create Guice Injector.
      */
@@ -27,7 +30,7 @@ public class DigraphMojo extends AbstractMojo {
     public void execute() {
         listSourceDirectories(
                 injector.getInstance(SourceDirectoryProvider.class)
-                .getSourceDirectories(projects));
+                .getDirectories(projects, includeTests));
     }
 
     private void listSourceDirectories(final List<String> sourceDirectories) {

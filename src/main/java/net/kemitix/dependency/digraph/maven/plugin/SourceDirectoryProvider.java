@@ -15,10 +15,13 @@ public interface SourceDirectoryProvider {
      * Returns all the source directories for the project, including any
      * modules.
      *
-     * @param projects the list of maven projects
+     * @param projects     the list of maven projects
+     * @param includeTests whether to include test sources
      *
      * @return the list of source directories
      */
-    List<String> getSourceDirectories(final List<MavenProject> projects);
+    List<String> getDirectories(
+            final List<MavenProject> projects,
+            final boolean includeTests);
 
 }
