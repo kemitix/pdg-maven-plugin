@@ -14,7 +14,8 @@ import java.util.List;
  *
  * @author pcampbell
  */
-public class DefaultSourceDirectoryProvider implements SourceDirectoryProvider {
+public class DefaultSourceDirectoryProvider extends AbstractMojoService
+        implements SourceDirectoryProvider {
 
     @Override
     public List<String> getDirectories(

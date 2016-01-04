@@ -22,25 +22,32 @@ public class DigraphMojo extends AbstractMojo {
     @Parameter(name = "includeTests", defaultValue = "true", required = false)
     private boolean includeTests;
 
-    /**
-     * Create Guice Injector.
-     */
-    private final Injector injector = Guice.createInjector(new DigraphModule());
+    private final Injector injector;
+
+    private final SourceDirectoryProvider directoryProvider;
+
+    private final SourceFileProvider fileProvider;
 
     @Getter
     private List<String> directories;
 
-    @Override
-    public void execute() {
-        directories = injector.getInstance(SourceDirectoryProvider.class)
-                .getDirectories(projects, includeTests);
-        listSourceDirectories(directories);
+    /**
+     * Default constructor.
+     */
+    public DigraphMojo() {
+        injector = Guice.createInjector(new DigraphModule());
+        directoryProvider = injector.getInstance(SourceDirectoryProvider.class);
+        fileProvider = injector.getInstance(SourceFileProvider.class);
     }
 
-    private void listSourceDirectories(final List<String> sourceDirectories) {
-        sourceDirectories.forEach((final String dir) -> {
-            getLog().info("* " + dir);
-        });
+    @Override
+    public void execute() {
+        directoryProvider.setMojo(this);
+        fileProvider.setMojo(this);
+
+        directories = directoryProvider.getDirectories(projects, includeTests);
+        fileProvider.process(directories);
+        fileProvider.getJavaFiles().forEach(System.out::println);
     }
 
 }

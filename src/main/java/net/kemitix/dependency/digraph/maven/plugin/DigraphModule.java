@@ -13,6 +13,8 @@ public class DigraphModule extends AbstractModule {
     protected void configure() {
         bind(SourceDirectoryProvider.class)
                 .to(DefaultSourceDirectoryProvider.class);
+        bind(SourceFileProvider.class)
+                .to(DirectoryListingProcessor.class);
     }
 
 }
