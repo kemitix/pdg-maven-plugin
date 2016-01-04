@@ -1,6 +1,7 @@
 package net.kemitix.dependency.digraph.maven.plugin;
 
 import lombok.Getter;
+import org.apache.maven.plugin.logging.Log;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -25,8 +26,9 @@ class DirectoryListingProcessor extends AbstractMojoService
 
     @Override
     public void process(final List<String> directories) {
+        final Log log = getMojo().getLog();
         directories.forEach((final String dir) -> {
-            getMojo().getLog().info("* " + dir);
+            log.info("* " + dir);
         });
     }
 

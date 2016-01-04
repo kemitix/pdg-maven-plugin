@@ -29,6 +29,9 @@ public class DigraphMojo extends AbstractMojo {
     private final SourceFileProvider fileProvider;
 
     @Getter
+    private final SourceFileVisitor fileVisitor;
+
+    @Getter
     private List<String> directories;
 
     /**
@@ -38,12 +41,14 @@ public class DigraphMojo extends AbstractMojo {
         injector = Guice.createInjector(new DigraphModule());
         directoryProvider = injector.getInstance(SourceDirectoryProvider.class);
         fileProvider = injector.getInstance(SourceFileProvider.class);
+        fileVisitor = injector.getInstance(SourceFileVisitor.class);
     }
 
     @Override
     public void execute() {
         directoryProvider.setMojo(this);
         fileProvider.setMojo(this);
+        fileVisitor.setMojo(this);
 
         directories = directoryProvider.getDirectories(projects, includeTests);
         fileProvider.process(directories);

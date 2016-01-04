@@ -14,7 +14,9 @@ public class DigraphModule extends AbstractModule {
         bind(SourceDirectoryProvider.class)
                 .to(DefaultSourceDirectoryProvider.class);
         bind(SourceFileProvider.class)
-                .to(DirectoryListingProcessor.class);
+                .to(DefaultSourceFileProvider.class);
+        bind(SourceFileVisitor.class)
+                .to(DefaultSourceFileVisitor.class);
     }
 
 }

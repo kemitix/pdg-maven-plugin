@@ -11,7 +11,7 @@
             <plugin>
                 <artifactId>dependency-digraph-maven-plugin</artifactId>
                 <configuration>
-                    <includeTests>true</includeTests>
+                    <includeTests>false</includeTests>
                     <projects implementation="net.kemitix.dependency.digraph.maven.plugin.stubs.DigraphSrcOnlyProjectList"/>
                 </configuration>
             </plugin>

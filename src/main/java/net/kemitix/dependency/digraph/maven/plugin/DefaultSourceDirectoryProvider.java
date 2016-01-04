@@ -1,6 +1,5 @@
 package net.kemitix.dependency.digraph.maven.plugin;
 
-import lombok.NonNull;
 import org.apache.maven.model.Build;
 import org.apache.maven.project.MavenProject;
 
@@ -19,7 +18,7 @@ public class DefaultSourceDirectoryProvider extends AbstractMojoService
 
     @Override
     public List<String> getDirectories(
-            @NonNull final List<MavenProject> projects,
+            final List<MavenProject> projects,
             final boolean includeTests) {
         final List<String> directories = new ArrayList<>();
         projects.forEach((final MavenProject project) -> {
