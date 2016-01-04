@@ -1,5 +1,6 @@
 package net.kemitix.dependency.digraph.maven.plugin;
 
+import lombok.NonNull;
 import org.apache.maven.model.Build;
 import org.apache.maven.project.MavenProject;
 
@@ -17,7 +18,7 @@ public class DefaultSourceDirectoryProvider implements SourceDirectoryProvider {
 
     @Override
     public List<String> getDirectories(
-            final List<MavenProject> projects,
+            @NonNull final List<MavenProject> projects,
             final boolean includeTests) {
         final List<String> directories = new ArrayList<>();
         projects.forEach((final MavenProject project) -> {
@@ -41,7 +42,7 @@ public class DefaultSourceDirectoryProvider implements SourceDirectoryProvider {
     private void addDirectoryIfExists(
             final List<String> directories,
             final String directory) {
-        if (Files.isDirectory(Paths.get(directory))) {
+        if (null != directory && Files.isDirectory(Paths.get(directory))) {
             directories.add(directory);
         }
     }
