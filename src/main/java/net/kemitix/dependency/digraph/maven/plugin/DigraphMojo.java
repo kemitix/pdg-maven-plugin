@@ -1,5 +1,6 @@
 package net.kemitix.dependency.digraph.maven.plugin;
 
+import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import lombok.Getter;
@@ -38,7 +39,13 @@ public class DigraphMojo extends AbstractMojo {
      * Default constructor.
      */
     public DigraphMojo() {
-        injector = Guice.createInjector(new DigraphModule());
+        injector = Guice.createInjector(new DigraphModule(),
+                new AbstractModule() {
+            @Override
+            protected void configure() {
+                bind(DigraphMojo.class).toInstance(DigraphMojo.this);
+            }
+        });
         directoryProvider = injector.getInstance(SourceDirectoryProvider.class);
         fileProvider = injector.getInstance(SourceFileProvider.class);
         fileVisitor = injector.getInstance(SourceFileVisitor.class);
@@ -46,10 +53,6 @@ public class DigraphMojo extends AbstractMojo {
 
     @Override
     public void execute() {
-        directoryProvider.setMojo(this);
-        fileProvider.setMojo(this);
-        fileVisitor.setMojo(this);
-
         directories = directoryProvider.getDirectories(projects, includeTests);
         fileProvider.process(directories);
         fileProvider.getJavaFiles().forEach(System.out::println);

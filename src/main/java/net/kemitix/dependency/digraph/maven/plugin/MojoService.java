@@ -8,13 +8,6 @@ package net.kemitix.dependency.digraph.maven.plugin;
 public interface MojoService {
 
     /**
-     * Sets the mojo.
-     *
-     * @param mojo the mojo
-     */
-    void setMojo(DigraphMojo mojo);
-
-    /**
      * Gets the mojo.
      *
      * @return the mojo

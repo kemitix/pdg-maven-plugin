@@ -1,7 +1,8 @@
 package net.kemitix.dependency.digraph.maven.plugin;
 
 import lombok.Getter;
-import lombok.Setter;
+
+import javax.inject.Inject;
 
 import java.io.File;
 import java.io.IOException;
@@ -20,7 +21,7 @@ import java.util.List;
 public class DefaultSourceFileVisitor extends SimpleFileVisitor<Path>
         implements SourceFileVisitor {
 
-    @Setter
+    @Inject
     @Getter
     private DigraphMojo mojo;
 

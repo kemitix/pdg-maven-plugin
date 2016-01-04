@@ -47,7 +47,6 @@ public class DefaultSourceFileProviderTest {
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-        sourceFileProvider.setMojo(mojo);
         doReturn(fileVisitor).when(mojo).getFileVisitor();
     }
 

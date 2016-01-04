@@ -45,7 +45,6 @@ public class DirectoryListingProcessorTest {
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-        listingProcessor.setMojo(mojo);
         doReturn(log).when(mojo).getLog();
     }
 

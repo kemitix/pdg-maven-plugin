@@ -1,7 +1,8 @@
 package net.kemitix.dependency.digraph.maven.plugin;
 
 import lombok.Getter;
-import lombok.Setter;
+
+import javax.inject.Inject;
 
 /**
  * Abstract Mojo Service.
@@ -14,7 +15,7 @@ import lombok.Setter;
  */
 public abstract class AbstractMojoService implements MojoService {
 
-    @Setter
+    @Inject
     @Getter
     private DigraphMojo mojo;
 
