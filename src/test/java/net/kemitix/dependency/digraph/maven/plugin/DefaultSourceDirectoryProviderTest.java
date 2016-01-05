@@ -7,6 +7,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -64,9 +65,11 @@ public class DefaultSourceDirectoryProviderTest {
 
     /**
      * should be able to get source directory out after setting it.
+     *
+     * @throws java.io.IOException if error creating directory
      */
     @Test
-    public void shouldGetSourceDirectoryAfterSettingIt() {
+    public void shouldGetSourceDirectoryAfterSettingIt() throws IOException {
         //given
         final String directory = fileManager.createTempDirectory().toString();
         //when
@@ -78,9 +81,11 @@ public class DefaultSourceDirectoryProviderTest {
 
     /**
      * add project - src exists - with tests - test exists.
+     *
+     * @throws java.io.IOException if error creating directory
      */
     @Test
-    public void shouldAddSourcesAndTests() {
+    public void shouldAddSourcesAndTests() throws IOException {
         //given
         final String sources = fileManager.createTempDirectory().toString();
         build.setSourceDirectory(sources);
@@ -96,9 +101,12 @@ public class DefaultSourceDirectoryProviderTest {
 
     /**
      * add project - src exists - with tests - test do not exists.
+     *
+     * @throws java.io.IOException if error creating directory
      */
     @Test
-    public void shouldAddSourcesAndNoTestsWhenTestsDoNotExist() {
+    public void shouldAddSourcesAndNoTestsWhenTestsDoNotExist()
+            throws IOException {
         //given
         final String sources = fileManager.createTempDirectory().toString();
         build.setSourceDirectory(sources);
@@ -114,9 +122,11 @@ public class DefaultSourceDirectoryProviderTest {
 
     /**
      * add project - src exists - without tests.
+     *
+     * @throws java.io.IOException if error creating directory
      */
     @Test
-    public void shouldAddSourcesAndNoTests() {
+    public void shouldAddSourcesAndNoTests() throws IOException {
         //given
         final String sources = fileManager.createTempDirectory().toString();
         build.setSourceDirectory(sources);

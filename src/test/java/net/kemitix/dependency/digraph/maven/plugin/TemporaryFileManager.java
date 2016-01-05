@@ -1,8 +1,8 @@
 package net.kemitix.dependency.digraph.maven.plugin;
 
-import com.google.common.io.Files;
-
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.ArrayDeque;
 import java.util.Deque;
 
@@ -26,11 +26,26 @@ public class TemporaryFileManager {
      * Creates a temporary directory.
      *
      * @return the created directory
+     *
+     * @throws IOException if error creating directory
      */
-    public File createTempDirectory() {
-        File dir = Files.createTempDir();
+    public File createTempDirectory() throws IOException {
+        File dir = Files.createTempDirectory("").toFile();
         createdFiles.push(dir);
         return dir;
+    }
+
+    /**
+     * Creates a temporary file.
+     *
+     * @return the created file
+     *
+     * @throws IOException if error creating file
+     */
+    public File createTempFile() throws IOException {
+        File file = Files.createTempFile("", "").toFile();
+        createdFiles.push(file);
+        return file;
     }
 
 }

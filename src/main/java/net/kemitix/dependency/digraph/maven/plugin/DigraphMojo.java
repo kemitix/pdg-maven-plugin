@@ -10,6 +10,7 @@ import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -39,8 +40,15 @@ public class DigraphMojo extends AbstractMojo {
 
     private final ReportGenerator reportGenerator;
 
+    private final ReportWriter reportWriter;
+
     @Getter
     private List<String> directories;
+
+    /**
+     * The file to write the report to.
+     */
+    private static final String REPORT_FILE = "target/digraph.dot";
 
     /**
      * Default constructor.
@@ -59,6 +67,7 @@ public class DigraphMojo extends AbstractMojo {
         fileAnalyser = injector.getInstance(SourceFileAnalyser.class);
         dependencyData = injector.getInstance(DependencyData.class);
         reportGenerator = injector.getInstance(ReportGenerator.class);
+        reportWriter = injector.getInstance(ReportWriter.class);
     }
 
     @Override
@@ -69,7 +78,11 @@ public class DigraphMojo extends AbstractMojo {
         if (javaFiles != null) {
             javaFiles.forEach(fileAnalyser::analyse);
             dependencyData.dumpDependencies(getLog());
-            getLog().info(reportGenerator.generate());
+            try {
+                reportWriter.write(reportGenerator.generate(), REPORT_FILE);
+            } catch (IOException ex) {
+                getLog().error(ex.toString());
+            }
         }
     }
 
