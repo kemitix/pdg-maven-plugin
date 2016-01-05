@@ -67,9 +67,13 @@ public class DefaultSourceFileProviderTest {
         sourceFileProvider.process(directories);
         //then
         List<File> javaFiles = fileVisitor.getJavaFiles();
-        assertThat(javaFiles.size(), is(2));
+        /** the following assumes that the four src files (index 0,2-4) are
+         * found first, then the lone test file (index 5) */
+        final int numberOfClassFiles = 6;
+        assertThat(javaFiles.size(), is(numberOfClassFiles));
         assertTrue(javaFiles.get(0).toString().contains(src));
-        assertTrue(javaFiles.get(1).toString().contains(test));
+        final int indexOfTestFile = 5;
+        assertTrue(javaFiles.get(indexOfTestFile).toString().contains(test));
     }
 
 }

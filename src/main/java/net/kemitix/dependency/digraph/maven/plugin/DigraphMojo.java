@@ -9,6 +9,7 @@ import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
 
+import java.io.File;
 import java.util.List;
 
 /**
@@ -32,6 +33,10 @@ public class DigraphMojo extends AbstractMojo {
     @Getter
     private final SourceFileVisitor fileVisitor;
 
+    private final SourceFileAnalyser fileAnalyser;
+
+    private final DependencyData dependencyData;
+
     @Getter
     private List<String> directories;
 
@@ -49,13 +54,19 @@ public class DigraphMojo extends AbstractMojo {
         directoryProvider = injector.getInstance(SourceDirectoryProvider.class);
         fileProvider = injector.getInstance(SourceFileProvider.class);
         fileVisitor = injector.getInstance(SourceFileVisitor.class);
+        fileAnalyser = injector.getInstance(SourceFileAnalyser.class);
+        dependencyData = injector.getInstance(DependencyData.class);
     }
 
     @Override
     public void execute() {
         directories = directoryProvider.getDirectories(projects, includeTests);
         fileProvider.process(directories);
-        fileProvider.getJavaFiles().forEach(System.out::println);
+        final List<File> javaFiles = fileProvider.getJavaFiles();
+        if (javaFiles != null) {
+            javaFiles.forEach(fileAnalyser::analyse);
+            dependencyData.dumpDependencies(getLog());
+        }
     }
 
 }
