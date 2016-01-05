@@ -23,6 +23,8 @@ public class DigraphModule extends AbstractModule {
                 .to(DefaultSourceFileAnalyser.class);
         bind(DependencyData.class)
                 .toInstance(dependencyData);
+        bind(ReportGenerator.class)
+                .to(DotFileReportGenerator.class);
     }
 
 }

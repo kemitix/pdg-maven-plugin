@@ -37,6 +37,8 @@ public class DigraphMojo extends AbstractMojo {
 
     private final DependencyData dependencyData;
 
+    private final ReportGenerator reportGenerator;
+
     @Getter
     private List<String> directories;
 
@@ -56,6 +58,7 @@ public class DigraphMojo extends AbstractMojo {
         fileVisitor = injector.getInstance(SourceFileVisitor.class);
         fileAnalyser = injector.getInstance(SourceFileAnalyser.class);
         dependencyData = injector.getInstance(DependencyData.class);
+        reportGenerator = injector.getInstance(ReportGenerator.class);
     }
 
     @Override
@@ -66,6 +69,7 @@ public class DigraphMojo extends AbstractMojo {
         if (javaFiles != null) {
             javaFiles.forEach(fileAnalyser::analyse);
             dependencyData.dumpDependencies(getLog());
+            getLog().info(reportGenerator.generate());
         }
     }
 

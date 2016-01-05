@@ -1,9 +1,12 @@
 package net.kemitix.dependency.digraph.maven.plugin;
 
+import lombok.Getter;
 import org.apache.maven.plugin.logging.Log;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -14,6 +17,7 @@ import java.util.Set;
  */
 public class DefaultDependencyData implements DependencyData {
 
+    @Getter
     private final Map<String, Set<String>> packageUses;
 
 //    private final Map<PackagedClass, Set<PackagedClass>> classUses;
@@ -74,4 +78,13 @@ public class DefaultDependencyData implements DependencyData {
 //            this.theClass = theClass;
 //        }
 //    }
+    @Override
+    public List<String> getUserPackages() {
+        return new ArrayList<>(packageUses.keySet());
+    }
+
+    @Override
+    public List<String> getUsedPackages(final String user) {
+        return new ArrayList<>(packageUses.get(user));
+    }
 }

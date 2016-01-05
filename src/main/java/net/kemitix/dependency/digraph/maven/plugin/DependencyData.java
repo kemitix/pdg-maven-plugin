@@ -2,6 +2,8 @@ package net.kemitix.dependency.digraph.maven.plugin;
 
 import org.apache.maven.plugin.logging.Log;
 
+import java.util.List;
+
 /**
  * Interface for storing package and class dependency data.
  *
@@ -29,5 +31,21 @@ public interface DependencyData {
      * @param log the log to write to
      */
     void dumpDependencies(final Log log);
+
+    /**
+     * Returns a list of packages that use other packages.
+     *
+     * @return the list of package names
+     */
+    List<String> getUserPackages();
+
+    /**
+     * Returns a list of packages that are used by the user package.
+     *
+     * @param user the package to filter on
+     *
+     * @return the list of package names
+     */
+    List<String> getUsedPackages(String user);
 
 }
