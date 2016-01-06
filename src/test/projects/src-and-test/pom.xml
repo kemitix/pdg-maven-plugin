@@ -9,7 +9,7 @@
     <build>
         <plugins>
             <plugin>
-                <artifactId>dependency-digraph-maven-plugin</artifactId>
+                <artifactId>digraph-dependency-maven-plugin</artifactId>
                 <configuration>
                     <includeTests>true</includeTests>
                     <projects implementation="net.kemitix.dependency.digraph.maven.plugin.stubs.DigraphSrcAndTestProjectList"/>
