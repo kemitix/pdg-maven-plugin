@@ -23,7 +23,7 @@ public class DigraphMojo extends AbstractMojo {
     @Parameter(defaultValue = "${reactorProjects}", readonly = true)
     private List<MavenProject> projects;
 
-    @Parameter(name = "includeTests", defaultValue = "true")
+    @Parameter(name = "includeTests", defaultValue = "false")
     private boolean includeTests;
 
     @NonNull
