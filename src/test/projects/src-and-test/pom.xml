@@ -13,6 +13,7 @@
                 <configuration>
                     <includeTests>true</includeTests>
                     <projects implementation="net.kemitix.dependency.digraph.maven.plugin.stubs.DigraphSrcAndTestProjectList"/>
+                    <basePackage>test</basePackage>
                 </configuration>
             </plugin>
         </plugins>

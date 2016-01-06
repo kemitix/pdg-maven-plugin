@@ -4,6 +4,7 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import lombok.Getter;
+import lombok.NonNull;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
@@ -22,8 +23,12 @@ public class DigraphMojo extends AbstractMojo {
     @Parameter(defaultValue = "${reactorProjects}", readonly = true)
     private List<MavenProject> projects;
 
-    @Parameter(name = "includeTests", defaultValue = "true", required = false)
+    @Parameter(name = "includeTests", defaultValue = "true")
     private boolean includeTests;
+
+    @NonNull
+    @Parameter(name = "basePackage", required = true)
+    private String basePackage;
 
     private final Injector injector;
 
@@ -79,7 +84,8 @@ public class DigraphMojo extends AbstractMojo {
             javaFiles.forEach(fileAnalyser::analyse);
             dependencyData.dumpDependencies(getLog());
             try {
-                reportWriter.write(reportGenerator.generate(), REPORT_FILE);
+                reportWriter.write(
+                        reportGenerator.generate(basePackage), REPORT_FILE);
             } catch (IOException ex) {
                 getLog().error(ex.toString());
             }

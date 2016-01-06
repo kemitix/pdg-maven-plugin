@@ -52,10 +52,31 @@ public class DotFileReportGeneratorTest {
         doReturn(users).when(dependencyData).getUserPackages();
         doReturn(used).when(dependencyData).getUsedPackages(user);
         //when
-        String report = reportGenerator.generate();
+        String report = reportGenerator.generate("test");
         //then
         assertThat(report,
                 is("digraph {\n\t\"test.nested\" -> \"test.other\";\n}"));
+    }
+
+    /**
+     * Test that the report only includes expected package.
+     */
+    @Test
+    public void shouldOnlyIncludeExpectedPackage() {
+        //given
+        List<String> users = new ArrayList<>();
+        List<String> used = new ArrayList<>();
+        String user = "test.nested";
+        String dependency = "tested.other";
+        users.add(user);
+        used.add(dependency);
+        doReturn(users).when(dependencyData).getUserPackages();
+        doReturn(used).when(dependencyData).getUsedPackages(user);
+        //when
+        String report = reportGenerator.generate("test");
+        //then
+        assertThat(report,
+                is("digraph {\n}"));
     }
 
 }

@@ -1,5 +1,7 @@
 package net.kemitix.dependency.digraph.maven.plugin;
 
+import lombok.NonNull;
+
 import javax.inject.Inject;
 
 /**
@@ -14,17 +16,28 @@ public class DotFileReportGenerator extends AbstractMojoService
     private DependencyData dependencyData;
 
     @Override
-    public String generate() {
+    public String generate(@NonNull final String basePackage) {
         StringBuilder report = new StringBuilder();
         report.append("digraph {\n");
         dependencyData.getUserPackages().forEach((String user) -> {
-            dependencyData.getUsedPackages(user).forEach((String used) -> {
-                report.append("\t\"").append(user).append("\" -> \"")
-                        .append(used).append("\";\n");
-            });
+            if (withinBasePackage(basePackage, user)) {
+                dependencyData.getUsedPackages(user).forEach((String used) -> {
+                    if (withinBasePackage(basePackage, used)) {
+                        report.append("\t\"").append(user).append("\" -> \"")
+                                .append(used).append("\";\n");
+                    }
+                });
+            }
         });
         report.append("}");
         return report.toString();
+    }
+
+    private boolean withinBasePackage(
+            @NonNull final String basePackage,
+            @NonNull final String thePackage) {
+        return basePackage.equals(thePackage)
+                || thePackage.startsWith(basePackage + ".");
     }
 
 }
