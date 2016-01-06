@@ -37,7 +37,9 @@ public class DefaultDependencyData implements DependencyData {
         if (!packageUses.containsKey(userPackage)) {
             packageUses.put(userPackage, new HashSet<>());
         }
-        packageUses.get(userPackage).add(usedPackage);
+        if (!userPackage.equals(usedPackage)) {
+            packageUses.get(userPackage).add(usedPackage);
+        }
 //        // class dependency
 //        PackagedClass user = new PackagedClass(userPackage, userClass);
 //        PackagedClass used = new PackagedClass(usedPackage, usedClass);
