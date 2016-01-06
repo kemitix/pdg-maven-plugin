@@ -19,12 +19,16 @@ public class DotFileReportGenerator extends AbstractMojoService
     public String generate(@NonNull final String basePackage) {
         StringBuilder report = new StringBuilder();
         report.append("digraph {\n");
+        report.append("\tnode[shape=\"box\"];\n");
         dependencyData.getUserPackages().forEach((String user) -> {
             if (withinBasePackage(basePackage, user)) {
                 dependencyData.getUsedPackages(user).forEach((String used) -> {
                     if (withinBasePackage(basePackage, used)) {
-                        report.append("\t\"").append(user).append("\" -> \"")
-                                .append(used).append("\";\n");
+                        report.append("\t\"")
+                                .append(strip(basePackage, user))
+                                .append("\" -> \"")
+                                .append(strip(basePackage, used))
+                                .append("\";\n");
                     }
                 });
             }
@@ -40,4 +44,12 @@ public class DotFileReportGenerator extends AbstractMojoService
                 || thePackage.startsWith(basePackage + ".");
     }
 
+    private String strip(
+            final String basePackage,
+            final String packageName) {
+        if (basePackage.equals(packageName)) {
+            return "[base]";
+        }
+        return packageName.replace(basePackage, "..");
+    }
 }

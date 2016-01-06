@@ -55,7 +55,8 @@ public class DotFileReportGeneratorTest {
         String report = reportGenerator.generate("test");
         //then
         assertThat(report,
-                is("digraph {\n\t\"test.nested\" -> \"test.other\";\n}"));
+                is("digraph {\n\tnode[shape=\"box\"];\n"
+                        + "\t\"...nested\" -> \"...other\";\n}"));
     }
 
     /**
@@ -76,7 +77,7 @@ public class DotFileReportGeneratorTest {
         String report = reportGenerator.generate("test");
         //then
         assertThat(report,
-                is("digraph {\n}"));
+                is("digraph {\n\tnode[shape=\"box\"];\n}"));
     }
 
 }
