@@ -41,7 +41,8 @@ public class DefaultSourceFileAnalyser extends AbstractMojoService
             // the class being parsed
             String packageName = cu.getPackage().getName().toString();
             final List<TypeDeclaration> types = cu.getTypes();
-            if (types != null) { // is null for package-info.java files
+            // types is null for package-info.java files
+            if (types != null && types.size() > 0) {
                 final TypeDeclaration item0 = types.get(0);
                 String className = item0.getName();
 
