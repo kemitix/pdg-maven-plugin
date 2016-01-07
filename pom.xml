@@ -3,14 +3,30 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>net.kemitix</groupId>
     <artifactId>digraph-dependency-maven-plugin</artifactId>
-    <version>0.1.0</version>
+    <version>0.1.1</version>
     <packaging>maven-plugin</packaging>
-    <name>Dependency Directed Graph Generator Maven Plugin</name>
+    <name>Digraph Dependency Maven Plugin</name>
+    <description>Generates a DOT Digraph of dependencies between packages within a project</description>
     <parent>
         <groupId>net.kemitix</groupId>
         <artifactId>kemitix-parent</artifactId>
-        <version>0.3.0</version>
+        <version>0.4.0</version>
     </parent>
+
+    <url>https://github.com/kemitix/digraph-dependency-maven-plugin</url>
+
+    <issueManagement>
+        <url>https://github.com/kemitix/digraph-dependency-maven-plugin/issues</url>
+    </issueManagement>
+
+    <inceptionYear>2016</inceptionYear>
+
+    <scm>
+        <connection>scm:git:git@github.com:kemitix/digraph-dependency-maven-plugin.git</connection>
+        <developerConnection>scm:git:git@github.com:kemitix/digraph-dependency-maven-plugin.git</developerConnection>
+        <url>git@github.com:kemitix/digraph-dependency-maven-plugin.git</url>
+    </scm>
+
     <properties>
         <maven.version>3.3.9</maven.version>
     </properties>

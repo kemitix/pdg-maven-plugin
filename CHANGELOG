@@ -1,6 +1,12 @@
 CHANGELOG
 =========
 
+0.1.1
+------
+
+* Add Github repo details
+* Upgrade kemitix-parent to 0.4.0 to fix bad javadoc and sources jar signatures
+
 0.1.0
 ------
 
