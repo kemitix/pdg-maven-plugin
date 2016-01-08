@@ -53,21 +53,24 @@ public class DigraphProjectStub extends MavenProjectStub {
         setUrl(model.getUrl());
         setPackaging(model.getPackaging());
 
+        final String srcMainJava = getBasedir() + "/src/main/java";
+        final String srcTestJava = getBasedir() + "/src/test/java";
+
         Build build = new Build();
         build.setFinalName(model.getArtifactId());
         build.setDirectory(getBasedir() + "/target");
-        build.setSourceDirectory(getBasedir() + "/src/main/java");
+        build.setSourceDirectory(srcMainJava);
         build.setOutputDirectory(getBasedir() + "/target/classes");
-        build.setTestSourceDirectory(getBasedir() + "/src/test/java");
+        build.setTestSourceDirectory(srcTestJava);
         build.setTestOutputDirectory(getBasedir() + "/target/test-classes");
         setBuild(build);
 
-        List compileSourceRoots = new ArrayList();
-        compileSourceRoots.add(getBasedir() + "/src/main/java");
+        List<String> compileSourceRoots = new ArrayList<>();
+        compileSourceRoots.add(srcMainJava);
         setCompileSourceRoots(compileSourceRoots);
 
-        List testCompileSourceRoots = new ArrayList();
-        testCompileSourceRoots.add(getBasedir() + "/src/test/java");
+        List<String> testCompileSourceRoots = new ArrayList<>();
+        testCompileSourceRoots.add(srcTestJava);
         setTestCompileSourceRoots(testCompileSourceRoots);
     }
 
