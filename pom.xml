@@ -94,6 +94,11 @@
             <version>1.16.6</version>
             <type>jar</type>
         </dependency>
+        <dependency>
+            <groupId>net.kemitix</groupId>
+            <artifactId>node</artifactId>
+            <version>0.1.0</version>
+        </dependency>
     </dependencies>
     <build>
         <plugins>
