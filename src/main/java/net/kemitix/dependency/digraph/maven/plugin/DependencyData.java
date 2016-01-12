@@ -14,16 +14,11 @@ public interface DependencyData {
     /**
      * Records a dependency between the user class and the imported class.
      *
-     * @param userPackage     the package that is using the import
-     * @param userClass       the class within the package that is using the
-     *                        imported class
-     * @param importedPackage the package that contains the class that is being
-     *                        imported
-     * @param importedClass   the class within the package that is being
-     *                        imported
+     * @param user     the package that is using the import
+     * @param imported the package that contains the class that is being
+     *                 imported
      */
-    void addDependency(String userPackage, String userClass,
-            String importedPackage, String importedClass);
+    void addDependency(String user, String imported);
 
     /**
      * Dumps the dependencies to stdout.
