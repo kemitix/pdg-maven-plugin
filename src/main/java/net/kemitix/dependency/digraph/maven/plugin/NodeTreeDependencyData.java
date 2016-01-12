@@ -18,6 +18,20 @@ public class NodeTreeDependencyData implements DependencyData {
     private final Node<PackageData> root
             = new NodeItem<>(new PackageData("[root]"));
 
+    private PackageNode baseNode;
+
+    /**
+     * Constructor.
+     *
+     * @param basePackage the base package within which to report
+     */
+    public NodeTreeDependencyData(final String basePackage) {
+        final List<PackageData> baseLine = createPackageLineList(basePackage);
+        root.createDescendantLine(baseLine);
+        root.walkTree(baseLine).ifPresent((Node<PackageData> base)
+                -> baseNode = (PackageNode) base);
+    }
+
     @Override
     public void addDependency(final String user, final String imported) {
         final List<PackageData> userLine = createPackageLineList(user);
