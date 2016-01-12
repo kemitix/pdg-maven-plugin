@@ -43,9 +43,6 @@ public class DefaultSourceFileAnalyser extends AbstractMojoService
             final List<TypeDeclaration> types = cu.getTypes();
             // types is null for package-info.java files
             if (types != null && types.size() > 0) {
-                final TypeDeclaration item0 = types.get(0);
-                String className = item0.getName();
-
                 // identify classes being imported
                 final List<ImportDeclaration> imports = cu.getImports();
                 if (imports != null) {
@@ -58,8 +55,8 @@ public class DefaultSourceFileAnalyser extends AbstractMojoService
                             m = CLASS_IMPORT.matcher(name);
                         }
                         if (m.find()) {
-                            dependencyData.addDependency(packageName, className,
-                                    m.group("package"), m.group("class"));
+                            dependencyData.addDependency(packageName,
+                                    m.group("package"));
                         }
                     });
                 }

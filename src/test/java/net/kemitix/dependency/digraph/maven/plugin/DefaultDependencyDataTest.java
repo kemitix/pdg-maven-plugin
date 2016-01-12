@@ -40,10 +40,8 @@ public class DefaultDependencyDataTest {
     public void shouldDumpExpectedDependencies() {
         //given
         String userPackage = "user package";
-        String userClass = "user class";
         String usedPackage = "used package";
-        String usedClass = "used class";
-        data.addDependency(userPackage, userClass, usedPackage, usedClass);
+        data.addDependency(userPackage, usedPackage);
         //when
         data.dumpDependencies(log);
         //then
