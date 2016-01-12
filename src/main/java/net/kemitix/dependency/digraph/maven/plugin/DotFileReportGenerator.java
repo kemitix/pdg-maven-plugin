@@ -17,7 +17,7 @@ public class DotFileReportGenerator extends AbstractMojoService
 
     @Override
     public String generate(@NonNull final String basePackage) {
-        StringBuilder report = new StringBuilder();
+        final StringBuilder report = new StringBuilder();
         report.append("digraph {\n");
         report.append("\tnode[shape=\"box\"];\n");
         dependencyData.getUserPackages().forEach((String user) -> {
