@@ -9,8 +9,6 @@ import javax.inject.Inject;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -32,12 +30,9 @@ class DefaultSourceFileAnalyser extends AbstractMojoService
 
     @Override
     public void analyse(final File file) {
-        getMojo().getLog().info("analysing: " + file);
         try {
             CompilationUnit cu = JavaParser.parse(file);
-            // the package being parsed
             String packageName = cu.getPackage().getName().toString();
-            // identify classes being imported
             cu.getImports().forEach((ImportDeclaration id) -> {
                 final String name = id.getName().toString();
                 Matcher m;
