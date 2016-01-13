@@ -1,6 +1,7 @@
 package net.kemitix.dependency.digraph.maven.plugin;
 
 import lombok.Getter;
+import org.apache.maven.plugin.logging.Log;
 
 import javax.inject.Inject;
 
@@ -13,10 +14,15 @@ import javax.inject.Inject;
  *
  * @author pcampbell
  */
-public abstract class AbstractMojoService implements MojoService {
+abstract class AbstractMojoService implements MojoService {
 
     @Inject
     @Getter
     private DigraphMojo mojo;
+
+    @Override
+    public Log getLog() {
+        return mojo.getLog();
+    }
 
 }

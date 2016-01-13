@@ -1,51 +1,35 @@
 package net.kemitix.dependency.digraph.maven.plugin;
 
-import org.apache.maven.plugin.logging.Log;
-
-import java.util.List;
+import net.kemitix.node.Node;
 
 /**
  * Interface for storing package and class dependency data.
  *
  * @author pcampbell
  */
-public interface DependencyData {
+interface DependencyData {
 
     /**
      * Records a dependency between the user class and the imported class.
      *
-     * @param userPackage     the package that is using the import
-     * @param userClass       the class within the package that is using the
-     *                        imported class
-     * @param importedPackage the package that contains the class that is being
-     *                        imported
-     * @param importedClass   the class within the package that is being
-     *                        imported
+     * @param user     the package that is using the import
+     * @param imported the package that contains the class that is being
+     *                 imported
      */
-    void addDependency(String userPackage, String userClass,
-            String importedPackage, String importedClass);
+    void addDependency(String user, String imported);
 
     /**
-     * Dumps the dependencies to stdout.
+     * Sets the base package.
      *
-     * @param log the log to write to
+     * @param basePackage the base package within which to report
      */
-    void dumpDependencies(final Log log);
+    void setBasePackage(final String basePackage);
 
     /**
-     * Returns a list of packages that use other packages.
+     * Returns the base node.
      *
-     * @return the list of package names
+     * @return the base node
      */
-    List<String> getUserPackages();
-
-    /**
-     * Returns a list of packages that are used by the user package.
-     *
-     * @param user the package to filter on
-     *
-     * @return the list of package names
-     */
-    List<String> getUsedPackages(String user);
+    Node<PackageData> getBaseNode();
 
 }

@@ -29,6 +29,7 @@ public abstract class AbstractProjectsList implements List<MavenProject> {
      * @param projectStub the project stub
      */
     public AbstractProjectsList(final DigraphProjectStub projectStub) {
+        projectStub.init();
         list.add(projectStub);
     }
 

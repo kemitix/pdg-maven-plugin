@@ -13,7 +13,7 @@ import java.util.List;
  *
  * @author pcampbell
  */
-public class DefaultSourceDirectoryProvider extends AbstractMojoService
+class DefaultSourceDirectoryProvider extends AbstractMojoService
         implements SourceDirectoryProvider {
 
     @Override

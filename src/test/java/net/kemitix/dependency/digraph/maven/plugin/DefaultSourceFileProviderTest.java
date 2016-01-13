@@ -10,10 +10,10 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import static org.hamcrest.CoreMatchers.containsString;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.doReturn;
 
 /**
@@ -67,13 +67,21 @@ public class DefaultSourceFileProviderTest {
         sourceFileProvider.process(directories);
         //then
         List<File> javaFiles = fileVisitor.getJavaFiles();
-        /** the following assumes that the four src files (index 0,2-4) are
-         * found first, then the lone test file (index 5) */
+        javaFiles.sort(File::compareTo);
+        /** 
+         * The files are sorted so should appear in the order: 
+         * main/.../nested/package-info.java, main/.../nested/Src.java, 
+         * main/.../other/Imported.java, main/.../other/Static.java, 
+         * main/.../other/StaticAll.java and test/.../Tst.java
+         */
         final int numberOfClassFiles = 6;
         assertThat(javaFiles.size(), is(numberOfClassFiles));
-        assertTrue(javaFiles.get(0).toString().contains(src));
+        final String fileSeparator = System.getProperty("file.separator");
+        assertThat(javaFiles.get(0).toString(), 
+                containsString(src.replace("/", fileSeparator)));
         final int indexOfTestFile = 5;
-        assertTrue(javaFiles.get(indexOfTestFile).toString().contains(test));
+        assertThat(javaFiles.get(indexOfTestFile).toString(), 
+                containsString(test.replace("/", fileSeparator)));
     }
 
 }

@@ -7,7 +7,7 @@ import java.io.IOException;
  *
  * @author pcampbell
  */
-public interface ReportWriter extends MojoService {
+interface ReportWriter extends MojoService {
 
     /**
      * Write the report.

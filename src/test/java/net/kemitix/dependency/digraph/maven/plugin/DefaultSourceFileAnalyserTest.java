@@ -60,18 +60,15 @@ public class DefaultSourceFileAnalyserTest {
      * Should parse Src.java file.
      */
     @Test
+    @SuppressWarnings("magicnumber")
     public void shouldParseSrcFile() {
         //given
         File file = new File(SRC_JAVA);
         //when
         analyser.analyse(file);
         //then
-        verify(dependencyData, times(1))
-                .addDependency("test.nested", "Src", "test.other", "Imported");
-        verify(dependencyData, times(1))
-                .addDependency("test.nested", "Src", "test.other", "StaticAll");
-        verify(dependencyData, times(1))
-                .addDependency("test.nested", "Src", "test.other", "Static");
+        verify(dependencyData, times(3))
+                .addDependency("test.nested", "test.other");
     }
 
     /**
