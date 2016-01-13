@@ -22,10 +22,11 @@ Add the following to you pom.xml:
                 <configuration>
                     <basePackage>com.example</basePackage>
                     <!-- <includeTests>false</includeTests> -->
+                    <!-- <debug>true</debug> -->
                 </configuration>
             </plugin>
         </plugins>
     </build>
 
-The `basePackage` is required and `includeTests` is optional, defaulting to not including them.
+The `basePackage` is required while `includeTests` and `debug` are optional. Defaults are as shown.
 
