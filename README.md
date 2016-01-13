@@ -11,22 +11,18 @@ project.
 
 ## Usage
 
-Add the following to you pom.xml:
+Add the following build plugin to your pom.xml:
 
-    <build>
-        <plugins>
             <plugin>
                 <groupId>net.kemitix</groupId>
                 <artifactId>digraph-dependency-maven-plugin</artifactId>
-                <version>0.1.0</version>
+                <version>${digraph.version}</version>
                 <configuration>
                     <basePackage>com.example</basePackage>
                     <!-- <includeTests>false</includeTests> -->
                     <!-- <debug>true</debug> -->
                 </configuration>
             </plugin>
-        </plugins>
-    </build>
 
 The `basePackage` is required while `includeTests` and `debug` are optional. Defaults are as shown.
 
