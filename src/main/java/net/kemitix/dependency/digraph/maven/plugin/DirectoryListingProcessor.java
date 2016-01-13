@@ -26,7 +26,7 @@ class DirectoryListingProcessor extends AbstractMojoService
 
     @Override
     public void process(final List<String> directories) {
-        final Log log = getMojo().getLog();
+        final Log log = getLog();
         directories.forEach((final String dir) -> {
             log.info("* " + dir);
         });

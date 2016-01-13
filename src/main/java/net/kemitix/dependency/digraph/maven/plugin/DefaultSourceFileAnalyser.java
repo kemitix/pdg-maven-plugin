@@ -52,11 +52,9 @@ class DefaultSourceFileAnalyser extends AbstractMojoService
                 }
             });
         } catch (ParseException ex) {
-            Logger.getLogger(DefaultSourceFileAnalyser.class.getName())
-                    .log(Level.SEVERE, "Error parsing file " + file, ex);
+            getLog().error("Error parsing file " + file, ex);
         } catch (IOException ex) {
-            Logger.getLogger(DefaultSourceFileAnalyser.class.getName())
-                    .log(Level.SEVERE, "Error reading file " + file, ex);
+            getLog().error("Error reading file " + file, ex);
         }
 
     }
