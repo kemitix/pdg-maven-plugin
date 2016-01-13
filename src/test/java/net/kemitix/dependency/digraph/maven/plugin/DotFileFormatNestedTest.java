@@ -22,12 +22,12 @@ import static org.mockito.Mockito.doReturn;
  *
  * @author pcampbell
  */
-public class DotFileReportGeneratorTest {
+public class DotFileFormatNestedTest {
 
     /**
      * Class under test.
      */
-    private DotFileReportGenerator reportGenerator;
+    private DotFileFormat dotFileFormat;
 
     private DependencyData dependencyData;
 
@@ -41,7 +41,9 @@ public class DotFileReportGeneratorTest {
     public void setUp() {
         MockitoAnnotations.initMocks(this);
         dependencyData = new NodeTreeDependencyData();
-        reportGenerator = new DotFileReportGenerator(nodePathGenerator);
+        dependencyData.setBasePackage("test");
+        dotFileFormat = new DotFileFormatNested(
+                dependencyData.getBaseNode(), nodePathGenerator);
     }
 
     /**
@@ -50,7 +52,6 @@ public class DotFileReportGeneratorTest {
     @Test
     public void shouldCreateTestNode() {
         //given
-        dependencyData.setBasePackage("test");
         dependencyData.addDependency("test.nested", "test.other");
         //when
         Node<PackageData> baseNode = dependencyData.getBaseNode();
@@ -65,7 +66,6 @@ public class DotFileReportGeneratorTest {
     @Test
     public void shouldGenerateReport() {
         //given
-        dependencyData.setBasePackage("test");
         dependencyData.addDependency("test.nested", "test.other");
         final Node<PackageData> baseNode = dependencyData.getBaseNode();
 
@@ -87,7 +87,7 @@ public class DotFileReportGeneratorTest {
                 + "\"nested\"->\"other\"\n"
                 + "}";
         //when
-        String report = reportGenerator.generate(baseNode);
+        String report = dotFileFormat.renderReport();
         //then
         assertThat(report, is(expected));
     }
@@ -99,7 +99,6 @@ public class DotFileReportGeneratorTest {
     @Test
     public void shouldOnlyIncludeUsingPackage() {
         //given
-        dependencyData.setBasePackage("test");
         dependencyData.addDependency("test.nested", "tested.other");
         final Node<PackageData> baseNode = dependencyData.getBaseNode();
 
@@ -116,7 +115,7 @@ public class DotFileReportGeneratorTest {
                 + "\"nested\"[label=\"nested\"];}\n"
                 + "}";
         //when
-        String report = reportGenerator.generate(baseNode);
+        String report = dotFileFormat.renderReport();
         //then
         assertThat(report, is(expected));
     }
@@ -128,7 +127,6 @@ public class DotFileReportGeneratorTest {
     @Test
     public void shouldOnlyIncludeUsedPackage() {
         //given
-        dependencyData.setBasePackage("test");
         dependencyData.addDependency("tested.nested", "test.other");
         final Node<PackageData> baseNode = dependencyData.getBaseNode();
 
@@ -145,7 +143,7 @@ public class DotFileReportGeneratorTest {
                 + "\"other\"[label=\"other\"];}\n"
                 + "}";
         //when
-        String report = reportGenerator.generate(baseNode);
+        String report = dotFileFormat.renderReport();
         //then
         assertThat(report, is(expected));
     }
@@ -157,7 +155,6 @@ public class DotFileReportGeneratorTest {
     @Test
     public void shouldNestPackages() {
         //given
-        dependencyData.setBasePackage("test");
         dependencyData.addDependency("test.nested", "test.other");
         dependencyData.addDependency("test.nested", "test.other.more");
         dependencyData.addDependency("test.other", "test.yetmore");
@@ -196,7 +193,7 @@ public class DotFileReportGeneratorTest {
                 + "\"other\"->\"yetmore\"[ltail=\"clusterother\",]\n"
                 + "}";
         //when
-        String report = reportGenerator.generate(baseNode);
+        String report = dotFileFormat.renderReport();
         //then
         assertThat(report, is(expected));
     }
