@@ -12,7 +12,7 @@ import java.util.Set;
  *
  * @author pcampbell
  */
-public class PackageData {
+class PackageData {
 
     @Getter
     private final String name;
@@ -25,7 +25,7 @@ public class PackageData {
      *
      * @param name the name of the package
      */
-    public PackageData(final String name) {
+    PackageData(final String name) {
         this.name = name;
     }
 

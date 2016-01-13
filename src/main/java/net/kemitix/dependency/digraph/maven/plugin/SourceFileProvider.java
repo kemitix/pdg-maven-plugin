@@ -8,7 +8,7 @@ import java.util.List;
  *
  * @author pcampbell
  */
-public interface SourceFileProvider extends MojoService {
+interface SourceFileProvider extends MojoService {
 
     /**
      * Process the list of directories.

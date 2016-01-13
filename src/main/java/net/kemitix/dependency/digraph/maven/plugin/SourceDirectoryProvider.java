@@ -9,7 +9,7 @@ import java.util.List;
  *
  * @author pcampbell
  */
-public interface SourceDirectoryProvider extends MojoService {
+interface SourceDirectoryProvider extends MojoService {
 
     /**
      * Returns all the source directories for the project, including any

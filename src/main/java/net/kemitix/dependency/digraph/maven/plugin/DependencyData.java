@@ -9,7 +9,7 @@ import java.util.List;
  *
  * @author pcampbell
  */
-public interface DependencyData {
+interface DependencyData {
 
     /**
      * Records a dependency between the user class and the imported class.

@@ -13,7 +13,7 @@ import java.util.List;
  *
  * @author Paul Campbell
  */
-public class NodeTreeDependencyData implements DependencyData {
+class NodeTreeDependencyData implements DependencyData {
 
     private final Node<PackageData> root
             = new NodeItem<>(new PackageData("[root]"));

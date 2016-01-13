@@ -19,7 +19,7 @@ import java.util.regex.Pattern;
  *
  * @author pcampbell
  */
-public class DefaultSourceFileAnalyser extends AbstractMojoService
+class DefaultSourceFileAnalyser extends AbstractMojoService
         implements SourceFileAnalyser {
 
     @Inject

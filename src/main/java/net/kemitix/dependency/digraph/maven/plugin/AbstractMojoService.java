@@ -13,7 +13,7 @@ import javax.inject.Inject;
  *
  * @author pcampbell
  */
-public abstract class AbstractMojoService implements MojoService {
+abstract class AbstractMojoService implements MojoService {
 
     @Inject
     @Getter

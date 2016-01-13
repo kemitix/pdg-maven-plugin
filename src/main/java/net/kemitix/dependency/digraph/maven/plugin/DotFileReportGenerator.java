@@ -9,7 +9,7 @@ import javax.inject.Inject;
  *
  * @author pcampbell
  */
-public class DotFileReportGenerator extends AbstractMojoService
+class DotFileReportGenerator extends AbstractMojoService
         implements ReportGenerator {
 
     @Inject

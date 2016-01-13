@@ -7,7 +7,7 @@ import net.kemitix.node.Node;
  *
  * @author pcampbell
  */
-public interface PackageTreeBuilder {
+interface PackageTreeBuilder {
 
     /**
      * Initialise the builder and set the base package.

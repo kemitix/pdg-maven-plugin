@@ -10,7 +10,7 @@ import java.util.List;
  *
  * @author pcampbell
  */
-public interface SourceFileVisitor extends FileVisitor<Path>, MojoService {
+interface SourceFileVisitor extends FileVisitor<Path>, MojoService {
 
     /**
      * Returns the list of Java source files found.

@@ -15,7 +15,7 @@ import java.util.logging.Logger;
  *
  * @author pcampbell
  */
-public class DefaultSourceFileProvider extends AbstractMojoService
+class DefaultSourceFileProvider extends AbstractMojoService
         implements SourceFileProvider {
 
     /**

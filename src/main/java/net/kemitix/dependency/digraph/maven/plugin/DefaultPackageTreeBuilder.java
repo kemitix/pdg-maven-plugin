@@ -13,7 +13,7 @@ import java.util.Arrays;
  *
  * @author pcampbell
  */
-public class DefaultPackageTreeBuilder implements PackageTreeBuilder {
+class DefaultPackageTreeBuilder implements PackageTreeBuilder {
 
     private String basePackage;
 

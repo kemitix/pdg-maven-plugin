@@ -5,7 +5,7 @@ package net.kemitix.dependency.digraph.maven.plugin;
  *
  * @author pcampbell
  */
-public interface ReportGenerator extends MojoService {
+interface ReportGenerator extends MojoService {
 
     /**
      * Generates the dependency report.

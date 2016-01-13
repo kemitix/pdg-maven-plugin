@@ -7,7 +7,7 @@ import com.google.inject.AbstractModule;
  *
  * @author pcampbell
  */
-public class DigraphModule extends AbstractModule {
+class DigraphModule extends AbstractModule {
 
     private final DependencyData dependencyData = new DefaultDependencyData();
 

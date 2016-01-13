@@ -15,7 +15,7 @@ import java.util.Set;
  *
  * @author pcampbell
  */
-public class DefaultDependencyData implements DependencyData {
+class DefaultDependencyData implements DependencyData {
 
     @Getter
     private final Map<String, Set<String>> packageUses;

@@ -5,7 +5,7 @@ package net.kemitix.dependency.digraph.maven.plugin;
  *
  * @author pcampbell
  */
-public interface MojoService {
+interface MojoService {
 
     /**
      * Gets the mojo.
