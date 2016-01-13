@@ -7,9 +7,9 @@ import com.google.inject.AbstractModule;
  *
  * @author pcampbell
  */
-public class DigraphModule extends AbstractModule {
+class DigraphModule extends AbstractModule {
 
-    private final DependencyData dependencyData = new DefaultDependencyData();
+    private final DependencyData dependencyData = new NodeTreeDependencyData();
 
     @Override
     protected void configure() {
@@ -27,6 +27,10 @@ public class DigraphModule extends AbstractModule {
                 .to(DotFileReportGenerator.class);
         bind(ReportWriter.class)
                 .to(DefaultReportWriter.class);
+        bind(PackageTreeBuilder.class)
+                .to(DefaultPackageTreeBuilder.class);
+        bind(NodePathGenerator.class)
+                .to(DefaultNodePathGenerator.class);
     }
 
 }

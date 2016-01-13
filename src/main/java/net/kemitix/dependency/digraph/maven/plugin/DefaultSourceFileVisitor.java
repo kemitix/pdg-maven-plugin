@@ -18,7 +18,7 @@ import java.util.List;
  *
  * @author pcampbell
  */
-public class DefaultSourceFileVisitor extends SimpleFileVisitor<Path>
+class DefaultSourceFileVisitor extends SimpleFileVisitor<Path>
         implements SourceFileVisitor {
 
     @Inject

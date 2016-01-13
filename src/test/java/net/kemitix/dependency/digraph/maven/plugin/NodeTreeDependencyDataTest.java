@@ -10,16 +10,16 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 /**
- * Tests for {@link DefaultDependencyData}.
+ * Tests for {@link NodeTreeDependencyData}.
  *
  * @author pcampbell
  */
-public class DefaultDependencyDataTest {
+public class NodeTreeDependencyDataTest {
 
     /**
      * Class under test.
      */
-    private DefaultDependencyData data;
+    private NodeTreeDependencyData data;
 
     @Mock
     private Log log;
@@ -30,7 +30,7 @@ public class DefaultDependencyDataTest {
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-        data = new DefaultDependencyData();
+        data = new NodeTreeDependencyData();
     }
 
     /**
@@ -40,10 +40,8 @@ public class DefaultDependencyDataTest {
     public void shouldDumpExpectedDependencies() {
         //given
         String userPackage = "user package";
-        String userClass = "user class";
         String usedPackage = "used package";
-        String usedClass = "used class";
-        data.addDependency(userPackage, userClass, usedPackage, usedClass);
+        data.addDependency(userPackage, usedPackage);
         //when
         data.dumpDependencies(log);
         //then

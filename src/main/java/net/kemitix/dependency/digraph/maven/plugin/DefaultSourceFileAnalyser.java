@@ -4,13 +4,11 @@ import com.github.javaparser.JavaParser;
 import com.github.javaparser.ParseException;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.ImportDeclaration;
-import com.github.javaparser.ast.body.TypeDeclaration;
 
 import javax.inject.Inject;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
@@ -21,7 +19,7 @@ import java.util.regex.Pattern;
  *
  * @author pcampbell
  */
-public class DefaultSourceFileAnalyser extends AbstractMojoService
+class DefaultSourceFileAnalyser extends AbstractMojoService
         implements SourceFileAnalyser {
 
     @Inject
@@ -37,33 +35,22 @@ public class DefaultSourceFileAnalyser extends AbstractMojoService
         getMojo().getLog().info("analysing: " + file);
         try {
             CompilationUnit cu = JavaParser.parse(file);
-
-            // the class being parsed
+            // the package being parsed
             String packageName = cu.getPackage().getName().toString();
-            final List<TypeDeclaration> types = cu.getTypes();
-            // types is null for package-info.java files
-            if (types != null && types.size() > 0) {
-                final TypeDeclaration item0 = types.get(0);
-                String className = item0.getName();
-
-                // identify classes being imported
-                final List<ImportDeclaration> imports = cu.getImports();
-                if (imports != null) {
-                    imports.forEach((ImportDeclaration id) -> {
-                        final String name = id.getName().toString();
-                        Matcher m;
-                        if (id.isStatic() && !id.isAsterisk()) {
-                            m = METHOD_IMPORT.matcher(name);
-                        } else {
-                            m = CLASS_IMPORT.matcher(name);
-                        }
-                        if (m.find()) {
-                            dependencyData.addDependency(packageName, className,
-                                    m.group("package"), m.group("class"));
-                        }
-                    });
+            // identify classes being imported
+            cu.getImports().forEach((ImportDeclaration id) -> {
+                final String name = id.getName().toString();
+                Matcher m;
+                if (id.isStatic() && !id.isAsterisk()) {
+                    m = METHOD_IMPORT.matcher(name);
+                } else {
+                    m = CLASS_IMPORT.matcher(name);
                 }
-            }
+                if (m.find()) {
+                    dependencyData.addDependency(
+                            packageName, m.group("package"));
+                }
+            });
         } catch (ParseException ex) {
             Logger.getLogger(DefaultSourceFileAnalyser.class.getName())
                     .log(Level.SEVERE, "Error parsing file " + file, ex);

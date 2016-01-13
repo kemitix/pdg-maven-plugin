@@ -7,7 +7,7 @@ import java.io.File;
  *
  * @author pcampbell
  */
-public interface SourceFileAnalyser extends MojoService {
+interface SourceFileAnalyser extends MojoService {
 
     /**
      * Analyse the file.

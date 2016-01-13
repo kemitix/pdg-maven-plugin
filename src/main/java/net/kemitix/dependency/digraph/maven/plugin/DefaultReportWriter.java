@@ -12,7 +12,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  *
  * @author pcampbell
  */
-public class DefaultReportWriter extends AbstractMojoService
+class DefaultReportWriter extends AbstractMojoService
         implements ReportWriter {
 
     @Override
