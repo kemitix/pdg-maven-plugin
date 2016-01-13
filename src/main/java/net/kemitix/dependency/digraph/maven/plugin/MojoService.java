@@ -1,5 +1,7 @@
 package net.kemitix.dependency.digraph.maven.plugin;
 
+import org.apache.maven.plugin.logging.Log;
+
 /**
  * Interface for Mojo services.
  *
@@ -13,5 +15,12 @@ interface MojoService {
      * @return the mojo
      */
     DigraphMojo getMojo();
+
+    /**
+     * Get the logger.
+     *
+     * @return the logger
+     */
+    Log getLog();
 
 }

@@ -1,7 +1,6 @@
 package net.kemitix.dependency.digraph.maven.plugin;
 
 import net.kemitix.node.Node;
-import org.apache.maven.plugin.logging.Log;
 
 /**
  * Interface for storing package and class dependency data.
@@ -18,13 +17,6 @@ interface DependencyData {
      *                 imported
      */
     void addDependency(String user, String imported);
-
-    /**
-     * Dumps the dependencies to stdout.
-     *
-     * @param log the log to write to
-     */
-    void dumpDependencies(final Log log);
 
     /**
      * Sets the base package.

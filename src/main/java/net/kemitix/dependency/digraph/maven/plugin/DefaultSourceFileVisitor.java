@@ -2,8 +2,6 @@ package net.kemitix.dependency.digraph.maven.plugin;
 
 import lombok.Getter;
 
-import javax.inject.Inject;
-
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.FileVisitResult;
@@ -20,10 +18,6 @@ import java.util.List;
  */
 class DefaultSourceFileVisitor extends SimpleFileVisitor<Path>
         implements SourceFileVisitor {
-
-    @Inject
-    @Getter
-    private DigraphMojo mojo;
 
     /**
      * The list of Java files discovered.
