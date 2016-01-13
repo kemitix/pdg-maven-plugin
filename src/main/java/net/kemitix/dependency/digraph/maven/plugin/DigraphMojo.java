@@ -30,6 +30,9 @@ public class DigraphMojo extends AbstractMojo {
     @Parameter(name = "basePackage", required = true)
     private String basePackage;
 
+    @Parameter(name = "debug", defaultValue = "true")
+    private boolean debug;
+
     private final Injector injector;
 
     private final SourceDirectoryProvider directoryProvider;
@@ -83,6 +86,9 @@ public class DigraphMojo extends AbstractMojo {
         final List<File> javaFiles = fileProvider.getJavaFiles();
         if (javaFiles != null) {
             javaFiles.forEach(fileAnalyser::analyse);
+            if (debug) {
+                dependencyData.debugLog(getLog());
+            }
             try {
                 reportWriter.write(reportGenerator.generate(
                         dependencyData.getBaseNode()), REPORT_FILE);
