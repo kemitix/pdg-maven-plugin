@@ -1,6 +1,15 @@
 CHANGELOG
 =========
 
+0.2.0
+------
+
+* Cleanup logging
+* Show packages as nested clusters
+* Ignore class dependencies
+* Fix compilation lint errors
+* Upgrade javaparser to 2.3.0
+
 0.1.2
 ------
 
