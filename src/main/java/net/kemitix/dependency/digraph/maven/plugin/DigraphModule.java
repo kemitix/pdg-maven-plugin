@@ -9,7 +9,7 @@ import com.google.inject.AbstractModule;
  */
 class DigraphModule extends AbstractModule {
 
-    private final DependencyData dependencyData = new DefaultDependencyData();
+    private final DependencyData dependencyData = new NodeTreeDependencyData();
 
     @Override
     protected void configure() {

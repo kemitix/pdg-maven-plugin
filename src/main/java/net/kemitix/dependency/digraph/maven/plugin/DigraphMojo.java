@@ -77,6 +77,7 @@ public class DigraphMojo extends AbstractMojo {
 
     @Override
     public void execute() {
+        dependencyData.setBasePackage(basePackage);
         directories = directoryProvider.getDirectories(projects, includeTests);
         fileProvider.process(directories);
         final List<File> javaFiles = fileProvider.getJavaFiles();
@@ -84,8 +85,8 @@ public class DigraphMojo extends AbstractMojo {
             javaFiles.forEach(fileAnalyser::analyse);
             dependencyData.dumpDependencies(getLog());
             try {
-                reportWriter.write(
-                        reportGenerator.generate(basePackage), REPORT_FILE);
+                reportWriter.write(reportGenerator.generate(
+                        dependencyData.getBaseNode()), REPORT_FILE);
             } catch (IOException ex) {
                 getLog().error(ex.toString());
             }

@@ -1,5 +1,6 @@
 package net.kemitix.dependency.digraph.maven.plugin;
 
+import lombok.Getter;
 import net.kemitix.node.Node;
 import net.kemitix.node.NodeItem;
 import org.apache.maven.plugin.logging.Log;
@@ -18,18 +19,20 @@ class NodeTreeDependencyData implements DependencyData {
     private final Node<PackageData> root
             = new NodeItem<>(new PackageData("[root]"));
 
-    private PackageNode baseNode;
+    @Getter
+    private Node<PackageData> baseNode;
 
     /**
-     * Constructor.
+     * Sets the base package.
      *
      * @param basePackage the base package within which to report
      */
-    public NodeTreeDependencyData(final String basePackage) {
+    @Override
+    public void setBasePackage(final String basePackage) {
         final List<PackageData> baseLine = createPackageLineList(basePackage);
         root.createDescendantLine(baseLine);
         root.walkTree(baseLine).ifPresent((Node<PackageData> base)
-                -> baseNode = (PackageNode) base);
+                -> baseNode = base);
     }
 
     @Override
@@ -70,16 +73,6 @@ class NodeTreeDependencyData implements DependencyData {
                             .append(t.getData().getName());
                 });
         return usages.toString();
-    }
-
-    @Override
-    public List<String> getUserPackages() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
-    public List<String> getUsedPackages(final String user) {
-        throw new UnsupportedOperationException("Not supported yet.");
     }
 
 }

@@ -1,5 +1,7 @@
 package net.kemitix.dependency.digraph.maven.plugin;
 
+import net.kemitix.node.Node;
+
 /**
  * Interface for creating dependency data report.
  *
@@ -10,10 +12,10 @@ interface ReportGenerator extends MojoService {
     /**
      * Generates the dependency report.
      *
-     * @param basePackage only report dependencies within this package
+     * @param baseNode the node to report on
      *
      * @return the report
      */
-    String generate(String basePackage);
+    String generate(Node<PackageData> baseNode);
 
 }
