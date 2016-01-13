@@ -29,6 +29,8 @@ public class DigraphModule extends AbstractModule {
                 .to(DefaultReportWriter.class);
         bind(PackageTreeBuilder.class)
                 .to(DefaultPackageTreeBuilder.class);
+        bind(NodePathGenerator.class)
+                .to(DefaultNodePathGenerator.class);
     }
 
 }
