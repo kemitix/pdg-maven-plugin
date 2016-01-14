@@ -1,6 +1,13 @@
 CHANGELOG
 =========
 
+0.3.0
+------
+
+* Add selectable graph formats: nested and simple
+* Update REAdME.md
+* Add debug flag to output package tree
+
 0.2.0
 ------
 
