@@ -97,7 +97,7 @@ public class DigraphMojo extends AbstractMojo {
             if (debug) {
                 dependencyData.debugLog(getLog());
             }
-            DotFileFormatNested reportFormat;
+            DotFileFormat reportFormat;
             switch (format) {
                 case "nested":
                 default:
