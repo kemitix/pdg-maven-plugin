@@ -11,45 +11,23 @@ import java.util.List;
  *
  * @author pcampbell
  */
-class DotFileFormatNested implements DotFileFormat {
+class DotFileFormatNested extends AbstractDotFileFormat {
 
-    private final Node<PackageData> base;
-
-    private final NodePathGenerator nodePathGenerator;
-
-    /**
-     * Constructor.
-     *
-     * @param base              the base package
-     * @param nodePathGenerator the node path generator
-     */
     DotFileFormatNested(
             final Node<PackageData> base,
             final NodePathGenerator nodePathGenerator) {
-        this.base = base;
-        this.nodePathGenerator = nodePathGenerator;
+        super(base, nodePathGenerator);
     }
 
     @Override
-    public String renderReport() {
-        final StringBuilder report = new StringBuilder();
-        report.append("digraph{compound=true;node[shape=box]\n");
-        report.append(renderNode(base));
-        report.append(renderUsages(base));
-        report.append("}");
-        return report.toString();
-    }
-
-    private String renderNode(final Node<PackageData> node) {
+    String renderNode(final Node<PackageData> node) {
         final StringBuilder render = new StringBuilder();
-        final String clusterId = nodePathGenerator.getPath(node, base, "_");
+        final String clusterId = getPath(node, "_");
         final String nodeId = node.getData().getName();
         final String headerFormat
                 = "subgraph \"cluster{0}\"'{'"
                 + "label=\"{1}\";\"{1}\"[style=dotted]\n";
-        render.append(MessageFormat.format(headerFormat,
-                clusterId, nodeId));
-
+        render.append(MessageFormat.format(headerFormat, clusterId, nodeId));
         node.getChildren().stream()
                 .sorted(new NodePackageDataComparator())
                 .forEach((Node<PackageData> child) -> {
@@ -63,13 +41,15 @@ class DotFileFormatNested implements DotFileFormat {
         return render.toString();
     }
 
-    private String renderUsages(final Node<PackageData> node) {
+    @Override
+    String renderUsages(final Node<PackageData> node) {
         final StringBuilder usages = new StringBuilder();
         node.getChildren().stream()
                 .sorted(new NodePackageDataComparator())
                 .forEach((Node<PackageData> childNode) -> {
                     childNode.getData().getUses().stream()
-                            .filter((Node<PackageData> n) -> n.isChildOf(base))
+                            .filter((Node<PackageData> n)
+                                    -> n.isChildOf(getBase()))
                             .sorted(new NodePackageDataComparator())
                             .forEach((Node<PackageData> n) -> {
                                 usages.append(renderUsage(childNode, n));
@@ -86,12 +66,12 @@ class DotFileFormatNested implements DotFileFormat {
         // if tail node has children, then add ltail attribute
         if (tailNode.getChildren().size() > 0) {
             attributes.add(String.format("ltail=\"cluster%s\",",
-                    nodePathGenerator.getPath(tailNode, base, "_")));
+                    getPath(tailNode, "_")));
         }
         // if head node has children, then add lhead attribute
         if (headNode.getChildren().size() > 0) {
             attributes.add(String.format("lhead=\"cluster%s\",",
-                    nodePathGenerator.getPath(headNode, base, "_")));
+                    getPath(headNode, "_")));
         }
         final StringBuilder attributeTag = new StringBuilder();
         if (attributes.size() > 0) {
@@ -101,15 +81,12 @@ class DotFileFormatNested implements DotFileFormat {
         }
 
         return String.format("\"%s\"->\"%s\"%s%n",
-                nodePathGenerator.getPath(tailNode, base, "."),
-                nodePathGenerator.getPath(headNode, base, "."),
-                attributeTag);
+                getPath(tailNode, "."), getPath(headNode, "."), attributeTag);
     }
 
     private String renderLeafPackage(final Node<PackageData> node) {
         return String.format("\"%s\"[label=\"%s\"];",
-                nodePathGenerator.getPath(node, base, "."),
-                node.getData().getName());
+                getPath(node, "."), node.getData().getName());
     }
 
 }

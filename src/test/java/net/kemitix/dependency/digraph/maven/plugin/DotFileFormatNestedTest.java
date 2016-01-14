@@ -18,7 +18,7 @@ import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.doReturn;
 
 /**
- * Tests for {@link DotFileReportGenerator}.
+ * Tests for {@link DotFileFormatNested}.
  *
  * @author pcampbell
  */
