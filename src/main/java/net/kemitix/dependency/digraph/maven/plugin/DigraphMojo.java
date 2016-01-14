@@ -99,6 +99,10 @@ public class DigraphMojo extends AbstractMojo {
             }
             DotFileFormat reportFormat;
             switch (format) {
+                case "simple":
+                    reportFormat = new DotFileFormatSimple(
+                            dependencyData.getBaseNode(), nodePathGenerator);
+                    break;
                 case "nested":
                 default:
                     reportFormat = new DotFileFormatNested(
