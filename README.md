@@ -21,8 +21,27 @@ Add the following build plugin to your pom.xml:
                     <basePackage>com.example</basePackage>
                     <!-- <includeTests>false</includeTests> -->
                     <!-- <debug>true</debug> -->
+                    <!-- <format>nested</format> -->
                 </configuration>
             </plugin>
 
-The `basePackage` is required while `includeTests` and `debug` are optional. Defaults are as shown.
+The `basePackage` is the only required parameter.
 
+### basePackage
+
+Only dependencies where both the using package and the package being used are
+within the `basePackage` are included in the graph.
+
+### includeTests
+
+Whether or not to include the test sources in the graph. Default is `false`.
+
+### debug
+
+Whether to include a debug output. Currently that mean printing the list of
+nested packages that were scanned. Default is `true`.
+
+### format
+
+Which style of digraph to create. Default is `nested` which attempts to cluster
+packages within their parent package. The alternative is `simple`.
