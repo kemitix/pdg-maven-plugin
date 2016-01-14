@@ -5,6 +5,7 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 import lombok.Getter;
 import lombok.NonNull;
+import lombok.Setter;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
@@ -30,6 +31,13 @@ public class DigraphMojo extends AbstractMojo {
     @Parameter(name = "basePackage", required = true)
     private String basePackage;
 
+    @Parameter(name = "debug", defaultValue = "true")
+    private boolean debug;
+
+    @Setter
+    @Parameter(name = "format", defaultValue = "nested")
+    private String format;
+
     private final Injector injector;
 
     private final SourceDirectoryProvider directoryProvider;
@@ -46,6 +54,8 @@ public class DigraphMojo extends AbstractMojo {
     private final ReportGenerator reportGenerator;
 
     private final ReportWriter reportWriter;
+
+    private final NodePathGenerator nodePathGenerator;
 
     @Getter
     private List<String> directories;
@@ -73,6 +83,7 @@ public class DigraphMojo extends AbstractMojo {
         dependencyData = injector.getInstance(DependencyData.class);
         reportGenerator = injector.getInstance(ReportGenerator.class);
         reportWriter = injector.getInstance(ReportWriter.class);
+        nodePathGenerator = injector.getInstance(NodePathGenerator.class);
     }
 
     @Override
@@ -83,9 +94,24 @@ public class DigraphMojo extends AbstractMojo {
         final List<File> javaFiles = fileProvider.getJavaFiles();
         if (javaFiles != null) {
             javaFiles.forEach(fileAnalyser::analyse);
+            if (debug) {
+                dependencyData.debugLog(getLog());
+            }
+            DotFileFormat reportFormat;
+            switch (format) {
+                case "simple":
+                    reportFormat = new DotFileFormatSimple(
+                            dependencyData.getBaseNode(), nodePathGenerator);
+                    break;
+                case "nested":
+                default:
+                    reportFormat = new DotFileFormatNested(
+                            dependencyData.getBaseNode(), nodePathGenerator);
+                    break;
+            }
             try {
-                reportWriter.write(reportGenerator.generate(
-                        dependencyData.getBaseNode()), REPORT_FILE);
+                reportWriter.write(reportGenerator.generate(reportFormat),
+                        REPORT_FILE);
             } catch (IOException ex) {
                 getLog().error(ex.toString());
             }

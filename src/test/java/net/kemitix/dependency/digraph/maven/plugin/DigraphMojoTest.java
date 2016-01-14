@@ -34,6 +34,7 @@ public class DigraphMojoTest {
         final String pom = "src/test/projects/src-and-test/pom.xml";
         final String baseDir = new File(pom).getParentFile().getAbsolutePath();
         DigraphMojo mojo = (DigraphMojo) rule.lookupMojo(goal, pom);
+        mojo.setFormat("nested");
         assertNotNull(mojo);
         //when
         mojo.execute();
@@ -56,6 +57,7 @@ public class DigraphMojoTest {
         final String pom = "src/test/projects/src-only/pom.xml";
         final String baseDir = new File(pom).getParentFile().getAbsolutePath();
         final DigraphMojo mojo = (DigraphMojo) rule.lookupMojo(goal, pom);
+        mojo.setFormat("nested");
         assertNotNull(mojo);
         //when
         mojo.execute();

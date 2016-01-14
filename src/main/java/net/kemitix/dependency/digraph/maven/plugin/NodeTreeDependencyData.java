@@ -3,10 +3,13 @@ package net.kemitix.dependency.digraph.maven.plugin;
 import lombok.Getter;
 import net.kemitix.node.Node;
 import net.kemitix.node.NodeItem;
+import org.apache.maven.plugin.logging.Log;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 /**
  * Implementation of {@link DependencyData} using a node tree.
@@ -53,6 +56,23 @@ class NodeTreeDependencyData implements DependencyData {
         Arrays.asList(userPackage.split("\\."))
                 .forEach((String n) -> line.add(new PackageData(n)));
         return line;
+    }
+
+    @Override
+    public void debugLog(final Log log) {
+        debugLogNode(log, baseNode, 0);
+    }
+
+    private void debugLogNode(
+            final Log log,
+            final Node<PackageData> node,
+            final int depth) {
+        String padding = IntStream.range(0, depth * 2).mapToObj(x -> " ")
+                .collect(Collectors.joining());
+        log.info(padding + node.getData().getName());
+        node.getChildren().stream().forEach((Node<PackageData> t) -> {
+            debugLogNode(log, t, depth + 1);
+        });
     }
 
 }

@@ -1,6 +1,7 @@
 package net.kemitix.dependency.digraph.maven.plugin;
 
 import net.kemitix.node.Node;
+import org.apache.maven.plugin.logging.Log;
 
 /**
  * Interface for storing package and class dependency data.
@@ -31,5 +32,12 @@ interface DependencyData {
      * @return the base node
      */
     Node<PackageData> getBaseNode();
+
+    /**
+     * Log the statue of the dependency data.
+     *
+     * @param log the log to send the output
+     */
+    void debugLog(Log log);
 
 }

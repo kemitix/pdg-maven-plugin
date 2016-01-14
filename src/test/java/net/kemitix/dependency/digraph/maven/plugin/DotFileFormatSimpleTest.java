@@ -18,16 +18,16 @@ import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.doReturn;
 
 /**
- * Tests for {@link DotFileReportGenerator}.
+ * Tests for {@link DotFileFormatSimple}.
  *
  * @author pcampbell
  */
-public class DotFileReportGeneratorTest {
+public class DotFileFormatSimpleTest {
 
     /**
      * Class under test.
      */
-    private DotFileReportGenerator reportGenerator;
+    private DotFileFormat dotFileFormat;
 
     private DependencyData dependencyData;
 
@@ -41,7 +41,9 @@ public class DotFileReportGeneratorTest {
     public void setUp() {
         MockitoAnnotations.initMocks(this);
         dependencyData = new NodeTreeDependencyData();
-        reportGenerator = new DotFileReportGenerator(nodePathGenerator);
+        dependencyData.setBasePackage("test");
+        dotFileFormat = new DotFileFormatSimple(
+                dependencyData.getBaseNode(), nodePathGenerator);
     }
 
     /**
@@ -50,7 +52,6 @@ public class DotFileReportGeneratorTest {
     @Test
     public void shouldCreateTestNode() {
         //given
-        dependencyData.setBasePackage("test");
         dependencyData.addDependency("test.nested", "test.other");
         //when
         Node<PackageData> baseNode = dependencyData.getBaseNode();
@@ -65,7 +66,6 @@ public class DotFileReportGeneratorTest {
     @Test
     public void shouldGenerateReport() {
         //given
-        dependencyData.setBasePackage("test");
         dependencyData.addDependency("test.nested", "test.other");
         final Node<PackageData> baseNode = dependencyData.getBaseNode();
 
@@ -81,13 +81,11 @@ public class DotFileReportGeneratorTest {
                 .getPath(eq(otherNode), eq(baseNode), any(String.class));
 
         final String expected = "digraph{compound=true;node[shape=box]\n"
-                + "subgraph \"clustertest\"{"
-                + "label=\"test\";\"test\"[style=dotted]\n"
-                + "\"nested\"[label=\"nested\"];\"other\"[label=\"other\"];}\n"
-                + "\"nested\"->\"other\"\n"
+                + "\"nested\";\"other\";"
+                + "\"nested\"->\"other\";"
                 + "}";
         //when
-        String report = reportGenerator.generate(baseNode);
+        String report = dotFileFormat.renderReport();
         //then
         assertThat(report, is(expected));
     }
@@ -99,7 +97,6 @@ public class DotFileReportGeneratorTest {
     @Test
     public void shouldOnlyIncludeUsingPackage() {
         //given
-        dependencyData.setBasePackage("test");
         dependencyData.addDependency("test.nested", "tested.other");
         final Node<PackageData> baseNode = dependencyData.getBaseNode();
 
@@ -111,12 +108,10 @@ public class DotFileReportGeneratorTest {
                 .getPath(eq(nestedNode), eq(baseNode), any(String.class));
 
         final String expected = "digraph{compound=true;node[shape=box]\n"
-                + "subgraph \"clustertest\"{"
-                + "label=\"test\";\"test\"[style=dotted]\n"
-                + "\"nested\"[label=\"nested\"];}\n"
+                + "\"nested\";"
                 + "}";
         //when
-        String report = reportGenerator.generate(baseNode);
+        String report = dotFileFormat.renderReport();
         //then
         assertThat(report, is(expected));
     }
@@ -128,7 +123,6 @@ public class DotFileReportGeneratorTest {
     @Test
     public void shouldOnlyIncludeUsedPackage() {
         //given
-        dependencyData.setBasePackage("test");
         dependencyData.addDependency("tested.nested", "test.other");
         final Node<PackageData> baseNode = dependencyData.getBaseNode();
 
@@ -140,24 +134,20 @@ public class DotFileReportGeneratorTest {
                 .getPath(eq(otherNode), eq(baseNode), any(String.class));
 
         final String expected = "digraph{compound=true;node[shape=box]\n"
-                + "subgraph \"clustertest\"{"
-                + "label=\"test\";\"test\"[style=dotted]\n"
-                + "\"other\"[label=\"other\"];}\n"
+                + "\"other\";"
                 + "}";
         //when
-        String report = reportGenerator.generate(baseNode);
+        String report = dotFileFormat.renderReport();
         //then
         assertThat(report, is(expected));
     }
 
     /**
-     * Test that nested packages are included within their parent package
-     * cluster.
+     * Test that nested packages are included.
      */
     @Test
-    public void shouldNestPackages() {
+    public void shouldHandleNestedPackages() {
         //given
-        dependencyData.setBasePackage("test");
         dependencyData.addDependency("test.nested", "test.other");
         dependencyData.addDependency("test.nested", "test.other.more");
         dependencyData.addDependency("test.other", "test.yetmore");
@@ -183,20 +173,13 @@ public class DotFileReportGeneratorTest {
                 .getPath(eq(moreNode), eq(baseNode), any(String.class));
 
         final String expected = "digraph{compound=true;node[shape=box]\n"
-                + "subgraph \"clustertest\"{"
-                + "label=\"test\";\"test\"[style=dotted]\n"
-                + "\"nested\"[label=\"nested\"];"
-                + "subgraph \"clusterother\"{"
-                + "label=\"other\";\"other\"[style=dotted]\n"
-                + "\"other.more\"[label=\"more\"];}\n"
-                + "\"yetmore\"[label=\"yetmore\"];"
-                + "}\n"
-                + "\"nested\"->\"other.more\"\n"
-                + "\"nested\"->\"other\"[lhead=\"clusterother\",]\n"
-                + "\"other\"->\"yetmore\"[ltail=\"clusterother\",]\n"
+                + "\"nested\";\"other\";\"other.more\";\"yetmore\";"
+                + "\"nested\"->\"other.more\";"
+                + "\"nested\"->\"other\";"
+                + "\"other\"->\"yetmore\";"
                 + "}";
         //when
-        String report = reportGenerator.generate(baseNode);
+        String report = dotFileFormat.renderReport();
         //then
         assertThat(report, is(expected));
     }

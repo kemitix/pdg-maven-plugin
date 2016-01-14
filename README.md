@@ -11,21 +11,37 @@ project.
 
 ## Usage
 
-Add the following to you pom.xml:
+Add the following build plugin to your pom.xml:
 
-    <build>
-        <plugins>
             <plugin>
                 <groupId>net.kemitix</groupId>
                 <artifactId>digraph-dependency-maven-plugin</artifactId>
-                <version>0.1.0</version>
+                <version>${digraph.version}</version>
                 <configuration>
                     <basePackage>com.example</basePackage>
                     <!-- <includeTests>false</includeTests> -->
+                    <!-- <debug>true</debug> -->
+                    <!-- <format>nested</format> -->
                 </configuration>
             </plugin>
-        </plugins>
-    </build>
 
-The `basePackage` is required and `includeTests` is optional, defaulting to not including them.
+The `basePackage` is the only required parameter.
 
+### basePackage
+
+Only dependencies where both the using package and the package being used are
+within the `basePackage` are included in the graph.
+
+### includeTests
+
+Whether or not to include the test sources in the graph. Default is `false`.
+
+### debug
+
+Whether to include a debug output. Currently that mean printing the list of
+nested packages that were scanned. Default is `true`.
+
+### format
+
+Which style of digraph to create. Default is `nested` which attempts to cluster
+packages within their parent package. The alternative is `simple`.
