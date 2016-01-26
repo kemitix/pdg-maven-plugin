@@ -198,6 +198,65 @@ public class DotFileFormatNestedTest {
         assertThat(report, is(expected));
     }
 
+    /**
+     * The dummy package node within a package cluster should have the correct
+     * id.
+     */
+    @Test
+    public void shouldNestGrandChildParentDummyNode() {
+        //given
+        dependencyData.addDependency("test.one", "test.child.inter.leaf");
+        final Node<PackageData> baseNode = dependencyData.getBaseNode();
+
+        doReturn("test").when(nodePathGenerator)
+                .getPath(eq(baseNode), eq(baseNode), any(String.class));
+
+        Node<PackageData> oneNode = getChildNodeByName(baseNode, "one");
+        doReturn("one").when(nodePathGenerator)
+                .getPath(eq(oneNode), eq(baseNode), any(String.class));
+
+        Node<PackageData> childNode = getChildNodeByName(baseNode, "child");
+        doReturn("child").when(nodePathGenerator)
+                .getPath(eq(childNode), eq(baseNode), any(String.class));
+
+        Node<PackageData> interNode = getChildNodeByName(childNode, "inter");
+        doReturn("child.inter").when(nodePathGenerator)
+                .getPath(eq(interNode), eq(baseNode), eq("."));
+        doReturn("child_inter").when(nodePathGenerator)
+                .getPath(eq(interNode), eq(baseNode), eq("_"));
+
+        Node<PackageData> leafNode = getChildNodeByName(interNode, "leaf");
+        doReturn("child.inter.leaf").when(nodePathGenerator)
+                .getPath(eq(leafNode), eq(baseNode), eq("."));
+        doReturn("child_inter_leaf").when(nodePathGenerator)
+                .getPath(eq(leafNode), eq(baseNode), eq("_"));
+
+        final String expected = "digraph{compound=true;node[shape=box]\n"
+                + ""
+                + "subgraph \"clustertest\"{"
+                + "label=\"test\";\"test\"[style=dotted]\n"
+                + ""
+                + "subgraph \"clusterchild\"{"
+                + "label=\"child\";\"child\"[style=dotted]\n"
+                + ""
+                + "subgraph \"clusterchild_inter\"{"
+                + "label=\"inter\";"
+                + "\"child.inter\"[label=\"inter\",style=dotted]\n"
+                + ""
+                + "\"child.inter.leaf\"[label=\"leaf\"];}\n"
+                + "}\n"
+                + ""
+                + "\"one\"[label=\"one\"];}\n"
+                + ""
+                + "\"one\"->\"child.inter.leaf\"\n"
+                + ""
+                + "}";
+        //when
+        String report = dotFileFormat.renderReport();
+        //then
+        assertThat(report, is(expected));
+    }
+
     private Node<PackageData> getChildNodeByName(
             final Node<PackageData> baseNode,
             final String name) {
