@@ -82,7 +82,7 @@ public class DotFileFormatNestedTest {
 
         final String expected = "digraph{compound=true;node[shape=box]\n"
                 + "subgraph \"clustertest\"{"
-                + "label=\"test\";\"test\"[style=dotted]\n"
+                + "label=\"test\";\"test\"[label=\"test\",style=dotted]\n"
                 + "\"nested\"[label=\"nested\"];\"other\"[label=\"other\"];}\n"
                 + "\"nested\"->\"other\"\n"
                 + "}";
@@ -111,7 +111,7 @@ public class DotFileFormatNestedTest {
 
         final String expected = "digraph{compound=true;node[shape=box]\n"
                 + "subgraph \"clustertest\"{"
-                + "label=\"test\";\"test\"[style=dotted]\n"
+                + "label=\"test\";\"test\"[label=\"test\",style=dotted]\n"
                 + "\"nested\"[label=\"nested\"];}\n"
                 + "}";
         //when
@@ -139,7 +139,7 @@ public class DotFileFormatNestedTest {
 
         final String expected = "digraph{compound=true;node[shape=box]\n"
                 + "subgraph \"clustertest\"{"
-                + "label=\"test\";\"test\"[style=dotted]\n"
+                + "label=\"test\";\"test\"[label=\"test\",style=dotted]\n"
                 + "\"other\"[label=\"other\"];}\n"
                 + "}";
         //when
@@ -181,10 +181,10 @@ public class DotFileFormatNestedTest {
 
         final String expected = "digraph{compound=true;node[shape=box]\n"
                 + "subgraph \"clustertest\"{"
-                + "label=\"test\";\"test\"[style=dotted]\n"
+                + "label=\"test\";\"test\"[label=\"test\",style=dotted]\n"
                 + "\"nested\"[label=\"nested\"];"
                 + "subgraph \"clusterother\"{"
-                + "label=\"other\";\"other\"[style=dotted]\n"
+                + "label=\"other\";\"other\"[label=\"other\",style=dotted]\n"
                 + "\"other.more\"[label=\"more\"];}\n"
                 + "\"yetmore\"[label=\"yetmore\"];"
                 + "}\n"
@@ -234,10 +234,10 @@ public class DotFileFormatNestedTest {
         final String expected = "digraph{compound=true;node[shape=box]\n"
                 + ""
                 + "subgraph \"clustertest\"{"
-                + "label=\"test\";\"test\"[style=dotted]\n"
+                + "label=\"test\";\"test\"[label=\"test\",style=dotted]\n"
                 + ""
                 + "subgraph \"clusterchild\"{"
-                + "label=\"child\";\"child\"[style=dotted]\n"
+                + "label=\"child\";\"child\"[label=\"child\",style=dotted]\n"
                 + ""
                 + "subgraph \"clusterchild_inter\"{"
                 + "label=\"inter\";"
