@@ -286,4 +286,21 @@ public class DotFileFormatNestedTest {
         assertThat(report, not(containsString("lhead=\"clusterone\"")));
     }
 
+    /**
+     * The 'ltailf' suffix is not required when the head is a child of the tail.
+     */
+    @Test
+    public void shouldNotIncludeLTailWhenHeadIsChildOfTailf() {
+        //given
+        dependencyData.addDependency("test.one", "test.one.two");
+        nodePathGenerator = new DefaultNodePathGenerator();
+        dotFileFormat = new DotFileFormatNested(
+                dependencyData.getBaseNode(), nodePathGenerator);
+        //when
+        String report = dotFileFormat.renderReport();
+        //then
+        assertThat(report, containsString("\"one\"->\"one.two\""));
+        assertThat(report, not(containsString("ltail=\"clusterone\"")));
+    }
+
 }
