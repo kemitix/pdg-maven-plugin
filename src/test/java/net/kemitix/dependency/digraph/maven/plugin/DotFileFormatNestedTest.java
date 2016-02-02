@@ -8,6 +8,7 @@ import org.mockito.MockitoAnnotations;
 
 import java.util.Optional;
 
+import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.nullValue;
@@ -267,4 +268,39 @@ public class DotFileFormatNestedTest {
         }
         return nestedOptional.get();
     }
+
+    /**
+     * The 'lhead' suffix is not required when the tail is a child of the head.
+     */
+    @Test
+    public void shouldNotIncludeLHeadWhenTailIsChildOfHead() {
+        //given
+        dependencyData.addDependency("test.one.two", "test.one");
+        nodePathGenerator = new DefaultNodePathGenerator();
+        dotFileFormat = new DotFileFormatNested(
+                dependencyData.getBaseNode(), nodePathGenerator);
+        //when
+        String report = dotFileFormat.renderReport();
+        //then
+        assertThat(report, containsString("\"one.two\"->\"one\""));
+        assertThat(report, not(containsString("lhead=\"clusterone\"")));
+    }
+
+    /**
+     * The 'ltailf' suffix is not required when the head is a child of the tail.
+     */
+    @Test
+    public void shouldNotIncludeLTailWhenHeadIsChildOfTailf() {
+        //given
+        dependencyData.addDependency("test.one", "test.one.two");
+        nodePathGenerator = new DefaultNodePathGenerator();
+        dotFileFormat = new DotFileFormatNested(
+                dependencyData.getBaseNode(), nodePathGenerator);
+        //when
+        String report = dotFileFormat.renderReport();
+        //then
+        assertThat(report, containsString("\"one\"->\"one.two\""));
+        assertThat(report, not(containsString("ltail=\"clusterone\"")));
+    }
+
 }
