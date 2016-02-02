@@ -71,7 +71,8 @@ class DotFileFormatNested extends AbstractDotFileFormat {
                     getPath(tailNode, "_")));
         }
         // if head node has children, then add lhead attribute
-        if (headNode.getChildren().size() > 0) {
+        if (headNode.getChildren().size() > 0
+                && !tailNode.isChildOf(headNode)) {
             attributes.add(String.format("lhead=\"cluster%s\",",
                     getPath(headNode, "_")));
         }
