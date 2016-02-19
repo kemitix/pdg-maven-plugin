@@ -88,4 +88,22 @@ public class DefaultSourceFileAnalyserTest {
         // ParseException is not thrown
     }
 
+    /**
+     * Should handle commented file content.
+     */
+    @Test
+    public void shouldHandleCommentedFileContent() {
+        //given
+        String srcJava = "//package test.nested;\n"
+                + "//import test.other.Imported;\n"
+                + "//import static test.other.Static.method;\n"
+                + "//import static test.other.StaticAll.*;\n"
+                + "//public class Src {}";
+        InputStream stream = new ByteArrayInputStream(srcJava.getBytes(UTF_8));
+        //when
+        analyser.analyse(stream);
+        //then
+        // ParseException is not thrown
+    }
+
 }
