@@ -1,6 +1,6 @@
 package net.kemitix.dependency.digraph.maven.plugin;
 
-import java.io.File;
+import java.io.InputStream;
 
 /**
  * Interface for a source code file analyser.
@@ -12,8 +12,8 @@ interface SourceFileAnalyser extends MojoService {
     /**
      * Analyse the file.
      *
-     * @param file the file to analyse
+     * @param input the stream of the file to analyse
      */
-    void analyse(File file);
+    void analyse(InputStream input);
 
 }
