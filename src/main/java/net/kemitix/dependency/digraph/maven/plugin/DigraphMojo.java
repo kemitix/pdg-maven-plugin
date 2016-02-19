@@ -47,6 +47,8 @@ public class DigraphMojo extends AbstractMojo {
     @Getter
     private final SourceFileVisitor fileVisitor;
 
+    private final FileLoader fileLoader;
+
     private final SourceFileAnalyser fileAnalyser;
 
     private final DependencyData dependencyData;
@@ -79,6 +81,7 @@ public class DigraphMojo extends AbstractMojo {
         directoryProvider = injector.getInstance(SourceDirectoryProvider.class);
         fileProvider = injector.getInstance(SourceFileProvider.class);
         fileVisitor = injector.getInstance(SourceFileVisitor.class);
+        fileLoader = injector.getInstance(FileLoader.class);
         fileAnalyser = injector.getInstance(SourceFileAnalyser.class);
         dependencyData = injector.getInstance(DependencyData.class);
         reportGenerator = injector.getInstance(ReportGenerator.class);
@@ -93,7 +96,9 @@ public class DigraphMojo extends AbstractMojo {
         fileProvider.process(directories);
         final List<File> javaFiles = fileProvider.getJavaFiles();
         if (javaFiles != null) {
-            javaFiles.forEach(fileAnalyser::analyse);
+            javaFiles.stream()
+                    .map(fileLoader::asInputStream)
+                    .forEach(fileAnalyser::analyse);
             if (debug) {
                 dependencyData.debugLog(getLog());
             }

@@ -9,8 +9,10 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
-import java.io.File;
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.doReturn;
@@ -39,10 +41,6 @@ public class DefaultSourceFileAnalyserTest {
     @Mock
     private Log log;
 
-    private static final String SRC_JAVA
-            = "src/test/projects/src-and-test/"
-            + "src/main/java/test/nested/Src.java";
-
     /**
      * Prepare each test.
      */
@@ -63,25 +61,17 @@ public class DefaultSourceFileAnalyserTest {
     @SuppressWarnings("magicnumber")
     public void shouldParseSrcFile() {
         //given
-        File file = new File(SRC_JAVA);
+        String srcJava = "package test.nested;\n"
+                + "import test.other.Imported;\n"
+                + "import static test.other.Static.method;\n"
+                + "import static test.other.StaticAll.*;\n"
+                + "public class Src {}";
+        InputStream stream = new ByteArrayInputStream(srcJava.getBytes(UTF_8));
         //when
-        analyser.analyse(file);
+        analyser.analyse(stream);
         //then
         verify(dependencyData, times(3))
                 .addDependency("test.nested", "test.other");
-    }
-
-    /**
-     * Should handle IOException.
-     */
-    @Test
-    public void shouldSwallowIOException() {
-        //given
-        File file = new File("I do not exist");
-        //when
-        analyser.analyse(file);
-        //then
-        // IOException is not thrown
     }
 
     /**
@@ -90,9 +80,10 @@ public class DefaultSourceFileAnalyserTest {
     @Test
     public void shouldSwallowParseException() {
         //given
-        File file = new File("src/test/projects/src-and-test/pom.xml");
+        String nonJava = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<root/>";
+        InputStream stream = new ByteArrayInputStream(nonJava.getBytes(UTF_8));
         //when
-        analyser.analyse(file);
+        analyser.analyse(stream);
         //then
         // ParseException is not thrown
     }

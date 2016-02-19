@@ -19,6 +19,8 @@ class DigraphModule extends AbstractModule {
                 .to(DefaultSourceFileProvider.class);
         bind(SourceFileVisitor.class)
                 .to(DefaultSourceFileVisitor.class);
+        bind(FileLoader.class)
+                .to(DefaultFileLoader.class);
         bind(SourceFileAnalyser.class)
                 .to(DefaultSourceFileAnalyser.class);
         bind(DependencyData.class)

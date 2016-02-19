@@ -7,8 +7,7 @@ import com.github.javaparser.ast.ImportDeclaration;
 
 import javax.inject.Inject;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.InputStream;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -25,13 +24,14 @@ class DefaultSourceFileAnalyser extends AbstractMojoService
 
     private static final Pattern METHOD_IMPORT
             = Pattern.compile("^(?<package>.+)\\.(?<class>.+)\\.(?<method>.+)");
+
     private static final Pattern CLASS_IMPORT
             = Pattern.compile("^(?<package>.+)\\.(?<class>.+)");
 
     @Override
-    public void analyse(final File file) {
+    public void analyse(final InputStream inputStream) {
         try {
-            CompilationUnit cu = JavaParser.parse(file);
+            CompilationUnit cu = JavaParser.parse(inputStream);
             String packageName = cu.getPackage().getName().toString();
             cu.getImports().forEach((ImportDeclaration id) -> {
                 final String name = id.getName().toString();
@@ -47,9 +47,7 @@ class DefaultSourceFileAnalyser extends AbstractMojoService
                 }
             });
         } catch (ParseException ex) {
-            getLog().error("Error parsing file " + file, ex);
-        } catch (IOException ex) {
-            getLog().error("Error reading file " + file, ex);
+            getLog().error("Error parsing file " + inputStream, ex);
         }
 
     }
