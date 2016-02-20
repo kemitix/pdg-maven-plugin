@@ -29,6 +29,22 @@ abstract class AbstractDotFileFormat implements DotFileFormat {
         this.nodePathGenerator = nodePathGenerator;
     }
 
+    protected String getClusterId(final Node<PackageData> node) {
+        return quoted("cluster" + getPath(node, "_"));
+    }
+
+    protected String getNodeId(final Node<PackageData> node) {
+        return quoted(getPath(node, "."));
+    }
+
+    protected String getNodeName(final Node<PackageData> node) {
+        return quoted(node.getData().getName());
+    }
+
+    protected String quoted(final String text) {
+        return "\"" + text + "\"";
+    }
+
     @Override
     public String renderReport() {
         final StringBuilder report = new StringBuilder();
@@ -58,6 +74,11 @@ abstract class AbstractDotFileFormat implements DotFileFormat {
     }
 
     abstract String renderNode(final Node<PackageData> node);
+
+    protected String renderSimpleNode(final Node<PackageData> node) {
+        return String.format("%s[label=%s];", getNodeId(node),
+                getNodeName(node));
+    }
 
     abstract String renderUsages(final Node<PackageData> node);
 
