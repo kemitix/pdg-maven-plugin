@@ -13,49 +13,60 @@ import java.util.List;
  */
 class DotFileFormatNested extends AbstractDotFileFormat {
 
+    private final NodePackageDataComparator nodePackageDataComparator
+            = new NodePackageDataComparator();
+
     DotFileFormatNested(
             final Node<PackageData> base,
             final NodePathGenerator nodePathGenerator) {
         super(base, nodePathGenerator);
     }
 
+    private String openSubgraph(final Node<PackageData> node) {
+        return MessageFormat.format(
+                "subgraph {0}'{'"
+                + "label={1};"
+                + "{2}[label={1},style=dotted]\n", // phantom node
+                getClusterId(node), // {0}
+                getNodeName(node), // {1}
+                getNodeId(node)); // {2}
+    }
+
+    private String renderChild(final Node<PackageData> child) {
+        if (child.getChildren().size() > 0) {
+            return renderNode(child);
+        } else {
+            return renderSimpleNode(child);
+        }
+    }
+
     @Override
     String renderNode(final Node<PackageData> node) {
         final StringBuilder render = new StringBuilder();
-        final String clusterId = getPath(node, "_");
-        final String nodeId = getPath(node, ".");
-        final String nodeName = node.getData().getName();
-        final String headerFormat
-                = "subgraph \"cluster{0}\"'{'"
-                + "label=\"{1}\";\"{2}\"[label=\"{1}\",style=dotted]\n";
-        render.append(MessageFormat.format(
-                headerFormat, clusterId, nodeName, nodeId));
+        render.append(openSubgraph(node));
         node.getChildren().stream()
-                .sorted(new NodePackageDataComparator())
-                .forEach((Node<PackageData> child) -> {
-                    if (child.getChildren().size() > 0) {
-                        render.append(renderNode(child));
-                    } else {
-                        render.append(renderLeafPackage(child));
-                    }
-                });
-        render.append("}\n");
+                .sorted(nodePackageDataComparator)
+                .map(this::renderChild)
+                .forEach(render::append);
+        render.append("}\n"); // close subgraph
         return render.toString();
+    }
+
+    private boolean isChildOfBase(final Node<PackageData> node) {
+        return node.isChildOf(getBase());
     }
 
     @Override
     String renderUsages(final Node<PackageData> node) {
         final StringBuilder usages = new StringBuilder();
         node.getChildren().stream()
-                .sorted(new NodePackageDataComparator())
+                .sorted(nodePackageDataComparator)
                 .forEach((Node<PackageData> childNode) -> {
                     childNode.getData().getUses().stream()
-                            .filter((Node<PackageData> n)
-                                    -> n.isChildOf(getBase()))
-                            .sorted(new NodePackageDataComparator())
-                            .forEach((Node<PackageData> n) -> {
-                                usages.append(renderUsage(childNode, n));
-                            });
+                            .filter(this::isChildOfBase)
+                            .sorted(nodePackageDataComparator)
+                            .map(usedNode -> renderUsage(childNode, usedNode))
+                            .forEach(usages::append);
                     usages.append(renderUsages(childNode));
                 });
         return usages.toString();
@@ -68,14 +79,12 @@ class DotFileFormatNested extends AbstractDotFileFormat {
         // if tail node has children, then add ltail attribute
         if (tailNode.getChildren().size() > 0
                 && !headNode.isChildOf(tailNode)) {
-            attributes.add(String.format("ltail=\"cluster%s\",",
-                    getPath(tailNode, "_")));
+            attributes.add(String.format("ltail=%s,", getClusterId(tailNode)));
         }
         // if head node has children, then add lhead attribute
         if (headNode.getChildren().size() > 0
                 && !tailNode.isChildOf(headNode)) {
-            attributes.add(String.format("lhead=\"cluster%s\",",
-                    getPath(headNode, "_")));
+            attributes.add(String.format("lhead=%s,", getClusterId(headNode)));
         }
         final StringBuilder attributeTag = new StringBuilder();
         if (attributes.size() > 0) {
@@ -84,13 +93,10 @@ class DotFileFormatNested extends AbstractDotFileFormat {
             attributeTag.append("]");
         }
 
-        return String.format("\"%s\"->\"%s\"%s%n",
-                getPath(tailNode, "."), getPath(headNode, "."), attributeTag);
-    }
-
-    private String renderLeafPackage(final Node<PackageData> node) {
-        return String.format("\"%s\"[label=\"%s\"];",
-                getPath(node, "."), node.getData().getName());
+        return String.format("%s->%s%s%n",
+                getNodeId(tailNode),
+                getNodeId(headNode),
+                attributeTag);
     }
 
 }
