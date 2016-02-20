@@ -21,22 +21,10 @@ import java.util.List;
 @Mojo(name = "digraph", aggregator = true)
 public class DigraphMojo extends AbstractMojo {
 
-    @Parameter(defaultValue = "${reactorProjects}", readonly = true)
-    private List<MavenProject> projects;
-
-    @Parameter(name = "includeTests", defaultValue = "false")
-    private boolean includeTests;
-
-    @NonNull
-    @Parameter(name = "basePackage", required = true)
-    private String basePackage;
-
-    @Parameter(name = "debug", defaultValue = "true")
-    private boolean debug;
-
-    @Setter
-    @Parameter(name = "format", defaultValue = "nested")
-    private String format;
+    /**
+     * The file to write the report to.
+     */
+    private static final String REPORT_FILE = "target/digraph.dot";
 
     private final Injector injector;
 
@@ -59,25 +47,39 @@ public class DigraphMojo extends AbstractMojo {
 
     private final NodePathGenerator nodePathGenerator;
 
+    @Parameter(defaultValue = "${reactorProjects}", readonly = true)
+    private List<MavenProject> projects;
+
+    @Parameter(name = "includeTests", defaultValue = "false")
+    private boolean includeTests;
+
+    @NonNull
+    @Parameter(name = "basePackage", required = true)
+    private String basePackage;
+
+    @Parameter(name = "debug", defaultValue = "true")
+    private boolean debug;
+
+    @Setter
+    @Parameter(name = "format", defaultValue = "nested")
+    private String format;
+
     @Getter
     private List<String> directories;
-
-    /**
-     * The file to write the report to.
-     */
-    private static final String REPORT_FILE = "target/digraph.dot";
 
     /**
      * Default constructor.
      */
     public DigraphMojo() {
         injector = Guice.createInjector(new DigraphModule(),
-                new AbstractModule() {
-            @Override
-            protected void configure() {
-                bind(DigraphMojo.class).toInstance(DigraphMojo.this);
-            }
-        });
+                                        new AbstractModule() {
+                                            @Override
+                                            protected void configure() {
+                                                bind(DigraphMojo.class)
+                                                        .toInstance(
+                                                        DigraphMojo.this);
+                                            }
+                                        });
         directoryProvider = injector.getInstance(SourceDirectoryProvider.class);
         fileProvider = injector.getInstance(SourceFileProvider.class);
         fileVisitor = injector.getInstance(SourceFileVisitor.class);
@@ -97,26 +99,26 @@ public class DigraphMojo extends AbstractMojo {
         final List<File> javaFiles = fileProvider.getJavaFiles();
         if (javaFiles != null) {
             javaFiles.stream()
-                    .map(fileLoader::asInputStream)
-                    .forEach(fileAnalyser::analyse);
+                     .map(fileLoader::asInputStream)
+                     .forEach(fileAnalyser::analyse);
             if (debug) {
                 dependencyData.debugLog(getLog());
             }
             DotFileFormat reportFormat;
             switch (format) {
-                case "simple":
-                    reportFormat = new DotFileFormatSimple(
-                            dependencyData.getBaseNode(), nodePathGenerator);
-                    break;
-                case "nested":
-                default:
-                    reportFormat = new DotFileFormatNested(
-                            dependencyData.getBaseNode(), nodePathGenerator);
-                    break;
+            case "simple":
+                reportFormat = new DotFileFormatSimple(
+                        dependencyData.getBaseNode(), nodePathGenerator);
+                break;
+            case "nested":
+            default:
+                reportFormat = new DotFileFormatNested(
+                        dependencyData.getBaseNode(), nodePathGenerator);
+                break;
             }
             try {
                 reportWriter.write(reportGenerator.generate(reportFormat),
-                        REPORT_FILE);
+                                   REPORT_FILE);
             } catch (IOException ex) {
                 getLog().error(ex.toString());
             }

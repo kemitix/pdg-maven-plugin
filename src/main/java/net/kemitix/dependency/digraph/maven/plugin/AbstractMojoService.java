@@ -7,7 +7,6 @@ import javax.inject.Inject;
 
 /**
  * Abstract Mojo Service.
- *
  * <p>
  * Services to be injected should extend this class, thus allowing them to be
  * given access to the Mojo.

@@ -27,8 +27,8 @@ class DefaultSourceFileProvider extends AbstractMojoService
         final SourceFileVisitor fileVisitor = getMojo().getFileVisitor();
         directories.forEach((final String dir) -> {
             try {
-                Files.walkFileTree(
-                        new File(dir).getAbsoluteFile().toPath(), fileVisitor);
+                Files.walkFileTree(new File(dir).getAbsoluteFile().toPath(),
+                                   fileVisitor);
             } catch (IOException ex) {
                 getLog().error(ex);
             }

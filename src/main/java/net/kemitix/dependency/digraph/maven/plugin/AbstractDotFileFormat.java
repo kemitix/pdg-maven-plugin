@@ -2,6 +2,7 @@ package net.kemitix.dependency.digraph.maven.plugin;
 
 import lombok.AccessLevel;
 import lombok.Getter;
+
 import net.kemitix.node.Node;
 
 /**
@@ -33,16 +34,13 @@ abstract class AbstractDotFileFormat implements DotFileFormat {
         return quoted("cluster" + getPath(node, "_"));
     }
 
-    protected String getNodeId(final Node<PackageData> node) {
-        return quoted(getPath(node, "."));
-    }
-
-    protected String getNodeName(final Node<PackageData> node) {
-        return quoted(node.getData().getName());
-    }
-
     protected String quoted(final String text) {
         return "\"" + text + "\"";
+    }
+
+    protected String getPath(
+            final Node<PackageData> headNode, final String delimiter) {
+        return nodePathGenerator.getPath(headNode, getBase(), delimiter);
     }
 
     @Override
@@ -54,10 +52,8 @@ abstract class AbstractDotFileFormat implements DotFileFormat {
         return report.toString();
     }
 
-    protected String getPath(
-            final Node<PackageData> headNode,
-            final String delimiter) {
-        return nodePathGenerator.getPath(headNode, getBase(), delimiter);
+    String renderGraphStart() {
+        return "digraph{compound=true;node[shape=box]\n";
     }
 
     protected String renderElements(
@@ -69,22 +65,26 @@ abstract class AbstractDotFileFormat implements DotFileFormat {
         return render.toString();
     }
 
-    String renderGraphStart() {
-        return "digraph{compound=true;node[shape=box]\n";
+    String renderGraphFinish() {
+        return "}";
     }
 
     abstract String renderNode(final Node<PackageData> node);
 
     protected String renderSimpleNode(final Node<PackageData> node) {
         return String.format("%s[label=%s];", getNodeId(node),
-                getNodeName(node));
+                             getNodeName(node));
+    }
+
+    protected String getNodeId(final Node<PackageData> node) {
+        return quoted(getPath(node, "."));
+    }
+
+    protected String getNodeName(final Node<PackageData> node) {
+        return quoted(node.getData().getName());
     }
 
     abstract String renderUsages(final Node<PackageData> node);
-
-    String renderGraphFinish() {
-        return "}";
-    }
 
     /**
      * Functional Interface for rendering a node.

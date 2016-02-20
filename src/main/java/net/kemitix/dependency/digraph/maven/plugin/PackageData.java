@@ -1,11 +1,12 @@
 package net.kemitix.dependency.digraph.maven.plugin;
 
 import lombok.Getter;
-import net.kemitix.node.Node;
 
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
+
+import net.kemitix.node.Node;
 
 /**
  * Defines a package.

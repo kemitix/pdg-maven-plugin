@@ -27,8 +27,8 @@ class DefaultSourceFileVisitor extends SimpleFileVisitor<Path>
 
     @Override
     public FileVisitResult visitFile(
-            final Path file,
-            final BasicFileAttributes attrs) throws IOException {
+            final Path file, final BasicFileAttributes attrs)
+            throws IOException {
         if (file.toString().endsWith(".java")) {
             javaFiles.add(file.toFile());
         }

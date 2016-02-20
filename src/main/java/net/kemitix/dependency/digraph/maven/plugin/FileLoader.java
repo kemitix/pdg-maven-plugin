@@ -11,8 +11,7 @@ import java.io.InputStream;
 interface FileLoader {
 
     /**
-     * *
-     * Opens the file as in InputStream.
+     * * Opens the file as in InputStream.
      *
      * @param file the file to open
      *

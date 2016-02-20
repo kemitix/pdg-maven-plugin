@@ -21,9 +21,10 @@ class DotFileFormatSimple extends AbstractDotFileFormat {
         if (!node.equals(getBase())) {
             render.append("\"").append(getPath(node, ".")).append("\";");
         }
-        node.getChildren().stream()
-                .sorted(new NodePackageDataComparator())
-                .forEach((n) -> render.append(this.renderNode(n)));
+        node.getChildren()
+            .stream()
+            .sorted(new NodePackageDataComparator())
+            .forEach((n) -> render.append(this.renderNode(n)));
         return render.toString();
     }
 
@@ -31,24 +32,29 @@ class DotFileFormatSimple extends AbstractDotFileFormat {
     String renderUsages(final Node<PackageData> node) {
         final StringBuilder render = new StringBuilder();
         render.append(renderUsage(node));
-        node.getChildren().stream()
-                .sorted(new NodePackageDataComparator())
-                .forEach((n) -> render.append(this.renderUsages(n)));
+        node.getChildren()
+            .stream()
+            .sorted(new NodePackageDataComparator())
+            .forEach((n) -> render.append(this.renderUsages(n)));
         return render.toString();
     }
 
     private String renderUsage(final Node<PackageData> origin) {
         final StringBuilder render = new StringBuilder();
         final String originId = getPath(origin, ".");
-        origin.getData().getUses().stream()
-                .sorted(new NodePackageDataComparator())
-                .forEach((Node<PackageData> destination) -> {
-                    if (destination.isChildOf(getBase())) {
-                        render.append("\"").append(originId).append("\"->\"")
-                                .append(getPath(destination, "."))
-                                .append("\";");
-                    }
-                });
+        origin.getData()
+              .getUses()
+              .stream()
+              .sorted(new NodePackageDataComparator())
+              .forEach((Node<PackageData> destination) -> {
+                  if (destination.isChildOf(getBase())) {
+                      render.append("\"")
+                            .append(originId)
+                            .append("\"->\"")
+                            .append(getPath(destination, "."))
+                            .append("\";");
+                  }
+              });
         return render.toString();
     }
 

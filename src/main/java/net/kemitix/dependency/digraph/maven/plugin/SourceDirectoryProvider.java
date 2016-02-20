@@ -21,7 +21,6 @@ interface SourceDirectoryProvider extends MojoService {
      * @return the list of source directories
      */
     List<String> getDirectories(
-            final List<MavenProject> projects,
-            final boolean includeTests);
+            final List<MavenProject> projects, final boolean includeTests);
 
 }

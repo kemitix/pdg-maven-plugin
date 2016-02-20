@@ -20,14 +20,14 @@ import javax.inject.Inject;
 class DefaultSourceFileAnalyser extends AbstractMojoService
         implements SourceFileAnalyser {
 
+    private static final Pattern METHOD_IMPORT = Pattern.compile(
+            "^(?<package>.+)\\.(?<class>.+)\\.(?<method>.+)");
+
+    private static final Pattern CLASS_IMPORT = Pattern.compile(
+            "^(?<package>.+)\\.(?<class>.+)");
+
     @Inject
     private DependencyData dependencyData;
-
-    private static final Pattern METHOD_IMPORT
-            = Pattern.compile("^(?<package>.+)\\.(?<class>.+)\\.(?<method>.+)");
-
-    private static final Pattern CLASS_IMPORT
-            = Pattern.compile("^(?<package>.+)\\.(?<class>.+)");
 
     @Override
     public void analyse(final InputStream inputStream) {
@@ -45,8 +45,8 @@ class DefaultSourceFileAnalyser extends AbstractMojoService
                         m = CLASS_IMPORT.matcher(name);
                     }
                     if (m.find()) {
-                        dependencyData.addDependency(
-                                packageName, m.group("package"));
+                        dependencyData.addDependency(packageName,
+                                                     m.group("package"));
                     }
                 });
             }
