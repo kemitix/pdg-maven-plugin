@@ -13,7 +13,7 @@ import net.kemitix.node.Node;
  *
  * @author pcampbell
  */
-class PackageData {
+public class PackageData {
 
     @Getter
     private final String name;
@@ -26,7 +26,7 @@ class PackageData {
      *
      * @param name the name of the package
      */
-    PackageData(final String name) {
+    public PackageData(final String name) {
         this.name = name;
     }
 
