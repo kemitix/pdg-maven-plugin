@@ -44,12 +44,11 @@ class DotFileFormatNested extends AbstractDotFileFormat {
     }
 
     private String openSubgraph(final Node<PackageData> node) {
-        return MessageFormat.format("subgraph {0}'{'" + "label={1};" +
-                                    "{2}[label={1},style=dotted]\n",
-                                    // phantom node
-                                    getClusterId(node), // {0}
-                                    getNodeName(node), // {1}
-                                    getNodeId(node)); // {2}
+        return MessageFormat.format("subgraph {0}'{'" + "label={1};"
+                        + "{2}[label={1},style=dotted]\n", // phantom node
+                getClusterId(node), // {0}
+                getNodeName(node), // {1}
+                getNodeId(node)); // {2}
     }
 
     @Override
@@ -80,13 +79,13 @@ class DotFileFormatNested extends AbstractDotFileFormat {
             final Node<PackageData> headNode) {
         List<String> attributes = new ArrayList<>();
         // if tail node has children, then add ltail attribute
-        if (tailNode.getChildren().size() > 0 &&
-            !headNode.isChildOf(tailNode)) {
+        if (tailNode.getChildren().size() > 0 && !headNode.isChildOf(
+                tailNode)) {
             attributes.add(String.format("ltail=%s,", getClusterId(tailNode)));
         }
         // if head node has children, then add lhead attribute
-        if (headNode.getChildren().size() > 0 &&
-            !tailNode.isChildOf(headNode)) {
+        if (headNode.getChildren().size() > 0 && !tailNode.isChildOf(
+                headNode)) {
             attributes.add(String.format("lhead=%s,", getClusterId(headNode)));
         }
         final StringBuilder attributeTag = new StringBuilder();
@@ -97,7 +96,7 @@ class DotFileFormatNested extends AbstractDotFileFormat {
         }
 
         return String.format("%s->%s%s%n", getNodeId(tailNode),
-                             getNodeId(headNode), attributeTag);
+                getNodeId(headNode), attributeTag);
     }
 
 }
