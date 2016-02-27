@@ -44,8 +44,8 @@ class DefaultPackageTreeBuilder implements PackageTreeBuilder {
     }
 
     private void verifyWithinBasePackage(final String thePackage) {
-        if (!thePackage.equals(basePackage) &&
-            !(thePackage).startsWith(basePackage + ".")) {
+        if (!thePackage.equals(basePackage) && !(thePackage).startsWith(
+                basePackage + ".")) {
             throw new NodeException(
                     "Package not within base package: " + thePackage);
         }
