@@ -1,21 +1,15 @@
 package net.kemitix.dependency.digraph.maven.plugin;
 
-import net.kemitix.node.Node;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-
-import java.util.Optional;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertThat;
-import static org.junit.Assert.fail;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.doReturn;
+
+import net.kemitix.node.Node;
 
 /**
  * Tests for {@link DotFileFormatSimple}.
@@ -31,9 +25,6 @@ public class DotFileFormatSimpleTest {
 
     private DependencyData dependencyData;
 
-    @Mock
-    private NodePathGenerator nodePathGenerator;
-
     /**
      * Prepare each test.
      */
@@ -43,7 +34,7 @@ public class DotFileFormatSimpleTest {
         dependencyData = new NodeTreeDependencyData();
         dependencyData.setBasePackage("test");
         dotFileFormat = new DotFileFormatSimple(
-                dependencyData.getBaseNode(), nodePathGenerator);
+                dependencyData.getBaseNode(), new DefaultNodePathGenerator());
     }
 
     /**
@@ -67,23 +58,13 @@ public class DotFileFormatSimpleTest {
     public void shouldGenerateReport() {
         //given
         dependencyData.addDependency("test.nested", "test.other");
-        final Node<PackageData> baseNode = dependencyData.getBaseNode();
-
-        doReturn("test").when(nodePathGenerator)
-                .getPath(eq(baseNode), eq(baseNode), any(String.class));
-
-        Node<PackageData> nestedNode = getChildNodeByName(baseNode, "nested");
-        doReturn("nested").when(nodePathGenerator)
-                .getPath(eq(nestedNode), eq(baseNode), any(String.class));
-
-        Node<PackageData> otherNode = getChildNodeByName(baseNode, "other");
-        doReturn("other").when(nodePathGenerator)
-                .getPath(eq(otherNode), eq(baseNode), any(String.class));
-
-        final String expected = "digraph{compound=true;node[shape=box]\n"
-                + "\"nested\";\"other\";"
-                + "\"nested\"->\"other\";"
-                + "}";
+        final String expected = "digraph{\n"
+                + "compound=\"true\"\n"
+                + "node[shape=\"box\"]\n"
+                + "\"nested\"\n"
+                + "\"other\"\n"
+                + "\"nested\" -> \"other\""
+                + "}\n";
         //when
         String report = dotFileFormat.renderReport();
         //then
@@ -98,18 +79,11 @@ public class DotFileFormatSimpleTest {
     public void shouldOnlyIncludeUsingPackage() {
         //given
         dependencyData.addDependency("test.nested", "tested.other");
-        final Node<PackageData> baseNode = dependencyData.getBaseNode();
-
-        doReturn("test").when(nodePathGenerator)
-                .getPath(eq(baseNode), eq(baseNode), any(String.class));
-
-        Node<PackageData> nestedNode = getChildNodeByName(baseNode, "nested");
-        doReturn("nested").when(nodePathGenerator)
-                .getPath(eq(nestedNode), eq(baseNode), any(String.class));
-
-        final String expected = "digraph{compound=true;node[shape=box]\n"
-                + "\"nested\";"
-                + "}";
+        final String expected = "digraph{\n"
+                + "compound=\"true\"\n"
+                + "node[shape=\"box\"]\n"
+                + "\"nested\""
+                + "}\n";
         //when
         String report = dotFileFormat.renderReport();
         //then
@@ -124,18 +98,11 @@ public class DotFileFormatSimpleTest {
     public void shouldOnlyIncludeUsedPackage() {
         //given
         dependencyData.addDependency("tested.nested", "test.other");
-        final Node<PackageData> baseNode = dependencyData.getBaseNode();
-
-        doReturn("test").when(nodePathGenerator)
-                .getPath(eq(baseNode), eq(baseNode), any(String.class));
-
-        Node<PackageData> otherNode = getChildNodeByName(baseNode, "other");
-        doReturn("other").when(nodePathGenerator)
-                .getPath(eq(otherNode), eq(baseNode), any(String.class));
-
-        final String expected = "digraph{compound=true;node[shape=box]\n"
-                + "\"other\";"
-                + "}";
+        final String expected = "digraph{\n"
+                + "compound=\"true\"\n"
+                + "node[shape=\"box\"]\n"
+                + "\"other\""
+                + "}\n";
         //when
         String report = dotFileFormat.renderReport();
         //then
@@ -151,47 +118,21 @@ public class DotFileFormatSimpleTest {
         dependencyData.addDependency("test.nested", "test.other");
         dependencyData.addDependency("test.nested", "test.other.more");
         dependencyData.addDependency("test.other", "test.yetmore");
-        final Node<PackageData> baseNode = dependencyData.getBaseNode();
-
-        doReturn("test").when(nodePathGenerator)
-                .getPath(eq(baseNode), eq(baseNode), any(String.class));
-
-        Node<PackageData> nestedNode = getChildNodeByName(baseNode, "nested");
-        doReturn("nested").when(nodePathGenerator)
-                .getPath(eq(nestedNode), eq(baseNode), any(String.class));
-
-        Node<PackageData> yetmoreNode = getChildNodeByName(baseNode, "yetmore");
-        doReturn("yetmore").when(nodePathGenerator)
-                .getPath(eq(yetmoreNode), eq(baseNode), any(String.class));
-
-        Node<PackageData> otherNode = getChildNodeByName(baseNode, "other");
-        doReturn("other").when(nodePathGenerator)
-                .getPath(eq(otherNode), eq(baseNode), any(String.class));
-
-        Node<PackageData> moreNode = getChildNodeByName(otherNode, "more");
-        doReturn("other.more").when(nodePathGenerator)
-                .getPath(eq(moreNode), eq(baseNode), any(String.class));
-
-        final String expected = "digraph{compound=true;node[shape=box]\n"
-                + "\"nested\";\"other\";\"other.more\";\"yetmore\";"
-                + "\"nested\"->\"other.more\";"
-                + "\"nested\"->\"other\";"
-                + "\"other\"->\"yetmore\";"
-                + "}";
+        final String expected = "digraph{\n"
+                + "compound=\"true\"\n"
+                + "node[shape=\"box\"]\n"
+                + "\"nested\"\n"
+                + "\"other\"\n"
+                + "\"other.more\"\n"
+                + "\"yetmore\"\n"
+                + "\"nested\" -> \"other.more\"\n"
+                + "\"nested\" -> \"other\"\n"
+                + "\"other\" -> \"yetmore\""
+                + "}\n";
         //when
         String report = dotFileFormat.renderReport();
         //then
         assertThat(report, is(expected));
     }
 
-    private Node<PackageData> getChildNodeByName(
-            final Node<PackageData> baseNode,
-            final String name) {
-        final Optional<Node<PackageData>> nestedOptional
-                = baseNode.getChild(new PackageData(name));
-        if (!nestedOptional.isPresent()) {
-            fail("Child node not found");
-        }
-        return nestedOptional.get();
-    }
 }
