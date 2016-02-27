@@ -118,6 +118,14 @@
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+                <groupId>net.kemitix</groupId>
+                <artifactId>digraph-dependency-maven-plugin</artifactId>
+                <version>${project.version}</version>
+                <configuration>
+                   <basePackage>net.kemitix.dependency.digraph.maven.plugin</basePackage>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 </project>
