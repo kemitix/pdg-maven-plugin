@@ -26,8 +26,8 @@ class DotFileFormatNested extends AbstractDotFileFormat {
         final String label = quoted(subgraph.getLabel());
         final String id = quoted(subgraph.getId());
         return String.format("subgraph %s{%n" + "label=%s%n"
-                        + "%s[label=%s,style=\"dotted\"]%n" + "%s%n}",
-                quoted("cluster" + subgraph.getId()), label, id, label,
+                        + "%s[label=\"\",style=\"invis\",width=0]%n" + "%s%n}",
+                quoted("cluster" + subgraph.getId()), label, id,
                 renderElements(subgraph.getElements()));
     }
 
