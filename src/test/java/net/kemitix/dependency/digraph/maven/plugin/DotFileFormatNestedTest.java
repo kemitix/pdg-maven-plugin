@@ -65,7 +65,7 @@ public class DotFileFormatNestedTest {
         final String expected = "digraph{\n" + "compound=\"true\"\n"
                 + "node[shape=\"box\"]\n" + "subgraph \"cluster_test\"{\n"
                 + "label=\"test\"\n"
-                + "\"_test\"[label=\"test\",style=\"dotted\"]\n"
+                + "\"_test\"[label=\"\",style=\"invis\",width=0]\n"
                 + "\"nested\"\n"
                 + "\"other\"\n" + "}\n"
                 + "\"nested\"->\"other\"" + "}\n";
@@ -86,7 +86,7 @@ public class DotFileFormatNestedTest {
         final String expected = "digraph{\n" + "compound=\"true\"\n"
                 + "node[shape=\"box\"]\n" + "subgraph \"cluster_test\"{\n"
                 + "label=\"test\"\n"
-                + "\"_test\"[label=\"test\",style=\"dotted\"]\n"
+                + "\"_test\"[label=\"\",style=\"invis\",width=0]\n"
                 + "\"nested\"\n" + "}}\n";
         //when
         String report = dotFileFormat.renderReport();
@@ -105,7 +105,7 @@ public class DotFileFormatNestedTest {
         final String expected = "digraph{\n" + "compound=\"true\"\n"
                 + "node[shape=\"box\"]\n" + "subgraph \"cluster_test\"{\n"
                 + "label=\"test\"\n"
-                + "\"_test\"[label=\"test\",style=\"dotted\"]\n"
+                + "\"_test\"[label=\"\",style=\"invis\",width=0]\n"
                 + "\"other\"\n" + "}}\n";
         //when
         String report = dotFileFormat.renderReport();
@@ -126,10 +126,10 @@ public class DotFileFormatNestedTest {
         final String expected = "digraph{\n" + "compound=\"true\"\n"
                 + "node[shape=\"box\"]\n" + "subgraph \"cluster_test\"{\n"
                 + "label=\"test\"\n"
-                + "\"_test\"[label=\"test\",style=\"dotted\"]\n"
+                + "\"_test\"[label=\"\",style=\"invis\",width=0]\n"
                 + "\"nested\"\n"
                 + "subgraph \"clusterother\"{\n" + "label=\"other\"\n"
-                + "\"other\"[label=\"other\",style=\"dotted\"]\n"
+                + "\"other\"[label=\"\",style=\"invis\",width=0]\n"
                 + "\"other.more\"[label=\"more\"]\n" + "}\n"
                 + "\"yetmore\"\n" + "}\n"
                 + "\"nested\"->\"other.more\"\n"
@@ -152,14 +152,13 @@ public class DotFileFormatNestedTest {
         final String expected = "digraph{\n" + "compound=\"true\"\n"
                 + "node[shape=\"box\"]\n" + "subgraph \"cluster_test\"{\n"
                 + "label=\"test\"\n"
-                + "\"_test\"[label=\"test\",style=\"dotted\"]\n"
+                + "\"_test\"[label=\"\",style=\"invis\",width=0]\n"
                 + "subgraph \"clusterchild\"{\n" + "label=\"child\"\n"
-                + "\"child\"[label=\"child\",style=\"dotted\"]\n"
+                + "\"child\"[label=\"\",style=\"invis\",width=0]\n"
                 + "subgraph \"clusterchild_inter\"{\n" + "label=\"inter\"\n"
-                + "\"child_inter\"[label=\"inter\",style=\"dotted\"]\n"
+                + "\"child_inter\"[label=\"\",style=\"invis\",width=0]\n"
                 + "\"child.inter.leaf\"[label=\"leaf\"]\n" + "}\n" + "}\n"
-                + "\"one\"\n" + "}\n"
-                + "\"one\"->\"child.inter.leaf\"" + "}\n";
+                + "\"one\"\n" + "}\n" + "\"one\"->\"child.inter.leaf\"" + "}\n";
         //when
         String report = dotFileFormat.renderReport();
         //then
