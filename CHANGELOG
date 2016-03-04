@@ -1,6 +1,15 @@
 CHANGELOG
 =========
 
+0.4.0
+------
+
+* Hide cluster nodes
+* Construct digraph as model
+* Rewrite DotFileFormatNested
+* Fix entire file commented
+* Split DefaultSourceFileAnalyser
+
 0.3.2
 ------
 
