@@ -1,10 +1,12 @@
 package net.kemitix.dependency.digraph.maven.plugin;
 
-import net.kemitix.node.Node;
-
-import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+
+import net.kemitix.dependency.digraph.maven.plugin.digraph.EdgeElement;
+import net.kemitix.dependency.digraph.maven.plugin.digraph.Subgraph;
+import net.kemitix.node.Node;
 
 /**
  * Generates a dot file dependency report as nested clusters.
@@ -20,77 +22,45 @@ class DotFileFormatNested extends AbstractDotFileFormat {
     }
 
     @Override
-    String renderNode(final Node<PackageData> node) {
-        final StringBuilder render = new StringBuilder();
-        final String clusterId = getPath(node, "_");
-        final String nodeId = getPath(node, ".");
-        final String nodeName = node.getData().getName();
-        final String headerFormat
-                = "subgraph \"cluster{0}\"'{'"
-                + "label=\"{1}\";\"{2}\"[label=\"{1}\",style=dotted]\n";
-        render.append(MessageFormat.format(
-                headerFormat, clusterId, nodeName, nodeId));
-        node.getChildren().stream()
-                .sorted(new NodePackageDataComparator())
-                .forEach((Node<PackageData> child) -> {
-                    if (child.getChildren().size() > 0) {
-                        render.append(renderNode(child));
-                    } else {
-                        render.append(renderLeafPackage(child));
-                    }
-                });
-        render.append("}\n");
-        return render.toString();
+    String render(final Subgraph subgraph) {
+        final String label = quoted(subgraph.getLabel());
+        final String id = quoted(subgraph.getId());
+        return String.format("subgraph %s{%n" + "label=%s%n"
+                        + "%s[label=\"\",style=\"invis\",width=0]%n" + "%s%n}",
+                quoted("cluster" + subgraph.getId()), label, id,
+                renderElements(subgraph.getElements()));
     }
 
     @Override
-    String renderUsages(final Node<PackageData> node) {
-        final StringBuilder usages = new StringBuilder();
-        node.getChildren().stream()
-                .sorted(new NodePackageDataComparator())
-                .forEach((Node<PackageData> childNode) -> {
-                    childNode.getData().getUses().stream()
-                            .filter((Node<PackageData> n)
-                                    -> n.isChildOf(getBase()))
-                            .sorted(new NodePackageDataComparator())
-                            .forEach((Node<PackageData> n) -> {
-                                usages.append(renderUsage(childNode, n));
-                            });
-                    usages.append(renderUsages(childNode));
-                });
-        return usages.toString();
-    }
-
-    private String renderUsage(
-            final Node<PackageData> tailNode,
-            final Node<PackageData> headNode) {
+    String render(
+            final EdgeElement edgeElement) {
         List<String> attributes = new ArrayList<>();
+
+        final Node<PackageData> tailNode = edgeElement.getTail()
+                                                      .getPackageDataNode();
+        final Node<PackageData> headNode = edgeElement.getHead()
+                                                      .getPackageDataNode();
+
         // if tail node has children, then add ltail attribute
-        if (tailNode.getChildren().size() > 0
-                && !headNode.isChildOf(tailNode)) {
-            attributes.add(String.format("ltail=\"cluster%s\",",
-                    getPath(tailNode, "_")));
+        if (tailNode.getChildren().size() > 0 && !headNode.isChildOf(
+                tailNode)) {
+            attributes.add(String.format("ltail=\"cluster%s\"",
+                    getClusterId(tailNode)));
         }
         // if head node has children, then add lhead attribute
-        if (headNode.getChildren().size() > 0
-                && !tailNode.isChildOf(headNode)) {
-            attributes.add(String.format("lhead=\"cluster%s\",",
-                    getPath(headNode, "_")));
+        if (headNode.getChildren().size() > 0 && !tailNode.isChildOf(
+                headNode)) {
+            attributes.add(String.format("lhead=\"cluster%s\"",
+                    getClusterId(headNode)));
         }
-        final StringBuilder attributeTag = new StringBuilder();
+        String attributeTag = "";
         if (attributes.size() > 0) {
-            attributeTag.append("[");
-            attributes.forEach(attributeTag::append);
-            attributeTag.append("]");
+            attributeTag = String.format("[%s]",
+                    attributes.stream().collect(Collectors.joining(",")));
         }
 
-        return String.format("\"%s\"->\"%s\"%s%n",
-                getPath(tailNode, "."), getPath(headNode, "."), attributeTag);
-    }
-
-    private String renderLeafPackage(final Node<PackageData> node) {
-        return String.format("\"%s\"[label=\"%s\"];",
-                getPath(node, "."), node.getData().getName());
+        return String.format("%s->%s%s", quoted(getNodeId(tailNode)),
+                quoted(getNodeId(headNode)), attributeTag);
     }
 
 }

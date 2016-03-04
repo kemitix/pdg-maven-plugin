@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>net.kemitix</groupId>
     <artifactId>digraph-dependency-maven-plugin</artifactId>
-    <version>0.3.2</version>
+    <version>0.4.0</version>
     <packaging>maven-plugin</packaging>
     <name>Digraph Dependency Maven Plugin</name>
     <description>Generates a DOT Digraph of dependencies between packages within a project</description>
@@ -117,6 +117,14 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>net.kemitix</groupId>
+                <artifactId>digraph-dependency-maven-plugin</artifactId>
+                <version>${project.version}</version>
+                <configuration>
+                   <basePackage>net.kemitix.dependency.digraph.maven.plugin</basePackage>
+                </configuration>
             </plugin>
         </plugins>
     </build>

@@ -18,8 +18,7 @@ class DefaultSourceDirectoryProvider extends AbstractMojoService
 
     @Override
     public List<String> getDirectories(
-            final List<MavenProject> projects,
-            final boolean includeTests) {
+            final List<MavenProject> projects, final boolean includeTests) {
         final List<String> directories = new ArrayList<>();
         projects.forEach((final MavenProject project) -> {
             addProject(directories, project, includeTests);
@@ -28,20 +27,17 @@ class DefaultSourceDirectoryProvider extends AbstractMojoService
     }
 
     private void addProject(
-            final List<String> directories,
-            final MavenProject project,
+            final List<String> directories, final MavenProject project,
             final boolean includeTests) {
         final Build build = project.getBuild();
         addDirectoryIfExists(directories, build.getSourceDirectory());
         if (includeTests) {
-            addDirectoryIfExists(directories,
-                    build.getTestSourceDirectory());
+            addDirectoryIfExists(directories, build.getTestSourceDirectory());
         }
     }
 
     private void addDirectoryIfExists(
-            final List<String> directories,
-            final String directory) {
+            final List<String> directories, final String directory) {
         if (null != directory && Files.isDirectory(Paths.get(directory))) {
             directories.add(directory);
         }

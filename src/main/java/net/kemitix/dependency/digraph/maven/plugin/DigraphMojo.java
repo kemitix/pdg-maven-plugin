@@ -21,6 +21,32 @@ import java.util.List;
 @Mojo(name = "digraph", aggregator = true)
 public class DigraphMojo extends AbstractMojo {
 
+    /**
+     * The file to write the report to.
+     */
+    private static final String REPORT_FILE = "target/digraph.dot";
+
+    private final Injector injector;
+
+    private final SourceDirectoryProvider directoryProvider;
+
+    private final SourceFileProvider fileProvider;
+
+    @Getter
+    private final SourceFileVisitor fileVisitor;
+
+    private final FileLoader fileLoader;
+
+    private final SourceFileAnalyser fileAnalyser;
+
+    private final DependencyData dependencyData;
+
+    private final ReportGenerator reportGenerator;
+
+    private final ReportWriter reportWriter;
+
+    private final NodePathGenerator nodePathGenerator;
+
     @Parameter(defaultValue = "${reactorProjects}", readonly = true)
     private List<MavenProject> projects;
 
@@ -38,47 +64,26 @@ public class DigraphMojo extends AbstractMojo {
     @Parameter(name = "format", defaultValue = "nested")
     private String format;
 
-    private final Injector injector;
-
-    private final SourceDirectoryProvider directoryProvider;
-
-    private final SourceFileProvider fileProvider;
-
-    @Getter
-    private final SourceFileVisitor fileVisitor;
-
-    private final SourceFileAnalyser fileAnalyser;
-
-    private final DependencyData dependencyData;
-
-    private final ReportGenerator reportGenerator;
-
-    private final ReportWriter reportWriter;
-
-    private final NodePathGenerator nodePathGenerator;
-
     @Getter
     private List<String> directories;
-
-    /**
-     * The file to write the report to.
-     */
-    private static final String REPORT_FILE = "target/digraph.dot";
 
     /**
      * Default constructor.
      */
     public DigraphMojo() {
         injector = Guice.createInjector(new DigraphModule(),
-                new AbstractModule() {
-            @Override
-            protected void configure() {
-                bind(DigraphMojo.class).toInstance(DigraphMojo.this);
-            }
-        });
+                                        new AbstractModule() {
+                                            @Override
+                                            protected void configure() {
+                                                bind(DigraphMojo.class)
+                                                        .toInstance(
+                                                        DigraphMojo.this);
+                                            }
+                                        });
         directoryProvider = injector.getInstance(SourceDirectoryProvider.class);
         fileProvider = injector.getInstance(SourceFileProvider.class);
         fileVisitor = injector.getInstance(SourceFileVisitor.class);
+        fileLoader = injector.getInstance(FileLoader.class);
         fileAnalyser = injector.getInstance(SourceFileAnalyser.class);
         dependencyData = injector.getInstance(DependencyData.class);
         reportGenerator = injector.getInstance(ReportGenerator.class);
@@ -93,25 +98,27 @@ public class DigraphMojo extends AbstractMojo {
         fileProvider.process(directories);
         final List<File> javaFiles = fileProvider.getJavaFiles();
         if (javaFiles != null) {
-            javaFiles.forEach(fileAnalyser::analyse);
+            javaFiles.stream()
+                     .map(fileLoader::asInputStream)
+                     .forEach(fileAnalyser::analyse);
             if (debug) {
                 dependencyData.debugLog(getLog());
             }
             DotFileFormat reportFormat;
             switch (format) {
-                case "simple":
-                    reportFormat = new DotFileFormatSimple(
-                            dependencyData.getBaseNode(), nodePathGenerator);
-                    break;
-                case "nested":
-                default:
-                    reportFormat = new DotFileFormatNested(
-                            dependencyData.getBaseNode(), nodePathGenerator);
-                    break;
+            case "simple":
+                reportFormat = new DotFileFormatSimple(
+                        dependencyData.getBaseNode(), nodePathGenerator);
+                break;
+            case "nested":
+            default:
+                reportFormat = new DotFileFormatNested(
+                        dependencyData.getBaseNode(), nodePathGenerator);
+                break;
             }
             try {
                 reportWriter.write(reportGenerator.generate(reportFormat),
-                        REPORT_FILE);
+                                   REPORT_FILE);
             } catch (IOException ex) {
                 getLog().error(ex.toString());
             }

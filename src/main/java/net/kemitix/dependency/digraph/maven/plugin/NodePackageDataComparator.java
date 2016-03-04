@@ -1,9 +1,9 @@
 package net.kemitix.dependency.digraph.maven.plugin;
 
-import net.kemitix.node.Node;
-
 import java.io.Serializable;
 import java.util.Comparator;
+
+import net.kemitix.node.Node;
 
 /**
  * Comparator for sorting {@link PackageData} {@link Node}s.
@@ -17,9 +17,7 @@ class NodePackageDataComparator
 
     @Override
     public int compare(
-            final Node<PackageData> o1,
-            final Node<PackageData> o2) {
-        return o1.getData().getName()
-                .compareTo(o2.getData().getName());
+            final Node<PackageData> o1, final Node<PackageData> o2) {
+        return o1.getData().getName().compareTo(o2.getData().getName());
     }
 }

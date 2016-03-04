@@ -1,7 +1,8 @@
 package net.kemitix.dependency.digraph.maven.plugin;
 
-import net.kemitix.node.Node;
 import org.apache.maven.plugin.logging.Log;
+
+import net.kemitix.node.Node;
 
 /**
  * Interface for storing package and class dependency data.

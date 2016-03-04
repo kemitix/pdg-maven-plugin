@@ -17,7 +17,7 @@ class DirectoryListingProcessor extends AbstractMojoService
 
     /**
      * The list of Java files discovered.
-     *
+     * <p>
      * <p>
      * Will always be empty in this implementation.
      */

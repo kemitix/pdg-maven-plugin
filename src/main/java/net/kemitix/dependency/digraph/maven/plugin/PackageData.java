@@ -1,18 +1,19 @@
 package net.kemitix.dependency.digraph.maven.plugin;
 
 import lombok.Getter;
-import net.kemitix.node.Node;
 
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
+
+import net.kemitix.node.Node;
 
 /**
  * Defines a package.
  *
  * @author pcampbell
  */
-class PackageData {
+public class PackageData {
 
     @Getter
     private final String name;
@@ -25,7 +26,7 @@ class PackageData {
      *
      * @param name the name of the package
      */
-    PackageData(final String name) {
+    public PackageData(final String name) {
         this.name = name;
     }
 

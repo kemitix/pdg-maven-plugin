@@ -2,11 +2,12 @@ package net.kemitix.dependency.digraph.maven.plugin;
 
 import lombok.Getter;
 import lombok.NonNull;
+
+import java.util.Arrays;
+
 import net.kemitix.node.Node;
 import net.kemitix.node.NodeException;
 import net.kemitix.node.NodeItem;
-
-import java.util.Arrays;
 
 /**
  * Builds a tree of packages.
@@ -38,15 +39,15 @@ class DefaultPackageTreeBuilder implements PackageTreeBuilder {
 
     private void addPackage(@NonNull final String thePackage) {
         verifyWithinBasePackage(thePackage);
-        tree.createDescendantLine(Arrays.asList(
-                getRelativePackage(thePackage).split("\\.")));
+        tree.createDescendantLine(
+                Arrays.asList(getRelativePackage(thePackage).split("\\.")));
     }
 
     private void verifyWithinBasePackage(final String thePackage) {
-        if (!thePackage.equals(basePackage)
-                && !(thePackage).startsWith(basePackage + ".")) {
-            throw new NodeException("Package not within base package: "
-                    + thePackage);
+        if (!thePackage.equals(basePackage) && !(thePackage).startsWith(
+                basePackage + ".")) {
+            throw new NodeException(
+                    "Package not within base package: " + thePackage);
         }
     }
 
