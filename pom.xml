@@ -91,8 +91,7 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.16.6</version>
-            <type>jar</type>
+            <version>1.16.8</version>
         </dependency>
         <dependency>
             <groupId>net.kemitix</groupId>
