@@ -1,6 +1,13 @@
 CHANGELOG
 =========
 
+0.4.1
+------
+
+* Upgrade kemitix-parent to 0.9.0
+* Upgrade javaparser-core to 2.4.0
+* Upgrade lombok to 1.16.8
+
 0.4.0
 ------
 

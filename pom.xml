@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>net.kemitix</groupId>
     <artifactId>digraph-dependency-maven-plugin</artifactId>
-    <version>0.4.0</version>
+    <version>0.4.1</version>
     <packaging>maven-plugin</packaging>
     <name>Digraph Dependency Maven Plugin</name>
     <description>Generates a DOT Digraph of dependencies between packages within a project</description>
     <parent>
         <groupId>net.kemitix</groupId>
         <artifactId>kemitix-parent</artifactId>
-        <version>0.4.0</version>
+        <version>0.9.0</version>
     </parent>
 
     <url>https://github.com/kemitix/digraph-dependency-maven-plugin</url>
@@ -29,6 +28,7 @@
 
     <properties>
         <maven.version>3.3.9</maven.version>
+        <javaparser-core.version>2.4.0</javaparser-core.version>
     </properties>
     <dependencies>
         <dependency>
@@ -50,7 +50,7 @@
         <dependency>
             <groupId>com.github.javaparser</groupId>
             <artifactId>javaparser-core</artifactId>
-            <version>2.3.0</version>
+            <version>${javaparser-core.version}</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
@@ -91,8 +91,7 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.16.6</version>
-            <type>jar</type>
+            <version>1.16.8</version>
         </dependency>
         <dependency>
             <groupId>net.kemitix</groupId>
