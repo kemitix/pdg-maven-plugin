@@ -1,4 +1,6 @@
 # digraph-dependency-maven-plugin
+
+[![Join the chat at https://gitter.im/kemitix/digraph-dependency-maven-plugin](https://badges.gitter.im/kemitix/digraph-dependency-maven-plugin.svg)](https://gitter.im/kemitix/digraph-dependency-maven-plugin?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 Digraph generator for package dependencies within a project
 
 Build Plugin to create a [DOT](https://en.wikipedia.org/wiki/DOT_(graph_description_language))
