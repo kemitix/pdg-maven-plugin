@@ -1,3 +1,6 @@
+[![Build Status](https://travis-ci.org/kemitix/digraph-dependency-maven-plugin.svg?branch=develop)](https://travis-ci.org/kemitix/digraph-dependency-maven-plugin)
+[![Coverage Status](https://coveralls.io/repos/github/kemitix/digraph-dependency-maven-plugin/badge.svg?branch=develop)](https://coveralls.io/github/kemitix/digraph-dependency-maven-plugin?branch=develop)
+
 # digraph-dependency-maven-plugin
 Digraph generator for package dependencies within a project
 
