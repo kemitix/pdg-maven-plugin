@@ -48,7 +48,7 @@ public class DotFileFormatSimpleTest {
         Node<PackageData> baseNode = dependencyData.getBaseNode();
         //then
         assertThat(baseNode, is(not(nullValue())));
-        assertThat(baseNode.getData().getName(), is("test"));
+        assertThat(baseNode.getData().get().getName(), is("test"));
     }
 
     /**

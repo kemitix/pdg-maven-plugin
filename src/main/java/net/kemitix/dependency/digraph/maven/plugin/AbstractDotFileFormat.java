@@ -6,6 +6,7 @@ import lombok.Getter;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
@@ -91,12 +92,14 @@ public abstract class AbstractDotFileFormat implements DotFileFormat {
             final ElementContainer container) {
         return (Node<PackageData> childNode) -> {
             childNode.getData()
-                     .getUses()
-                     .stream()
-                     .filter(n -> n.isChildOf(getBase()))
-                     .sorted(nodePackageDataComparator)
-                     .map(usedNode -> createEdgeElement(childNode, usedNode))
-                     .forEach(container::add);
+                     .ifPresent(data -> data.getUses()
+                                            .stream()
+                                            .filter(n -> n.isDescendantOf(
+                                                    getBase()))
+                                            .sorted(nodePackageDataComparator)
+                                            .map(usedNode -> createEdgeElement(
+                                                    childNode, usedNode))
+                                            .forEach(container::add));
             getUsageInjector().injectUsages(container, childNode);
         };
     }
@@ -111,7 +114,14 @@ public abstract class AbstractDotFileFormat implements DotFileFormat {
     NodeElement createNodeElement(
             final Node<PackageData> packageDataNode) {
         return new NodeElement(packageDataNode, getNodeId(packageDataNode),
-                packageDataNode.getData().getName());
+                getRequiredData(packageDataNode.getData()).getName());
+    }
+
+    private PackageData getRequiredData(final Optional<PackageData> optional) {
+        if (optional.isPresent()) {
+            return optional.get();
+        }
+        throw new IllegalStateException("Node has no package data");
     }
 
     EdgeElement createEdgeElement(
@@ -134,7 +144,8 @@ public abstract class AbstractDotFileFormat implements DotFileFormat {
     }
 
     private Subgraph createSubgraph(final Node<PackageData> node) {
-        return new Subgraph(node, getClusterId(node), node.getData().getName());
+        return new Subgraph(node, getClusterId(node),
+                getRequiredData(node.getData()).getName());
     }
 
     private Map<Node<PackageData>, GraphElement> graphElements

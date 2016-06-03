@@ -1,5 +1,7 @@
 package net.kemitix.dependency.digraph.maven.plugin;
 
+import lombok.val;
+
 import java.io.Serializable;
 import java.util.Comparator;
 
@@ -18,6 +20,13 @@ class NodePackageDataComparator
     @Override
     public int compare(
             final Node<PackageData> o1, final Node<PackageData> o2) {
-        return o1.getData().getName().compareTo(o2.getData().getName());
+        val pd1 = o1.getData();
+        val pd2 = o2.getData();
+        if (pd1.isPresent() && pd2.isPresent()) {
+            val n1 = pd1.get().getName();
+            val n2 = pd2.get().getName();
+            return n1.compareTo(n2);
+        }
+        throw new IllegalStateException("Node has no package data");
     }
 }
