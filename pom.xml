@@ -31,6 +31,7 @@
         <maven.version>3.3.9</maven.version>
         <javaparser-core.version>2.4.0</javaparser-core.version>
         <coveralls-maven-plugin.version>4.2.0</coveralls-maven-plugin.version>
+        <node.version>0.3.0</node.version>
     </properties>
 
     <dependencies>
@@ -99,7 +100,7 @@
         <dependency>
             <groupId>net.kemitix</groupId>
             <artifactId>node</artifactId>
-            <version>0.1.0</version>
+            <version>${node.version}</version>
         </dependency>
     </dependencies>
     <build>

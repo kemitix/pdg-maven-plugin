@@ -42,13 +42,13 @@ class DotFileFormatNested extends AbstractDotFileFormat {
                                                       .getPackageDataNode();
 
         // if tail node has children, then add ltail attribute
-        if (tailNode.getChildren().size() > 0 && !headNode.isChildOf(
+        if (tailNode.getChildren().size() > 0 && !headNode.isDescendantOf(
                 tailNode)) {
             attributes.add(String.format("ltail=\"cluster%s\"",
                     getClusterId(tailNode)));
         }
         // if head node has children, then add lhead attribute
-        if (headNode.getChildren().size() > 0 && !tailNode.isChildOf(
+        if (headNode.getChildren().size() > 0 && !tailNode.isDescendantOf(
                 headNode)) {
             attributes.add(String.format("lhead=\"cluster%s\"",
                     getClusterId(headNode)));

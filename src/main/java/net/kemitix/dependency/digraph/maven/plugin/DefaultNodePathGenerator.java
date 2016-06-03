@@ -1,5 +1,7 @@
 package net.kemitix.dependency.digraph.maven.plugin;
 
+import lombok.val;
+
 import net.kemitix.node.Node;
 
 /**
@@ -13,21 +15,17 @@ class DefaultNodePathGenerator implements NodePathGenerator {
     public String getPath(
             final Node<PackageData> node, final Node<PackageData> base,
             final String delimiter) {
-        final Node<PackageData> parent = node.getParent();
-        // if node has no parent, then "" is the path
-        if (parent == null) {
-            return "";
-        }
-        // if node's parent is base, then node is the path
-        if (parent.equals(base)) {
-            return node.getData().getName();
-        }
-        // else append to parent path
-        final StringBuilder path = new StringBuilder();
-        return path.append(getPath(parent, base, delimiter))
-                   .append(delimiter)
-                   .append(node.getData().getName())
-                   .toString();
+        val path = new StringBuilder();
+        node.getData()
+            .map(PackageData::getName)
+            .ifPresent(name -> node.getParent().ifPresent(parent -> {
+                if (!parent.equals(base)) {
+                    path.append(getPath(parent, base, delimiter))
+                        .append(delimiter);
+                }
+                path.append(name);
+            }));
+        return path.toString();
     }
 
 }
