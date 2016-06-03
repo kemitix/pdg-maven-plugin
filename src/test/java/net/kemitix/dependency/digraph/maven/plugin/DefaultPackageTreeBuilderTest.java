@@ -47,7 +47,7 @@ public class DefaultPackageTreeBuilderTest {
         //then
         assertNotNull(tree);
         assertThat(tree.getChildren().size(), is(0));
-        assertNull(tree.getParent());
+        assertThat(tree.getParent(), is(Optional.empty()));
     }
 
     /**
@@ -63,7 +63,7 @@ public class DefaultPackageTreeBuilderTest {
         final Optional<Node<String>> found = tree.findChild(subpackage);
         //then
         assertTrue(found.isPresent());
-        assertThat(found.get().getData(), is(subpackage));
+        assertThat(found.get().getData(), is(Optional.of(subpackage)));
     }
 
     /**
