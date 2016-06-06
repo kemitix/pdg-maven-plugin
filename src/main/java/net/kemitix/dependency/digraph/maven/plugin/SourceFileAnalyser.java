@@ -7,7 +7,7 @@ import java.io.InputStream;
  *
  * @author pcampbell
  */
-interface SourceFileAnalyser extends MojoService {
+interface SourceFileAnalyser {
 
     /**
      * Analyse the file.

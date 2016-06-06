@@ -5,20 +5,28 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 
+import javax.inject.Inject;
+
 /**
  * Implementation of {@link FileLoader}.
  *
  * @author pcampbell
  */
-public class DefaultFileLoader extends AbstractMojoService
-        implements FileLoader {
+class DefaultFileLoader implements FileLoader {
+
+    private final DigraphMojo mojo;
+
+    @Inject
+    DefaultFileLoader(final DigraphMojo mojo) {
+        this.mojo = mojo;
+    }
 
     @Override
     public InputStream asInputStream(final File file) {
         try {
             return new FileInputStream(file);
         } catch (FileNotFoundException ex) {
-            getLog().error(ex);
+            mojo.getLog().error(ex);
         }
         return null;
     }

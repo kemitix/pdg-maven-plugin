@@ -56,6 +56,7 @@
     <orderEntry type="library" scope="TEST" name="Maven: org.codehaus.plexus:plexus-container-default:1.0-alpha-9-stable-1" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: classworlds:classworlds:1.1-alpha-2" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.codehaus.plexus:plexus-io:2.0.4" level="project" />
+    <orderEntry type="library" name="Maven: org.assertj:assertj-core:3.4.1" level="project" />
     <orderEntry type="library" name="Maven: org.projectlombok:lombok:1.16.8" level="project" />
     <orderEntry type="library" name="Maven: net.kemitix:node:0.3.0" level="project" />
   </component>

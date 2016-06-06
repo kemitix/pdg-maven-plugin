@@ -1,20 +1,26 @@
 package net.kemitix.dependency.digraph.maven.plugin;
 
+import org.apache.maven.plugin.logging.Log;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import static org.hamcrest.CoreMatchers.containsString;
-
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.doReturn;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.verify;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.FileVisitResult;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Tests for {@link DefaultSourceFileProvider}.
@@ -23,65 +29,81 @@ import static org.mockito.Mockito.doReturn;
  */
 public class DefaultSourceFileProviderTest {
 
-    /**
-     * Class under test.
-     */
     @InjectMocks
     private DefaultSourceFileProvider sourceFileProvider;
 
-    /**
-     * Mock mojo.
-     */
     @Mock
     private DigraphMojo mojo;
 
-    /**
-     * SourceFileVisitor.
-     */
-    private final SourceFileVisitor fileVisitor
-            = new DefaultSourceFileVisitor();
+    @Mock
+    private SourceFileVisitor fileVisitor;
 
-    /**
-     * Prepare each test.
-     */
+    @Mock
+    private Log log;
+
+    private List<String> directories;
+
+    private List<File> fileList;
+
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-        doReturn(fileVisitor).when(mojo).getFileVisitor();
+        directories = new ArrayList<>();
+        fileList = new ArrayList<>();
     }
 
-    /**
-     * Should attempt to walk each directory provided.
-     *
-     * @throws java.io.IOException if error walking files
-     */
     @Test
-    public void shouldLogEachDirectory() throws IOException {
+    public void processShouldReturnDirectories() throws Exception {
         //given
         final String src = "src/test/projects/src-and-test/src/main/java";
         final String test = "src/test/projects/src-and-test/src/test/java";
-        final List<String> directories = new ArrayList<>();
         directories.add(src);
         directories.add(test);
+        given(fileVisitor.preVisitDirectory(any(), any())).willReturn(
+                FileVisitResult.CONTINUE);
+        given(fileVisitor.visitFile(any(), any())).willReturn(
+                FileVisitResult.CONTINUE);
+        given(fileVisitor.postVisitDirectory(any(), any())).willReturn(
+                FileVisitResult.CONTINUE);
+        given(fileVisitor.getJavaFiles()).willReturn(fileList);
+        //when
+        List<File> files = sourceFileProvider.process(directories);
+        //then
+        verify(fileVisitor).visitFile(
+                eq(Paths.get(src, "test/nested/package-info.java")
+                        .toAbsolutePath()), any());
+        verify(fileVisitor).visitFile(
+                eq(Paths.get(src, "test/nested/Src.java").toAbsolutePath()),
+                any());
+        verify(fileVisitor).visitFile(
+                eq(Paths.get(src, "test/other/Imported.java").toAbsolutePath()),
+                any());
+        verify(fileVisitor).visitFile(
+                eq(Paths.get(src, "test/other/Static.java").toAbsolutePath()),
+                any());
+        verify(fileVisitor).visitFile(
+                eq(Paths.get(src, "test/other/StaticAll.java")
+                        .toAbsolutePath()), any());
+        verify(fileVisitor).visitFile(
+                eq(Paths.get(test, "ignored.properties").toAbsolutePath()),
+                any());
+        verify(fileVisitor).visitFile(
+                eq(Paths.get(test, "test/Tst.java").toAbsolutePath()), any());
+        assertThat(files, is(fileList));
+    }
+
+    @Test
+    public void processShouldLogExceptions() throws Exception {
+        //given
+        final String src = "src/test/projects/src-and-test/src/main/java";
+        directories.add(src);
+        IOException ex = new IOException();
+        doThrow(ex).when(fileVisitor).preVisitDirectory(any(), any());
+        given(mojo.getLog()).willReturn(log);
         //when
         sourceFileProvider.process(directories);
         //then
-        List<File> javaFiles = fileVisitor.getJavaFiles();
-        javaFiles.sort(File::compareTo);
-        /** 
-         * The files are sorted so should appear in the order: 
-         * main/.../nested/package-info.java, main/.../nested/Src.java, 
-         * main/.../other/Imported.java, main/.../other/Static.java, 
-         * main/.../other/StaticAll.java and test/.../Tst.java
-         */
-        final int numberOfClassFiles = 6;
-        assertThat(javaFiles.size(), is(numberOfClassFiles));
-        final String fileSeparator = System.getProperty("file.separator");
-        assertThat(javaFiles.get(0).toString(), 
-                containsString(src.replace("/", fileSeparator)));
-        final int indexOfTestFile = 5;
-        assertThat(javaFiles.get(indexOfTestFile).toString(), 
-                containsString(test.replace("/", fileSeparator)));
+        verify(mojo.getLog()).error(ex);
     }
 
 }

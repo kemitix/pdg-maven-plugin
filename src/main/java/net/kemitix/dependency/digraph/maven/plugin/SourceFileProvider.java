@@ -8,20 +8,13 @@ import java.util.List;
  *
  * @author pcampbell
  */
-interface SourceFileProvider extends MojoService {
+interface SourceFileProvider {
 
     /**
-     * Process the list of directories.
+     * Process the list of directories and return the list of java files.
      *
      * @param directories the directories to process
      */
-    void process(List<String> directories);
-
-    /**
-     * Returns the list of Java file.
-     *
-     * @return the list of Java files
-     */
-    List<File> getJavaFiles();
+    List<File> process(List<String> directories);
 
 }
