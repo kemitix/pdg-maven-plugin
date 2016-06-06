@@ -12,12 +12,12 @@ import javax.inject.Inject;
  *
  * @author pcampbell
  */
-public class DefaultFileLoader implements FileLoader {
+class DefaultFileLoader implements FileLoader {
 
     private final DigraphMojo mojo;
 
     @Inject
-    public DefaultFileLoader(final DigraphMojo mojo) {
+    DefaultFileLoader(final DigraphMojo mojo) {
         this.mojo = mojo;
     }
 
