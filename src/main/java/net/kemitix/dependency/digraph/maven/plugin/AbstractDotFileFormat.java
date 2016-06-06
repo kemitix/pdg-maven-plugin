@@ -6,7 +6,6 @@ import lombok.Getter;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Set;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
@@ -114,14 +113,7 @@ public abstract class AbstractDotFileFormat implements DotFileFormat {
     NodeElement createNodeElement(
             final Node<PackageData> packageDataNode) {
         return new NodeElement(packageDataNode, getNodeId(packageDataNode),
-                getRequiredData(packageDataNode.getData()).getName());
-    }
-
-    private PackageData getRequiredData(final Optional<PackageData> optional) {
-        if (optional.isPresent()) {
-            return optional.get();
-        }
-        throw new IllegalStateException("Node has no package data");
+                NodeHelper.getRequiredData(packageDataNode).getName());
     }
 
     EdgeElement createEdgeElement(
@@ -145,7 +137,7 @@ public abstract class AbstractDotFileFormat implements DotFileFormat {
 
     private Subgraph createSubgraph(final Node<PackageData> node) {
         return new Subgraph(node, getClusterId(node),
-                getRequiredData(node.getData()).getName());
+                NodeHelper.getRequiredData(node).getName());
     }
 
     private Map<Node<PackageData>, GraphElement> graphElements
