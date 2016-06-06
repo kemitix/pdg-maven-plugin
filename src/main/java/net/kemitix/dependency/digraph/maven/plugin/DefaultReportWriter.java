@@ -12,7 +12,7 @@ import java.io.Writer;
  *
  * @author pcampbell
  */
-class DefaultReportWriter extends AbstractMojoService implements ReportWriter {
+class DefaultReportWriter implements ReportWriter {
 
     @Override
     public void write(final String report, final String file)

@@ -7,8 +7,7 @@ import javax.inject.Inject;
  *
  * @author pcampbell
  */
-class DotFileReportGenerator extends AbstractMojoService
-        implements ReportGenerator {
+class DotFileReportGenerator implements ReportGenerator {
 
     private final NodePathGenerator nodePathGenerator;
 

@@ -17,8 +17,7 @@ import javax.inject.Inject;
  *
  * @author pcampbell
  */
-class DefaultSourceFileAnalyser extends AbstractMojoService
-        implements SourceFileAnalyser {
+class DefaultSourceFileAnalyser implements SourceFileAnalyser {
 
     private static final Pattern METHOD_IMPORT = Pattern.compile(
             "^(?<package>.+)\\.(?<class>.+)\\.(?<method>.+)");
@@ -26,8 +25,16 @@ class DefaultSourceFileAnalyser extends AbstractMojoService
     private static final Pattern CLASS_IMPORT = Pattern.compile(
             "^(?<package>.+)\\.(?<class>.+)");
 
+    private final DigraphMojo mojo;
+
+    private final DependencyData dependencyData;
+
     @Inject
-    private DependencyData dependencyData;
+    DefaultSourceFileAnalyser(
+            final DigraphMojo mojo, final DependencyData dependencyData) {
+        this.mojo = mojo;
+        this.dependencyData = dependencyData;
+    }
 
     @Override
     public void analyse(final InputStream inputStream) {
@@ -46,12 +53,12 @@ class DefaultSourceFileAnalyser extends AbstractMojoService
                     }
                     if (m.find()) {
                         dependencyData.addDependency(packageName,
-                                                     m.group("package"));
+                                m.group("package"));
                     }
                 });
             }
         } catch (ParseException ex) {
-            getLog().error("Error parsing file " + inputStream, ex);
+            mojo.getLog().error("Error parsing file " + inputStream, ex);
         }
 
     }
