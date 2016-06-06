@@ -13,6 +13,7 @@ class DigraphModule extends AbstractModule {
 
     @Override
     protected void configure() {
+        bind(DigraphService.class).to(DefaultDigraphService.class);
         bind(DotFileFormatFactory.class).to(DefaultDotFileFormatFactory.class);
         bind(SourceDirectoryProvider.class).to(
                 DefaultSourceDirectoryProvider.class);
