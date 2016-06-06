@@ -1,39 +1,42 @@
 package net.kemitix.dependency.digraph.maven.plugin;
 
-import lombok.Getter;
-
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.util.ArrayList;
+import java.nio.file.Path;
 import java.util.List;
+
+import javax.inject.Inject;
 
 /**
  * Provider walks the directory and builds a list of discovered Java files.
  *
  * @author pcampbell
  */
-class DefaultSourceFileProvider extends AbstractMojoService
-        implements SourceFileProvider {
+class DefaultSourceFileProvider implements SourceFileProvider {
 
-    /**
-     * The list of Java files discovered.
-     */
-    @Getter
-    private final List<File> javaFiles = new ArrayList<>();
+    private final SourceFileVisitor fileVisitor;
+
+    private final DigraphMojo mojo;
+
+    @Inject
+    DefaultSourceFileProvider(
+            final SourceFileVisitor fileVisitor, final DigraphMojo mojo) {
+        this.fileVisitor = fileVisitor;
+        this.mojo = mojo;
+    }
 
     @Override
-    public void process(final List<String> directories) {
-        final SourceFileVisitor fileVisitor = getMojo().getFileVisitor();
+    public List<File> process(final List<String> directories) {
         directories.forEach((final String dir) -> {
             try {
-                Files.walkFileTree(new File(dir).getAbsoluteFile().toPath(),
-                                   fileVisitor);
+                Path start = new File(dir).getAbsoluteFile().toPath();
+                Files.walkFileTree(start, fileVisitor);
             } catch (IOException ex) {
-                getLog().error(ex);
+                mojo.getLog().error(ex);
             }
         });
-        javaFiles.addAll(fileVisitor.getJavaFiles());
+        return fileVisitor.getJavaFiles();
     }
 
 }

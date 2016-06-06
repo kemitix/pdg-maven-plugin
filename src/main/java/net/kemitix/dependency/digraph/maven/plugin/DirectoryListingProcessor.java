@@ -1,6 +1,5 @@
 package net.kemitix.dependency.digraph.maven.plugin;
 
-import lombok.Getter;
 import org.apache.maven.plugin.logging.Log;
 
 import java.io.File;
@@ -15,21 +14,13 @@ import java.util.List;
 class DirectoryListingProcessor extends AbstractMojoService
         implements SourceFileProvider {
 
-    /**
-     * The list of Java files discovered.
-     * <p>
-     * <p>
-     * Will always be empty in this implementation.
-     */
-    @Getter
-    private final List<File> javaFiles = new ArrayList<>();
-
     @Override
-    public void process(final List<String> directories) {
+    public List<File> process(final List<String> directories) {
         final Log log = getLog();
         directories.forEach((final String dir) -> {
             log.info("* " + dir);
         });
+        return new ArrayList<>();
     }
 
 }

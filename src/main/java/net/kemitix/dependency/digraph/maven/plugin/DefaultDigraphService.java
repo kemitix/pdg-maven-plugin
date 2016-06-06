@@ -60,8 +60,7 @@ class DefaultDigraphService implements DigraphService {
             final String format, final boolean debug) {
         dependencyData.setBasePackage(basePackage);
         fileProvider.process(
-                directoryProvider.getDirectories(projects, includeTests));
-        fileProvider.getJavaFiles()
+                directoryProvider.getDirectories(projects, includeTests))
                     .stream()
                     .map(fileLoader::asInputStream)
                     .forEach(fileAnalyser::analyse);
