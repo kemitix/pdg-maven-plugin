@@ -72,7 +72,7 @@ class DefaultDigraphService implements DigraphService {
                     dotFileFormatFactory.create(format,
                             dependencyData.getBaseNode())), REPORT_FILE);
         } catch (IOException ex) {
-            mojo.getLog().error(ex.toString());
+            mojo.getLog().error(ex.getMessage());
         }
     }
 }
