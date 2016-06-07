@@ -52,16 +52,16 @@ class NodeTreeDependencyData implements DependencyData {
             .ifPresent((Node<PackageData> base) -> baseNode = base);
     }
 
+    @Override
+    public void debugLog(final Log log) {
+        debugLogNode(log, baseNode, 0);
+    }
+
     private List<PackageData> createPackageLineList(final String userPackage) {
         List<PackageData> line = new ArrayList<>();
         Arrays.asList(userPackage.split("\\."))
               .forEach((String n) -> line.add(new PackageData(n)));
         return line;
-    }
-
-    @Override
-    public void debugLog(final Log log) {
-        debugLogNode(log, baseNode, 0);
     }
 
     private void debugLogNode(
