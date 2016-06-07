@@ -8,17 +8,17 @@ package net.kemitix.dependency.digraph.maven.plugin.digraph;
 public interface HasLabel {
 
     /**
-     * Sets the label.
-     *
-     * @param label the label
-     */
-    void setLabel(String label);
-
-    /**
      * Returns the label.
      *
      * @return the label
      */
     String getLabel();
+
+    /**
+     * Sets the label.
+     *
+     * @param label the label
+     */
+    void setLabel(String label);
 
 }

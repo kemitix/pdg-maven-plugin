@@ -1,17 +1,17 @@
 package net.kemitix.dependency.digraph.maven.plugin;
 
-import net.kemitix.node.Node;
-import net.kemitix.node.NodeException;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.Optional;
-
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
+
+import java.util.Optional;
+
+import net.kemitix.node.Node;
+import net.kemitix.node.NodeException;
 
 /**
  * Tests for {@link DefaultPackageTreeBuilder}.
@@ -46,7 +46,7 @@ public class DefaultPackageTreeBuilderTest {
         //then
         assertNotNull(tree);
         assertThat(tree.getChildren().size(), is(0));
-        assertNull(tree.getParent());
+        assertThat(tree.getParent(), is(Optional.empty()));
     }
 
     /**
@@ -59,10 +59,10 @@ public class DefaultPackageTreeBuilderTest {
         //when
         builder.addPackages(basePackage + "." + subpackage);
         Node<String> tree = builder.getTree();
-        final Optional<Node<String>> found = tree.getChild(subpackage);
+        final Optional<Node<String>> found = tree.findChild(subpackage);
         //then
         assertTrue(found.isPresent());
-        assertThat(found.get().getData(), is(subpackage));
+        assertThat(found.get().getData(), is(Optional.of(subpackage)));
     }
 
     /**
@@ -75,15 +75,14 @@ public class DefaultPackageTreeBuilderTest {
         final String beta = "beta";
         final String delta = "delta";
         //when
-        builder.addPackages(
-                basePackage + "." + beta,
+        builder.addPackages(basePackage + "." + beta,
                 basePackage + "." + alpha + "." + delta);
         Node<String> tree = builder.getTree();
         //then
-        assertTrue(tree.getChild(beta).isPresent());
-        final Optional<Node<String>> foundAlpha = tree.getChild(alpha);
+        assertTrue(tree.findChild(beta).isPresent());
+        final Optional<Node<String>> foundAlpha = tree.findChild(alpha);
         assertTrue(foundAlpha.isPresent());
-        assertTrue(foundAlpha.get().getChild(delta).isPresent());
+        assertTrue(foundAlpha.get().findChild(delta).isPresent());
     }
 
     /**

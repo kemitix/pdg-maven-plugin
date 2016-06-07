@@ -1,35 +1,32 @@
 package net.kemitix.dependency.digraph.maven.plugin;
 
-import lombok.Getter;
-import org.apache.maven.plugin.logging.Log;
+import lombok.val;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.inject.Inject;
 
 /**
  * Processor to list directories to console.
  *
  * @author pcampbell
  */
-class DirectoryListingProcessor extends AbstractMojoService
-        implements SourceFileProvider {
+class DirectoryListingProcessor implements SourceFileProvider {
 
-    /**
-     * The list of Java files discovered.
-     * <p>
-     * <p>
-     * Will always be empty in this implementation.
-     */
-    @Getter
-    private final List<File> javaFiles = new ArrayList<>();
+    private final DigraphMojo mojo;
+
+    @Inject
+    DirectoryListingProcessor(final DigraphMojo mojo) {
+        this.mojo = mojo;
+    }
 
     @Override
-    public void process(final List<String> directories) {
-        final Log log = getLog();
-        directories.forEach((final String dir) -> {
-            log.info("* " + dir);
-        });
+    public List<File> process(final List<String> directories) {
+        val log = mojo.getLog();
+        directories.stream().map(d -> "* " + d).forEach(log::info);
+        return new ArrayList<>();
     }
 
 }

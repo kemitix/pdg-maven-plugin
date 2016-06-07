@@ -36,15 +36,15 @@ class DotFileFormatSimple extends AbstractDotFileFormat {
 
     @Override
     String render(
-            final EdgeElement edgeElement) {
-        return quoted(edgeElement.getTail().getId()) + " -> " + quoted(
-                edgeElement.getHead().getId());
+            final NodeElement nodeElement) {
+        return quoted(nodeElement.getId());
     }
 
     @Override
     String render(
-            final NodeElement nodeElement) {
-        return quoted(nodeElement.getId());
+            final EdgeElement edgeElement) {
+        return quoted(edgeElement.getTail().getId()) + " -> " + quoted(
+                edgeElement.getHead().getId());
     }
 
 }

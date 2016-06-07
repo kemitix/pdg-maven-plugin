@@ -1,6 +1,13 @@
 CHANGELOG
 =========
 
+0.5.0
+------
+
+* Improved test coverage
+* Upgrade kemitix-parent to 1.2.0
+* Upgrade node to 0.3.0
+
 0.4.1
 ------
 

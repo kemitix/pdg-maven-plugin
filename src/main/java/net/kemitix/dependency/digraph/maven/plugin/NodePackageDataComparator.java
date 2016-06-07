@@ -18,6 +18,8 @@ class NodePackageDataComparator
     @Override
     public int compare(
             final Node<PackageData> o1, final Node<PackageData> o2) {
-        return o1.getData().getName().compareTo(o2.getData().getName());
+        return NodeHelper.getRequiredData(o1)
+                         .getName()
+                         .compareTo(NodeHelper.getRequiredData(o2).getName());
     }
 }

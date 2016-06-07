@@ -31,11 +31,12 @@ class NodeTreeDependencyData implements DependencyData {
         root.createDescendantLine(userLine);
         final List<PackageData> importedLine = createPackageLineList(imported);
         root.createDescendantLine(importedLine);
-        root.walkTree(importedLine).ifPresent((Node<PackageData> i) -> {
-            root.walkTree(userLine).ifPresent((Node<PackageData> u) -> {
-                u.getData().getUses().add(i);
-            });
-        });
+        root.findInPath(importedLine)
+            .ifPresent(i -> root.findInPath(userLine)
+                                .ifPresent(u -> u.getData()
+                                                 .ifPresent(upd -> upd.getUses()
+                                                                      .add(i)
+                                                 )));
     }
 
     /**
@@ -47,8 +48,13 @@ class NodeTreeDependencyData implements DependencyData {
     public void setBasePackage(final String basePackage) {
         final List<PackageData> baseLine = createPackageLineList(basePackage);
         root.createDescendantLine(baseLine);
-        root.walkTree(baseLine)
+        root.findInPath(baseLine)
             .ifPresent((Node<PackageData> base) -> baseNode = base);
+    }
+
+    @Override
+    public void debugLog(final Log log) {
+        debugLogNode(log, baseNode, 0);
     }
 
     private List<PackageData> createPackageLineList(final String userPackage) {
@@ -58,20 +64,16 @@ class NodeTreeDependencyData implements DependencyData {
         return line;
     }
 
-    @Override
-    public void debugLog(final Log log) {
-        debugLogNode(log, baseNode, 0);
-    }
-
     private void debugLogNode(
             final Log log, final Node<PackageData> node, final int depth) {
         String padding = IntStream.range(0, depth * 2)
                                   .mapToObj(x -> " ")
                                   .collect(Collectors.joining());
-        log.info(padding + node.getData().getName());
-        node.getChildren().stream().forEach((Node<PackageData> t) -> {
-            debugLogNode(log, t, depth + 1);
-        });
+        node.getData()
+            .map(PackageData::getName)
+            .map(name -> padding + name)
+            .ifPresent(log::info);
+        node.getChildren().forEach(t -> debugLogNode(log, t, depth + 1));
     }
 
 }

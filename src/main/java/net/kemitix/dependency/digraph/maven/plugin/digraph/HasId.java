@@ -8,17 +8,17 @@ package net.kemitix.dependency.digraph.maven.plugin.digraph;
 public interface HasId {
 
     /**
-     * Sets the id.
-     *
-     * @param id the id
-     */
-    void setId(String id);
-
-    /**
      * Returns the id.
      *
      * @return the id
      */
     String getId();
+
+    /**
+     * Sets the id.
+     *
+     * @param id the id
+     */
+    void setId(String id);
 
 }

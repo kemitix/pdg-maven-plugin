@@ -3,13 +3,13 @@ package net.kemitix.dependency.digraph.maven.plugin;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 import static org.junit.Assert.assertThat;
+
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Tests for {@link PackageData}.
@@ -80,4 +80,19 @@ public class PackageDataTest {
         assertThat(set, hasItem(data2));
     }
 
+    @Test
+    public void equalsShouldBeFalseWhenOtherIsNull() {
+        //given
+        final PackageData data = new PackageData("name");
+        //then
+        assertThat(data.equals(null), is(false));
+    }
+
+    @Test
+    public void equalsShouldBeFalseWhenOtherIsNotPackageData() {
+        //given
+        final PackageData data = new PackageData("name");
+        //then
+        assertThat(data.equals("not PackageData"), is(false));
+    }
 }

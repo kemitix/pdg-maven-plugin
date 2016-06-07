@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <artifactId>digraph-dependency-maven-plugin</artifactId>
-    <version>0.4.1</version>
+    <version>0.5.0</version>
     <packaging>maven-plugin</packaging>
     <name>Digraph Dependency Maven Plugin</name>
     <description>Generates a DOT Digraph of dependencies between packages within a project</description>
     <parent>
         <groupId>net.kemitix</groupId>
         <artifactId>kemitix-parent</artifactId>
-        <version>0.9.0</version>
+        <version>1.2.0</version>
     </parent>
 
     <url>https://github.com/kemitix/digraph-dependency-maven-plugin</url>
@@ -29,7 +30,11 @@
     <properties>
         <maven.version>3.3.9</maven.version>
         <javaparser-core.version>2.4.0</javaparser-core.version>
+        <coveralls-maven-plugin.version>4.2.0</coveralls-maven-plugin.version>
+        <node.version>0.3.0</node.version>
+        <assertj.version>3.4.1</assertj.version>
     </properties>
+
     <dependencies>
         <dependency>
             <groupId>org.apache.maven</groupId>
@@ -89,6 +94,12 @@
             <scope>test</scope>
         </dependency>
         <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+            <version>${assertj.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>1.16.8</version>
@@ -96,7 +107,7 @@
         <dependency>
             <groupId>net.kemitix</groupId>
             <artifactId>node</artifactId>
-            <version>0.1.0</version>
+            <version>${node.version}</version>
         </dependency>
     </dependencies>
     <build>
@@ -122,8 +133,13 @@
                 <artifactId>digraph-dependency-maven-plugin</artifactId>
                 <version>${project.version}</version>
                 <configuration>
-                   <basePackage>net.kemitix.dependency.digraph.maven.plugin</basePackage>
+                    <basePackage>net.kemitix.dependency.digraph.maven.plugin</basePackage>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.eluder.coveralls</groupId>
+                <artifactId>coveralls-maven-plugin</artifactId>
+                <version>${coveralls-maven-plugin.version}</version>
             </plugin>
         </plugins>
     </build>

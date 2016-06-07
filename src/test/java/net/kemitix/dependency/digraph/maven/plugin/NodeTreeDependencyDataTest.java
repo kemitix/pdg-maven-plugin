@@ -1,6 +1,5 @@
 package net.kemitix.dependency.digraph.maven.plugin;
 
-import net.kemitix.node.Node;
 import org.apache.maven.plugin.logging.Log;
 import org.junit.Before;
 import org.junit.Test;
@@ -10,6 +9,8 @@ import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+
+import net.kemitix.node.Node;
 
 /**
  * Tests for {@link NodeTreeDependencyData}.
@@ -41,7 +42,7 @@ public class NodeTreeDependencyDataTest {
         //when
         Node<PackageData> baseNode = data.getBaseNode();
         //then
-        assertThat(baseNode.getData().getName(), is("kemitix"));
+        assertThat(baseNode.getData().get().getName(), is("kemitix"));
     }
 
     /**
@@ -55,10 +56,10 @@ public class NodeTreeDependencyDataTest {
         //when
         data.addDependency("net.kemitix.alpha", "net.kemitix.beta");
         //then
-        assertThat(baseNode.getChild(new PackageData("alpha")).isPresent(),
-                is(true));
-        assertThat(baseNode.getChild(new PackageData("beta")).isPresent(),
-                is(true));
+        assertThat(baseNode.findChild(new PackageData("alpha"))
+                           .isPresent(), is(true));
+        assertThat(baseNode.findChild(new PackageData("beta"))
+                           .isPresent(), is(true));
     }
 
     /**
