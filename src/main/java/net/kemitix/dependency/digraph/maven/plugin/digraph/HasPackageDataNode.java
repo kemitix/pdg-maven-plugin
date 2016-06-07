@@ -10,17 +10,17 @@ import net.kemitix.node.Node;
 public interface HasPackageDataNode {
 
     /**
-     * Sets the package data node.
-     *
-     * @param packageDataNode the package data node
-     */
-    void setPackageDataNode(Node<PackageData> packageDataNode);
-
-    /**
      * Returns the package data node.
      *
      * @return the package data node
      */
     Node<PackageData> getPackageDataNode();
+
+    /**
+     * Sets the package data node.
+     *
+     * @param packageDataNode the package data node
+     */
+    void setPackageDataNode(Node<PackageData> packageDataNode);
 
 }
