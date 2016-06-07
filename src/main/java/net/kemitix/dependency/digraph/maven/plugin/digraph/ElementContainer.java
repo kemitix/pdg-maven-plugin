@@ -20,6 +20,7 @@ public interface ElementContainer {
      * Adds an element to the container.
      *
      * @param element the element to add
+     *
      * @return true if the element was added
      */
     boolean add(GraphElement element);
