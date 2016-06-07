@@ -36,6 +36,9 @@ public abstract class AbstractDotFileFormat implements DotFileFormat {
     private final NodePackageDataComparator nodePackageDataComparator
             = new NodePackageDataComparator();
 
+    private Map<Node<PackageData>, GraphElement> graphElements
+            = new HashMap<>();
+
     /**
      * Constructor.
      *
@@ -51,10 +54,6 @@ public abstract class AbstractDotFileFormat implements DotFileFormat {
 
     protected String getClusterId(final Node<PackageData> node) {
         return getPath(node, "_");
-    }
-
-    protected String quoted(final String text) {
-        return "\"" + text + "\"";
     }
 
     protected String getPath(
@@ -140,9 +139,6 @@ public abstract class AbstractDotFileFormat implements DotFileFormat {
                 NodeHelper.getRequiredData(node).getName());
     }
 
-    private Map<Node<PackageData>, GraphElement> graphElements
-            = new HashMap<>();
-
     protected GraphNodeInjector getNodeInjector() {
         return new GraphNodeInjector() {
             @Override
@@ -165,40 +161,6 @@ public abstract class AbstractDotFileFormat implements DotFileFormat {
 
     protected String getNodeId(final Node<PackageData> node) {
         return getPath(node, ".");
-    }
-
-    /**
-     * Functional Interface for rendering a node.
-     */
-    @FunctionalInterface
-    protected interface GraphNodeInjector {
-
-        void injectNodes(
-                final ElementContainer container, final Node<PackageData> node);
-
-    }
-
-    /**
-     * Functional Interface for rendering a usage.
-     */
-    @FunctionalInterface
-    protected interface GraphUsageInjector {
-
-        void injectUsages(
-                final ElementContainer container, final Node<PackageData> node);
-
-    }
-
-    String renderElements(final Collection<GraphElement> elements) {
-        return elements.stream()
-                       .map(this::render)
-                       .collect(Collectors.joining("\n"));
-    }
-
-    String renderProperties(final Set<PropertyElement> properties) {
-        return properties.stream()
-                         .map(this::render)
-                         .collect(Collectors.joining(";\n"));
     }
 
     String render(final GraphElement graphElement) {
@@ -251,6 +213,44 @@ public abstract class AbstractDotFileFormat implements DotFileFormat {
             final PropertyElement propertyElement) {
         return propertyElement.getName() + "=" + quoted(
                 propertyElement.getValue());
+    }
+
+    String renderElements(final Collection<GraphElement> elements) {
+        return elements.stream()
+                       .map(this::render)
+                       .collect(Collectors.joining("\n"));
+    }
+
+    String renderProperties(final Set<PropertyElement> properties) {
+        return properties.stream()
+                         .map(this::render)
+                         .collect(Collectors.joining(";\n"));
+    }
+
+    protected String quoted(final String text) {
+        return "\"" + text + "\"";
+    }
+
+    /**
+     * Functional Interface for rendering a node.
+     */
+    @FunctionalInterface
+    protected interface GraphNodeInjector {
+
+        void injectNodes(
+                final ElementContainer container, final Node<PackageData> node);
+
+    }
+
+    /**
+     * Functional Interface for rendering a usage.
+     */
+    @FunctionalInterface
+    protected interface GraphUsageInjector {
+
+        void injectUsages(
+                final ElementContainer container, final Node<PackageData> node);
+
     }
 
 }
