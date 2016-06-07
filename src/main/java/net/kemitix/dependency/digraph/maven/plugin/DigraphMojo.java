@@ -20,6 +20,8 @@ public class DigraphMojo extends AbstractMojo {
 
     private final Injector injector;
 
+    private final DigraphService digraphService;
+
     @Setter
     @Parameter(defaultValue = "${reactorProjects}", readonly = true)
     private List<MavenProject> projects;
@@ -38,8 +40,6 @@ public class DigraphMojo extends AbstractMojo {
     @Setter
     @Parameter(name = "format", defaultValue = "nested")
     private String format;
-
-    private final DigraphService digraphService;
 
     /**
      * Default constructor.
