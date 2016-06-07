@@ -19,11 +19,11 @@ import net.kemitix.node.Node;
 public class Subgraph extends GraphElement
         implements ElementContainer, HasId, HasLabel, EdgeEndpoint {
 
+    private final List<GraphElement> elements = new ArrayList<>();
+
     private String id;
 
     private String label;
-
-    private final List<GraphElement> elements = new ArrayList<>();
 
     private Node<PackageData> packageDataNode;
 
