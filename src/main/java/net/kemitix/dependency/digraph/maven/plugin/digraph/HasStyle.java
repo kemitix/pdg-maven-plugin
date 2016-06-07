@@ -8,17 +8,17 @@ package net.kemitix.dependency.digraph.maven.plugin.digraph;
 public interface HasStyle {
 
     /**
-     * Sets the style.
-     *
-     * @param style the style
-     */
-    void setStyle(String style);
-
-    /**
      * Returns the style.
      *
      * @return the style
      */
     String getStyle();
+
+    /**
+     * Sets the style.
+     *
+     * @param style the style
+     */
+    void setStyle(String style);
 
 }
