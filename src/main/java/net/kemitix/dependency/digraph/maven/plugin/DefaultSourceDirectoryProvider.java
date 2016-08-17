@@ -37,7 +37,7 @@ class DefaultSourceDirectoryProvider implements SourceDirectoryProvider {
 
     private void addDirectoryIfExists(
             final List<String> directories, final String directory) {
-        if (null != directory && Files.isDirectory(Paths.get(directory))) {
+        if (directory != null && Files.isDirectory(Paths.get(directory))) {
             directories.add(directory);
         }
     }
