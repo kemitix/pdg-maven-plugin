@@ -16,6 +16,8 @@ import net.kemitix.node.NodeItem;
  */
 class DefaultPackageTreeBuilder implements PackageTreeBuilder {
 
+    public static final String PACKAGE_DELIMITER = ".";
+
     private String basePackage;
 
     @Getter
@@ -45,7 +47,7 @@ class DefaultPackageTreeBuilder implements PackageTreeBuilder {
 
     private void verifyWithinBasePackage(final String thePackage) {
         if (!thePackage.equals(basePackage) && !thePackage.startsWith(
-                basePackage + ".")) {
+                basePackage + PACKAGE_DELIMITER)) {
             throw new NodeException(
                     "Package not within base package: " + thePackage);
         }
@@ -55,7 +57,7 @@ class DefaultPackageTreeBuilder implements PackageTreeBuilder {
         if (!thePackage.endsWith(basePackage)) {
             return thePackage.substring(basePackage.length() + 1);
         }
-        return ".";
+        return PACKAGE_DELIMITER;
     }
 
 }
