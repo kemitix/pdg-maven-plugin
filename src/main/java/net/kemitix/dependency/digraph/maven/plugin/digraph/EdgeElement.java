@@ -10,9 +10,15 @@ import lombok.Getter;
 @Getter
 public class EdgeElement extends GraphElement {
 
-    private final EdgeEndpoint tail; // where the arrow is pointing from
+    /**
+     * Where the arrow is pointing from.
+     */
+    private final EdgeEndpoint tail;
 
-    private final EdgeEndpoint head; // where the arrow is pointing to
+    /**
+     * Where the arrow is pointing to.
+     */
+    private final EdgeEndpoint head;
 
     /**
      * Constructor.
