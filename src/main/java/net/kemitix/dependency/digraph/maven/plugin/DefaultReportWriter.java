@@ -1,11 +1,10 @@
 package net.kemitix.dependency.digraph.maven.plugin;
 
-import static java.nio.charset.StandardCharsets.UTF_8;
-
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
+import java.nio.charset.StandardCharsets;
 
 /**
  * Writer for the report.
@@ -19,7 +18,8 @@ class DefaultReportWriter implements ReportWriter {
             throws IOException {
         Writer writer = null;
         try {
-            writer = new OutputStreamWriter(new FileOutputStream(file), UTF_8);
+            writer = new OutputStreamWriter(new FileOutputStream(file),
+                    StandardCharsets.UTF_8);
             writer.append(report);
         } finally {
             if (writer != null) {
