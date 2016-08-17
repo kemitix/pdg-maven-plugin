@@ -14,8 +14,9 @@ public class Digraph extends AbstractGraphElement implements ElementContainer {
 
     /**
      * A list of ordered elements.
-     * <p>
-     * These are in the order that they are to be present in the generate file.
+     *
+     * <p>These are in the order that they are to be present in the generate
+     * file.</p>
      */
     @Getter
     private final List<GraphElement> elements = new ArrayList<>();
