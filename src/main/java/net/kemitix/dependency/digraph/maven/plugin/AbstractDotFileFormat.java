@@ -28,6 +28,10 @@ import net.kemitix.node.Node;
  */
 public abstract class AbstractDotFileFormat implements DotFileFormat {
 
+    public static final String CLOSE_BRACE = "]";
+
+    public static final String DOUBLE_QUOTE = "\"";
+
     @Getter(AccessLevel.PROTECTED)
     private final Node<PackageData> base;
 
@@ -193,7 +197,8 @@ public abstract class AbstractDotFileFormat implements DotFileFormat {
 
     String render(
             final NodeProperties nodeProperties) {
-        return "node[" + renderProperties(nodeProperties.getProperties()) + "]";
+        return "node[" + renderProperties(nodeProperties.getProperties())
+                + CLOSE_BRACE;
     }
 
     String render(
@@ -203,7 +208,7 @@ public abstract class AbstractDotFileFormat implements DotFileFormat {
         if (id.equals(label)) {
             return quoted(id);
         } else {
-            return quoted(id) + "[label=" + quoted(label) + "]";
+            return quoted(id) + "[label=" + quoted(label) + CLOSE_BRACE;
         }
     }
 
@@ -228,7 +233,7 @@ public abstract class AbstractDotFileFormat implements DotFileFormat {
     }
 
     protected String quoted(final String text) {
-        return "\"" + text + "\"";
+        return DOUBLE_QUOTE + text + DOUBLE_QUOTE;
     }
 
     /**
