@@ -14,6 +14,8 @@ import net.kemitix.node.Node;
  */
 class DotFileFormatSimple extends AbstractDotFileFormat {
 
+    public static final String NEWLINE = "\n";
+
     DotFileFormatSimple(
             final Node<PackageData> base,
             final NodePathGenerator nodePathGenerator) {
@@ -26,12 +28,12 @@ class DotFileFormatSimple extends AbstractDotFileFormat {
         final String id = subgraph.getId();
         String node = "";
         if (!id.startsWith("_")) {
-            node = quoted(id) + "\n";
+            node = quoted(id) + NEWLINE;
         }
         return node + subgraph.getElements()
                               .stream()
                               .map(this::render)
-                              .collect(Collectors.joining("\n"));
+                              .collect(Collectors.joining(NEWLINE));
     }
 
     @Override
