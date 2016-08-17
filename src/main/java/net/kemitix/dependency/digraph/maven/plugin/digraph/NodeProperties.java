@@ -7,8 +7,8 @@ import java.util.Set;
 
 /**
  * Properties for the nodes that follow.
- * <p>
- * Created by pcampbell on 20/02/16.
+ *
+ * @author pcampbell
  */
 public class NodeProperties extends AbstractGraphElement {
 
