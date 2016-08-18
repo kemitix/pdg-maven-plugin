@@ -42,24 +42,29 @@ class DefaultSourceFileAnalyser implements SourceFileAnalyser {
             CompilationUnit cu = JavaParser.parse(inputStream);
             final PackageDeclaration aPackage = cu.getPackage();
             if (aPackage != null) {
-                String packageName = aPackage.getName().toString();
-                cu.getImports().forEach((ImportDeclaration id) -> {
-                    final String name = id.getName().toString();
-                    Matcher m;
-                    if (id.isStatic() && !id.isAsterisk()) {
-                        m = METHOD_IMPORT.matcher(name);
-                    } else {
-                        m = CLASS_IMPORT.matcher(name);
-                    }
-                    if (m.find()) {
-                        dependencyData.addDependency(packageName,
-                                m.group("package"));
-                    }
-                });
+                analyseUnit(aPackage, cu);
             }
         } catch (ParseException ex) {
             mojo.getLog().error("Error parsing file " + inputStream, ex);
         }
 
+    }
+
+    private void analyseUnit(final PackageDeclaration aPackage,
+            final CompilationUnit cu) {
+        String packageName = aPackage.getName().toString();
+        cu.getImports().forEach((ImportDeclaration id) -> {
+            final String name = id.getName().toString();
+            Matcher m;
+            if (id.isStatic() && !id.isAsterisk()) {
+                m = METHOD_IMPORT.matcher(name);
+            } else {
+                m = CLASS_IMPORT.matcher(name);
+            }
+            if (m.find()) {
+                dependencyData.addDependency(packageName,
+                        m.group("package"));
+            }
+        });
     }
 }
