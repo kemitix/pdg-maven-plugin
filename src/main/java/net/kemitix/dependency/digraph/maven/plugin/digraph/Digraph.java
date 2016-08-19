@@ -37,6 +37,11 @@ public class Digraph extends AbstractGraphElement implements ElementContainer {
         return elements.add(graphElement);
     }
 
+    @Override
+    public String render() {
+        return getFormat().render(this);
+    }
+
     /**
      * Builder for Digraph.
      */

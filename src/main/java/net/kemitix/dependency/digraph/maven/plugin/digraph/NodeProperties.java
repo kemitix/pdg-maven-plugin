@@ -33,4 +33,8 @@ public class NodeProperties extends AbstractGraphElement {
         return properties.add(propertyElement);
     }
 
+    @Override
+    public String render() {
+        return getFormat().render(this);
+    }
 }

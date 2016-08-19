@@ -40,4 +40,8 @@ public class NodeElement extends AbstractGraphElement
         setLabel(label);
     }
 
+    @Override
+    public String render() {
+        return getFormat().render(this);
+    }
 }

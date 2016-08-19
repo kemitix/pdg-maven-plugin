@@ -11,6 +11,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
+import static org.mockito.BDDMockito.given;
 
 import net.kemitix.dependency.digraph.maven.plugin.DotFileFormat;
 import net.kemitix.dependency.digraph.maven.plugin.PackageData;
@@ -47,6 +48,16 @@ public class DigraphTest {
         val digraph = new Digraph(dotFileFormat);
         //then
         assertThat(digraph.getFormat()).isSameAs(dotFileFormat);
+    }
+
+    @Test
+    public void shouldRenderDigraph() {
+        //given
+        val digraph = new Digraph(dotFileFormat);
+        val expected = "rendered digraph";
+        given(dotFileFormat.render(digraph)).willReturn(expected);
+        //then
+        assertThat(digraph.render()).isEqualTo(expected);
     }
 
     @Test

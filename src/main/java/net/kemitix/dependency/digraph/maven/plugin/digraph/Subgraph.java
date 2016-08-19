@@ -50,4 +50,8 @@ public class Subgraph extends AbstractGraphElement
         return elements.add(graphElement);
     }
 
+    @Override
+    public String render() {
+        return getFormat().render(this);
+    }
 }

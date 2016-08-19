@@ -7,4 +7,10 @@ package net.kemitix.dependency.digraph.maven.plugin.digraph;
  */
 public interface GraphElement {
 
+    /**
+     * Render the graph element for use in a DotFile.
+     *
+     * @return the rendered graph element
+     */
+    String render();
 }

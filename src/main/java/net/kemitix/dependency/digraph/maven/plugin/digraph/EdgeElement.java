@@ -37,4 +37,8 @@ public class EdgeElement extends AbstractGraphElement {
         this.head = head;
     }
 
+    @Override
+    public String render() {
+        return getFormat().render(this);
+    }
 }

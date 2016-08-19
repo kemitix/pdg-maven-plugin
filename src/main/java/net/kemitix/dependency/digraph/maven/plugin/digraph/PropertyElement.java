@@ -30,4 +30,8 @@ public class PropertyElement extends AbstractGraphElement {
         this.value = value;
     }
 
+    @Override
+    public String render() {
+        return getFormat().render(this);
+    }
 }
