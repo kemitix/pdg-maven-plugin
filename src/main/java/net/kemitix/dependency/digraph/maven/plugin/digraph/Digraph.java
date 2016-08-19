@@ -33,12 +33,12 @@ public class Digraph extends AbstractGraphElement implements ElementContainer {
     }
 
     @Override
-    public boolean add(final GraphElement graphElement) {
+    public final boolean add(final GraphElement graphElement) {
         return elements.add(graphElement);
     }
 
     @Override
-    public String render() {
+    public final String render() {
         return getFormat().render(this);
     }
 
@@ -63,7 +63,7 @@ public class Digraph extends AbstractGraphElement implements ElementContainer {
          *
          * @return a Digraph
          */
-        public Digraph build() {
+        public final Digraph build() {
             Digraph digraph = new Digraph(format);
             digraph.add(new PropertyElement("compound", "true", format));
             final NodeProperties nodeProperties = new NodeProperties(format);
