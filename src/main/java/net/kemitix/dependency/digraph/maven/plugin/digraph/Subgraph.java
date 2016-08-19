@@ -46,12 +46,12 @@ public class Subgraph extends AbstractGraphElement
     }
 
     @Override
-    public boolean add(final GraphElement graphElement) {
+    public final boolean add(final GraphElement graphElement) {
         return elements.add(graphElement);
     }
 
     @Override
-    public String render() {
+    public final String render() {
         return getFormat().render(this);
     }
 }
