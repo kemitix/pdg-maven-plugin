@@ -41,7 +41,7 @@ public class NodeElement extends AbstractGraphElement
     }
 
     @Override
-    public String render() {
+    public final String render() {
         return getFormat().render(this);
     }
 }
