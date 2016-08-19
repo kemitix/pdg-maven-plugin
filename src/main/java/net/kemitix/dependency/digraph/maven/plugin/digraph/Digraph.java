@@ -10,7 +10,7 @@ import java.util.List;
  *
  * @author pcampbell
  */
-public class Digraph extends GraphElement implements ElementContainer {
+public class Digraph extends AbstractGraphElement implements ElementContainer {
 
     /**
      * A list of ordered elements.
@@ -21,8 +21,7 @@ public class Digraph extends GraphElement implements ElementContainer {
     private final List<GraphElement> elements = new ArrayList<>();
 
     @Override
-    public boolean add(
-            final GraphElement graphElement) {
+    public boolean add(final GraphElement graphElement) {
         return elements.add(graphElement);
     }
 

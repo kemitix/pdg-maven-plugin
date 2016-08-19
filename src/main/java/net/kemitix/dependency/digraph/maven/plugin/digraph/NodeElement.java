@@ -11,7 +11,7 @@ import net.kemitix.node.Node;
  */
 @Setter
 @Getter
-public class NodeElement extends GraphElement
+public class NodeElement extends AbstractGraphElement
         implements HasId, HasLabel, HasStyle, EdgeEndpoint {
 
     private String id;

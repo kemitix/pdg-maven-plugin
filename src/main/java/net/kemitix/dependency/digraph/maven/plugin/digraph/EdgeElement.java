@@ -8,7 +8,7 @@ import lombok.Getter;
  * @author pcampbell
  */
 @Getter
-public class EdgeElement extends GraphElement {
+public class EdgeElement extends AbstractGraphElement {
 
     /**
      * Where the arrow is pointing from.

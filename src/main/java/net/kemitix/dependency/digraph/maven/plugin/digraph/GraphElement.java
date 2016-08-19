@@ -1,10 +1,10 @@
 package net.kemitix.dependency.digraph.maven.plugin.digraph;
 
 /**
- * Common base for any element to be added to a graph.
+ * An element appearing in a Dot Graph.
  *
  * @author pcampbell
  */
-public abstract class GraphElement {
+public interface GraphElement {
 
 }

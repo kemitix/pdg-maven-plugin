@@ -8,7 +8,7 @@ import lombok.Getter;
  * @author pcampbell
  */
 @Getter
-public class PropertyElement extends GraphElement {
+public class PropertyElement extends AbstractGraphElement {
 
     private final String name;
 

@@ -16,7 +16,7 @@ import net.kemitix.node.Node;
  */
 @Setter
 @Getter
-public class Subgraph extends GraphElement
+public class Subgraph extends AbstractGraphElement
         implements ElementContainer, HasId, HasLabel, EdgeEndpoint {
 
     private final List<GraphElement> elements = new ArrayList<>();
@@ -43,8 +43,7 @@ public class Subgraph extends GraphElement
     }
 
     @Override
-    public boolean add(
-            final GraphElement graphElement) {
+    public boolean add(final GraphElement graphElement) {
         return elements.add(graphElement);
     }
 

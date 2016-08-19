@@ -10,7 +10,7 @@ import java.util.Set;
  * <p>
  * Created by pcampbell on 20/02/16.
  */
-public class NodeProperties extends GraphElement {
+public class NodeProperties extends AbstractGraphElement {
 
     @Getter
     private final Set<PropertyElement> properties = new HashSet<>();
