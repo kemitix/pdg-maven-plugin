@@ -58,7 +58,7 @@ public abstract class AbstractDotFileFormat implements DotFileFormat {
     }
 
     @Override
-    public String renderReport() {
+    public final String renderReport() {
         Digraph digraph = createDigraph();
         getNodeInjector().injectNodes(digraph, base);
         getUsageInjector().injectUsages(digraph, base);
@@ -66,47 +66,36 @@ public abstract class AbstractDotFileFormat implements DotFileFormat {
     }
 
     @Override
-    public String render(final Digraph digraph) {
+    public final String render(final Digraph digraph) {
         return "digraph{\n" + renderElements(digraph.getElements()) + "}\n";
     }
 
     @Override
-    public String render(final NodeElement nodeElement) {
-        final String id = nodeElement.getId();
-        final String label = nodeElement.getLabel();
-        if (id.equals(label)) {
-            return quoted(id);
-        } else {
-            return quoted(id) + "[label=" + quoted(label) + CLOSE_BRACE;
-        }
-    }
-
-    @Override
-    public String render(final NodeProperties nodeProperties) {
+    public final String render(final NodeProperties nodeProperties) {
         return "node[" + renderProperties(nodeProperties.getProperties())
                 + CLOSE_BRACE;
     }
 
     @Override
-    public String render(final PropertyElement propertyElement) {
+    public final String render(final PropertyElement propertyElement) {
         return propertyElement.getName() + "=" + quoted(
                 propertyElement.getValue());
     }
 
-    protected String getClusterId(final Node<PackageData> node) {
+    final String getClusterId(final Node<PackageData> node) {
         return getPath(node, "_");
     }
 
-    protected String getPath(
+    final String getPath(
             final Node<PackageData> headNode, final String delimiter) {
         return nodePathGenerator.getPath(headNode, getBase(), delimiter);
     }
 
-    protected Digraph createDigraph() {
+    final Digraph createDigraph() {
         return new Digraph.Builder(this).build();
     }
 
-    protected GraphUsageInjector getUsageInjector() {
+    final GraphUsageInjector getUsageInjector() {
         return (container, node) -> node.getChildren()
                                         .stream()
                                         .sorted(nodePackageDataComparator)
@@ -130,33 +119,33 @@ public abstract class AbstractDotFileFormat implements DotFileFormat {
         };
     }
 
-    EdgeEndpoint findEdgeEndpoint(final Node<PackageData> node) {
+    final EdgeEndpoint findEdgeEndpoint(final Node<PackageData> node) {
         if (node.getChildren().isEmpty()) {
             return findNodeElement(node);
         }
         return findSubgraph(node);
     }
 
-    NodeElement createNodeElement(
+    final NodeElement createNodeElement(
             final Node<PackageData> packageDataNode) {
         return new NodeElement(packageDataNode, getNodeId(packageDataNode),
                 NodeHelper.getRequiredData(packageDataNode).getName(), this);
     }
 
-    EdgeElement createEdgeElement(
+    final EdgeElement createEdgeElement(
             final Node<PackageData> tail, final Node<PackageData> head) {
         return new EdgeElement(findEdgeEndpoint(tail), findEdgeEndpoint(head),
                 this);
     }
 
-    protected NodeElement findNodeElement(final Node<PackageData> node) {
+    final NodeElement findNodeElement(final Node<PackageData> node) {
         if (!graphElements.containsKey(node)) {
             graphElements.put(node, createNodeElement(node));
         }
         return (NodeElement) graphElements.get(node);
     }
 
-    Subgraph findSubgraph(final Node<PackageData> node) {
+    final Subgraph findSubgraph(final Node<PackageData> node) {
         if (!graphElements.containsKey(node)) {
             graphElements.put(node, createSubgraph(node));
         }
@@ -168,7 +157,7 @@ public abstract class AbstractDotFileFormat implements DotFileFormat {
                 NodeHelper.getRequiredData(node).getName(), this);
     }
 
-    protected GraphNodeInjector getNodeInjector() {
+    final GraphNodeInjector getNodeInjector() {
         return new GraphNodeInjector() {
             @Override
             public void injectNodes(
@@ -188,23 +177,23 @@ public abstract class AbstractDotFileFormat implements DotFileFormat {
         };
     }
 
-    protected String getNodeId(final Node<PackageData> node) {
+    final String getNodeId(final Node<PackageData> node) {
         return getPath(node, ".");
     }
 
-    String renderElements(final Collection<GraphElement> elements) {
+    final String renderElements(final Collection<GraphElement> elements) {
         return elements.stream()
                        .map(GraphElement::render)
                        .collect(Collectors.joining("\n"));
     }
 
-    String renderProperties(final Set<PropertyElement> properties) {
+    final String renderProperties(final Set<PropertyElement> properties) {
         return properties.stream()
                          .map(GraphElement::render)
                          .collect(Collectors.joining(";\n"));
     }
 
-    protected String quoted(final String text) {
+    final String quoted(final String text) {
         return DOUBLE_QUOTE + text + DOUBLE_QUOTE;
     }
 
@@ -212,7 +201,7 @@ public abstract class AbstractDotFileFormat implements DotFileFormat {
      * Functional Interface for rendering a node.
      */
     @FunctionalInterface
-    protected interface GraphNodeInjector {
+    interface GraphNodeInjector {
 
         void injectNodes(
                 final ElementContainer container, final Node<PackageData> node);
@@ -223,7 +212,7 @@ public abstract class AbstractDotFileFormat implements DotFileFormat {
      * Functional Interface for rendering a usage.
      */
     @FunctionalInterface
-    protected interface GraphUsageInjector {
+    interface GraphUsageInjector {
 
         void injectUsages(
                 final ElementContainer container, final Node<PackageData> node);

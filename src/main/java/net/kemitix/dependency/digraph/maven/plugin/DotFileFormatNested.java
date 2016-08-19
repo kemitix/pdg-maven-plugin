@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import net.kemitix.dependency.digraph.maven.plugin.digraph.EdgeElement;
+import net.kemitix.dependency.digraph.maven.plugin.digraph.NodeElement;
 import net.kemitix.dependency.digraph.maven.plugin.digraph.Subgraph;
 import net.kemitix.node.Node;
 
@@ -73,6 +74,17 @@ class DotFileFormatNested extends AbstractDotFileFormat {
         String attributeTag = buildAttributeTag(attributes);
         return String.format("%s->%s%s", quoted(getNodeId(tailNode)),
                 quoted(getNodeId(headNode)), attributeTag);
+    }
+
+    @Override
+    public final String render(final NodeElement nodeElement) {
+        final String id = nodeElement.getId();
+        final String label = nodeElement.getLabel();
+        if (id.equals(label)) {
+            return quoted(id);
+        } else {
+            return quoted(id) + "[label=" + quoted(label) + CLOSE_BRACE;
+        }
     }
 
 }
