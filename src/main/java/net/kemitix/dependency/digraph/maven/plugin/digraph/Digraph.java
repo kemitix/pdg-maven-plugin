@@ -26,4 +26,23 @@ public class Digraph extends AbstractGraphElement implements ElementContainer {
         return elements.add(graphElement);
     }
 
+    /**
+     * Builder for Digraph.
+     */
+    public static class Builder {
+
+        /**
+         * Builds a Digraph with preset properties and node properties.
+         *
+         * @return a Digraph
+         */
+        public static Digraph build() {
+            Digraph digraph = new Digraph();
+            digraph.add(new PropertyElement("compound", "true"));
+            final NodeProperties nodeProperties = new NodeProperties();
+            nodeProperties.add(new PropertyElement("shape", "box"));
+            digraph.add(nodeProperties);
+            return digraph;
+        }
+    }
 }

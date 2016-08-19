@@ -37,8 +37,7 @@ public abstract class AbstractDotFileFormat implements DotFileFormat {
 
     private final NodePathGenerator nodePathGenerator;
 
-    private final NodePackageDataComparator nodePackageDataComparator
-            = new NodePackageDataComparator();
+    private final NodePackageDataComparator nodePackageDataComparator;
 
     private Map<Node<PackageData>, GraphElement> graphElements
             = new HashMap<>();
@@ -54,6 +53,8 @@ public abstract class AbstractDotFileFormat implements DotFileFormat {
             final NodePathGenerator nodePathGenerator) {
         this.base = base;
         this.nodePathGenerator = nodePathGenerator;
+        this.nodePackageDataComparator = new NodePackageDataComparator();
+        this.graphElements = new HashMap<>();
     }
 
     protected String getClusterId(final Node<PackageData> node) {
@@ -66,12 +67,7 @@ public abstract class AbstractDotFileFormat implements DotFileFormat {
     }
 
     protected Digraph createDigraph() {
-        Digraph digraph = new Digraph();
-        digraph.add(new PropertyElement("compound", "true"));
-        final NodeProperties nodeProperties = new NodeProperties();
-        nodeProperties.add(new PropertyElement("shape", "box"));
-        digraph.add(nodeProperties);
-        return digraph;
+        return Digraph.Builder.build();
     }
 
     @Override
