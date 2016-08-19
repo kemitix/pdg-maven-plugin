@@ -67,7 +67,7 @@ public abstract class AbstractDotFileFormat implements DotFileFormat {
     }
 
     protected Digraph createDigraph() {
-        return Digraph.Builder.build();
+        return new Digraph.Builder(this).build();
     }
 
     @Override
@@ -112,12 +112,13 @@ public abstract class AbstractDotFileFormat implements DotFileFormat {
     NodeElement createNodeElement(
             final Node<PackageData> packageDataNode) {
         return new NodeElement(packageDataNode, getNodeId(packageDataNode),
-                NodeHelper.getRequiredData(packageDataNode).getName());
+                NodeHelper.getRequiredData(packageDataNode).getName(), this);
     }
 
     EdgeElement createEdgeElement(
             final Node<PackageData> tail, final Node<PackageData> head) {
-        return new EdgeElement(findEdgeEndpoint(tail), findEdgeEndpoint(head));
+        return new EdgeElement(findEdgeEndpoint(tail), findEdgeEndpoint(head),
+                this);
     }
 
     protected NodeElement findNodeElement(final Node<PackageData> node) {
@@ -136,7 +137,7 @@ public abstract class AbstractDotFileFormat implements DotFileFormat {
 
     private Subgraph createSubgraph(final Node<PackageData> node) {
         return new Subgraph(node, getClusterId(node),
-                NodeHelper.getRequiredData(node).getName());
+                NodeHelper.getRequiredData(node).getName(), this);
     }
 
     protected GraphNodeInjector getNodeInjector() {

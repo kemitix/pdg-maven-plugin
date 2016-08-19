@@ -2,6 +2,8 @@ package net.kemitix.dependency.digraph.maven.plugin.digraph;
 
 import lombok.Getter;
 
+import net.kemitix.dependency.digraph.maven.plugin.DotFileFormat;
+
 /**
  * A key, value property.
  *
@@ -17,10 +19,13 @@ public class PropertyElement extends AbstractGraphElement {
     /**
      * Constructor.
      *
-     * @param name  the name of the property
-     * @param value the value of the property
+     * @param name   the name of the property
+     * @param value  the value of the property
+     * @param format the output format
      */
-    public PropertyElement(final String name, final String value) {
+    public PropertyElement(
+            final String name, final String value, final DotFileFormat format) {
+        super(format);
         this.name = name;
         this.value = value;
     }

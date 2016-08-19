@@ -5,7 +5,7 @@ package net.kemitix.dependency.digraph.maven.plugin;
  *
  * @author pcampbell
  */
-interface DotFileFormat {
+public interface DotFileFormat {
 
     /**
      * Generates the report.

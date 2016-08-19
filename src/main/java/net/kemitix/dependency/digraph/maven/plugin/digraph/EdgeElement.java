@@ -2,6 +2,8 @@ package net.kemitix.dependency.digraph.maven.plugin.digraph;
 
 import lombok.Getter;
 
+import net.kemitix.dependency.digraph.maven.plugin.DotFileFormat;
+
 /**
  * Represents an edge (line) on the graph.
  *
@@ -23,10 +25,14 @@ public class EdgeElement extends AbstractGraphElement {
     /**
      * Constructor.
      *
-     * @param tail the tail (origin of the edge)
-     * @param head the head (destination of the edge)
+     * @param tail   the tail (origin of the edge)
+     * @param head   the head (destination of the edge)
+     * @param format the output format
      */
-    public EdgeElement(final EdgeEndpoint tail, final EdgeEndpoint head) {
+    public EdgeElement(
+            final EdgeEndpoint tail, final EdgeEndpoint head,
+            final DotFileFormat format) {
+        super(format);
         this.tail = tail;
         this.head = head;
     }
