@@ -28,13 +28,12 @@ public class NodeProperties extends AbstractGraphElement {
      *
      * @return true if the property is added
      */
-    public boolean add(
-            final PropertyElement propertyElement) {
+    public final boolean add(final PropertyElement propertyElement) {
         return properties.add(propertyElement);
     }
 
     @Override
-    public String render() {
+    public final String render() {
         return getFormat().render(this);
     }
 }
