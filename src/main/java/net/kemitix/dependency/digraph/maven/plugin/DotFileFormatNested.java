@@ -1,12 +1,12 @@
 package net.kemitix.dependency.digraph.maven.plugin;
 
-import net.kemitix.dependency.digraph.maven.plugin.digraph.EdgeElement;
-import net.kemitix.dependency.digraph.maven.plugin.digraph.Subgraph;
-import net.kemitix.node.Node;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import net.kemitix.dependency.digraph.maven.plugin.digraph.EdgeElement;
+import net.kemitix.dependency.digraph.maven.plugin.digraph.Subgraph;
+import net.kemitix.node.Node;
 
 /**
  * Generates a dot file dependency report as nested clusters.
@@ -51,7 +51,7 @@ class DotFileFormatNested extends AbstractDotFileFormat {
     }
 
     @Override
-    String render(final Subgraph subgraph) {
+    public String render(final Subgraph subgraph) {
         final String label = quoted(subgraph.getLabel());
         final String id = quoted(subgraph.getId());
         return String.format("subgraph %s{%n" + "label=%s%n"
@@ -61,7 +61,7 @@ class DotFileFormatNested extends AbstractDotFileFormat {
     }
 
     @Override
-    String render(
+    public String render(
             final EdgeElement edgeElement) {
         List<String> attributes = new ArrayList<>();
         final Node<PackageData> tailNode = edgeElement.getTail()

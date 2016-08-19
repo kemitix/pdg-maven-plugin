@@ -23,8 +23,7 @@ class DotFileFormatSimple extends AbstractDotFileFormat {
     }
 
     @Override
-    String render(
-            final Subgraph subgraph) {
+    public String render(final Subgraph subgraph) {
         final String id = subgraph.getId();
         String node = "";
         if (!id.startsWith("_")) {
@@ -37,14 +36,12 @@ class DotFileFormatSimple extends AbstractDotFileFormat {
     }
 
     @Override
-    String render(
-            final NodeElement nodeElement) {
+    public String render(final NodeElement nodeElement) {
         return quoted(nodeElement.getId());
     }
 
     @Override
-    String render(
-            final EdgeElement edgeElement) {
+    public String render(final EdgeElement edgeElement) {
         return quoted(edgeElement.getTail().getId()) + " -> " + quoted(
                 edgeElement.getHead().getId());
     }

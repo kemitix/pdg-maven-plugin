@@ -57,6 +57,42 @@ public abstract class AbstractDotFileFormat implements DotFileFormat {
         this.graphElements = new HashMap<>();
     }
 
+    @Override
+    public String renderReport() {
+        Digraph digraph = createDigraph();
+        getNodeInjector().injectNodes(digraph, base);
+        getUsageInjector().injectUsages(digraph, base);
+        return render(digraph);
+    }
+
+    @Override
+    public String render(final Digraph digraph) {
+        return "digraph{\n" + renderElements(digraph.getElements()) + "}\n";
+    }
+
+    @Override
+    public String render(final NodeElement nodeElement) {
+        final String id = nodeElement.getId();
+        final String label = nodeElement.getLabel();
+        if (id.equals(label)) {
+            return quoted(id);
+        } else {
+            return quoted(id) + "[label=" + quoted(label) + CLOSE_BRACE;
+        }
+    }
+
+    @Override
+    public String render(final NodeProperties nodeProperties) {
+        return "node[" + renderProperties(nodeProperties.getProperties())
+                + CLOSE_BRACE;
+    }
+
+    @Override
+    public String render(final PropertyElement propertyElement) {
+        return propertyElement.getName() + "=" + quoted(
+                propertyElement.getValue());
+    }
+
     protected String getClusterId(final Node<PackageData> node) {
         return getPath(node, "_");
     }
@@ -68,14 +104,6 @@ public abstract class AbstractDotFileFormat implements DotFileFormat {
 
     protected Digraph createDigraph() {
         return new Digraph.Builder(this).build();
-    }
-
-    @Override
-    public String renderReport() {
-        Digraph digraph = createDigraph();
-        getNodeInjector().injectNodes(digraph, base);
-        getUsageInjector().injectUsages(digraph, base);
-        return render(digraph);
     }
 
     protected GraphUsageInjector getUsageInjector() {
@@ -180,37 +208,6 @@ public abstract class AbstractDotFileFormat implements DotFileFormat {
             rendered = render((PropertyElement) graphElement);
         }
         return rendered;
-    }
-
-    String render(final Digraph digraph) {
-        return "digraph{\n" + renderElements(digraph.getElements()) + "}\n";
-    }
-
-    abstract String render(final Subgraph subgraph);
-
-    String render(
-            final NodeProperties nodeProperties) {
-        return "node[" + renderProperties(nodeProperties.getProperties())
-                + CLOSE_BRACE;
-    }
-
-    String render(
-            final NodeElement nodeElement) {
-        final String id = nodeElement.getId();
-        final String label = nodeElement.getLabel();
-        if (id.equals(label)) {
-            return quoted(id);
-        } else {
-            return quoted(id) + "[label=" + quoted(label) + CLOSE_BRACE;
-        }
-    }
-
-    abstract String render(final EdgeElement edgeElement);
-
-    String render(
-            final PropertyElement propertyElement) {
-        return propertyElement.getName() + "=" + quoted(
-                propertyElement.getValue());
     }
 
     String renderElements(final Collection<GraphElement> elements) {
