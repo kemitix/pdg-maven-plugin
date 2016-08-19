@@ -192,33 +192,15 @@ public abstract class AbstractDotFileFormat implements DotFileFormat {
         return getPath(node, ".");
     }
 
-    String render(final GraphElement graphElement) {
-        String rendered = "(graph-element)";
-        if (graphElement instanceof Digraph) {
-            rendered = render((Digraph) graphElement);
-        } else if (graphElement instanceof Subgraph) {
-            rendered = render((Subgraph) graphElement);
-        } else if (graphElement instanceof NodeProperties) {
-            rendered = render((NodeProperties) graphElement);
-        } else if (graphElement instanceof NodeElement) {
-            rendered = render((NodeElement) graphElement);
-        } else if (graphElement instanceof EdgeElement) {
-            rendered = render((EdgeElement) graphElement);
-        } else if (graphElement instanceof PropertyElement) {
-            rendered = render((PropertyElement) graphElement);
-        }
-        return rendered;
-    }
-
     String renderElements(final Collection<GraphElement> elements) {
         return elements.stream()
-                       .map(this::render)
+                       .map(GraphElement::render)
                        .collect(Collectors.joining("\n"));
     }
 
     String renderProperties(final Set<PropertyElement> properties) {
         return properties.stream()
-                         .map(this::render)
+                         .map(GraphElement::render)
                          .collect(Collectors.joining(";\n"));
     }
 
