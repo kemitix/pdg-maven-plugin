@@ -3,6 +3,7 @@ package net.kemitix.dependency.digraph.maven.plugin;
 import java.util.stream.Collectors;
 
 import net.kemitix.dependency.digraph.maven.plugin.digraph.EdgeElement;
+import net.kemitix.dependency.digraph.maven.plugin.digraph.GraphElement;
 import net.kemitix.dependency.digraph.maven.plugin.digraph.NodeElement;
 import net.kemitix.dependency.digraph.maven.plugin.digraph.Subgraph;
 import net.kemitix.node.Node;
@@ -23,8 +24,7 @@ class DotFileFormatSimple extends AbstractDotFileFormat {
     }
 
     @Override
-    String render(
-            final Subgraph subgraph) {
+    public String render(final Subgraph subgraph) {
         final String id = subgraph.getId();
         String node = "";
         if (!id.startsWith("_")) {
@@ -32,19 +32,17 @@ class DotFileFormatSimple extends AbstractDotFileFormat {
         }
         return node + subgraph.getElements()
                               .stream()
-                              .map(this::render)
+                              .map(GraphElement::render)
                               .collect(Collectors.joining(NEWLINE));
     }
 
     @Override
-    String render(
-            final NodeElement nodeElement) {
+    public String render(final NodeElement nodeElement) {
         return quoted(nodeElement.getId());
     }
 
     @Override
-    String render(
-            final EdgeElement edgeElement) {
+    public String render(final EdgeElement edgeElement) {
         return quoted(edgeElement.getTail().getId()) + " -> " + quoted(
                 edgeElement.getHead().getId());
     }
