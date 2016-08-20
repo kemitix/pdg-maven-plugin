@@ -1,6 +1,7 @@
 package net.kemitix.dependency.digraph.maven.plugin;
 
 import lombok.Getter;
+import lombok.val;
 import org.apache.maven.plugin.logging.Log;
 
 import java.util.ArrayList;
@@ -24,6 +25,12 @@ class NodeTreeDependencyData implements DependencyData {
 
     @Getter
     private Node<PackageData> baseNode;
+
+    static DependencyData newInstance(final String basePackage) {
+        val dependencyData = new NodeTreeDependencyData();
+        dependencyData.setBasePackage(basePackage);
+        return dependencyData;
+    }
 
     @Override
     public void addDependency(final String user, final String imported) {
