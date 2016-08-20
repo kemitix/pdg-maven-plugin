@@ -35,8 +35,7 @@ public class DotFileFormatNestedTest {
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-        dependencyData = new NodeTreeDependencyData();
-        dependencyData.setBasePackage("test");
+        dependencyData = DigraphFactory.newDependencyData("test");
         dotFileFormat = new DotFileFormatNested(dependencyData.getBaseNode(),
                 nodePathGenerator);
     }
