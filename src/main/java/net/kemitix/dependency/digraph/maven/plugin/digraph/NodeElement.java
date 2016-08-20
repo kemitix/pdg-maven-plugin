@@ -3,6 +3,7 @@ package net.kemitix.dependency.digraph.maven.plugin.digraph;
 import lombok.Getter;
 import lombok.Setter;
 
+import net.kemitix.dependency.digraph.maven.plugin.DotFileFormat;
 import net.kemitix.dependency.digraph.maven.plugin.PackageData;
 import net.kemitix.node.Node;
 
@@ -11,7 +12,7 @@ import net.kemitix.node.Node;
  */
 @Setter
 @Getter
-public class NodeElement extends GraphElement
+public class NodeElement extends AbstractGraphElement
         implements HasId, HasLabel, HasStyle, EdgeEndpoint {
 
     private String id;
@@ -28,13 +29,19 @@ public class NodeElement extends GraphElement
      * @param packageDataNode the package data node for this node element
      * @param id              the id of the node
      * @param label           the label of the node
+     * @param dotFileFormat   the output format
      */
     public NodeElement(
             final Node<PackageData> packageDataNode, final String id,
-            final String label) {
-        setPackageDataNode(packageDataNode);
-        setId(id);
-        setLabel(label);
+            final String label, final DotFileFormat dotFileFormat) {
+        super(dotFileFormat);
+        this.packageDataNode = packageDataNode;
+        this.id = id;
+        this.label = label;
     }
 
+    @Override
+    public final String render() {
+        return getDotFileFormat().render(this);
+    }
 }

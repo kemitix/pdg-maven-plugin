@@ -5,15 +5,26 @@ import lombok.Getter;
 import java.util.HashSet;
 import java.util.Set;
 
+import net.kemitix.dependency.digraph.maven.plugin.DotFileFormat;
+
 /**
  * Properties for the nodes that follow.
- * <p>
- * Created by pcampbell on 20/02/16.
+ *
+ * @author pcampbell
  */
-public class NodeProperties extends GraphElement {
+public class NodeProperties extends AbstractGraphElement {
 
     @Getter
     private final Set<PropertyElement> properties = new HashSet<>();
+
+    /**
+     * Constructor.
+     *
+     * @param dotFileFormat the output format
+     */
+    NodeProperties(final DotFileFormat dotFileFormat) {
+        super(dotFileFormat);
+    }
 
     /**
      * Adds a property to the node.
@@ -22,9 +33,12 @@ public class NodeProperties extends GraphElement {
      *
      * @return true if the property is added
      */
-    public boolean add(
-            final PropertyElement propertyElement) {
+    public final boolean add(final PropertyElement propertyElement) {
         return properties.add(propertyElement);
     }
 
+    @Override
+    public final String render() {
+        return getDotFileFormat().render(this);
+    }
 }

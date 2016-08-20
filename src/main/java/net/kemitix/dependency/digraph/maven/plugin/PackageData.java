@@ -32,14 +32,14 @@ public class PackageData {
 
     @Override
     @SuppressWarnings("magicnumber")
-    public int hashCode() {
+    public final int hashCode() {
         int hash = 7;
         hash = 29 * hash + Objects.hashCode(this.name);
         return hash;
     }
 
     @Override
-    public boolean equals(final Object obj) {
+    public final boolean equals(final Object obj) {
         if (this == obj) {
             return true;
         }

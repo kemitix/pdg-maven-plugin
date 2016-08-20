@@ -56,7 +56,7 @@ public class DigraphMojo extends AbstractMojo {
     }
 
     @Override
-    public void execute() {
+    public final void execute() {
         digraphService.execute(this, projects, includeTests, basePackage,
                 format, debug);
     }
