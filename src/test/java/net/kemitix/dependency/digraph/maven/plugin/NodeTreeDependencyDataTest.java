@@ -22,14 +22,14 @@ public class NodeTreeDependencyDataTest {
     /**
      * Class under test.
      */
-    private NodeTreeDependencyData data;
+    private DependencyData data;
 
     /**
      * Prepare each test.
      */
     @Before
     public void setUp() {
-        data = new NodeTreeDependencyData();
+        data = DigraphFactory.newDependencyData("net.kemitix");
     }
 
     /**
@@ -37,8 +37,6 @@ public class NodeTreeDependencyDataTest {
      */
     @Test
     public void shouldReturnTheSetBaseNode() {
-        //given
-        data.setBasePackage("net.kemitix");
         //when
         Node<PackageData> baseNode = data.getBaseNode();
         //then
@@ -51,7 +49,6 @@ public class NodeTreeDependencyDataTest {
     @Test
     public void shouldCreateDescendantNodes() {
         //given
-        data.setBasePackage(("net.kemitix"));
         final Node<PackageData> baseNode = data.getBaseNode();
         //when
         data.addDependency("net.kemitix.alpha", "net.kemitix.beta");
@@ -68,7 +65,6 @@ public class NodeTreeDependencyDataTest {
     @Test
     public void shouldLogDebugTree() {
         //given
-        data.setBasePackage(("net.kemitix"));
         data.addDependency("net.kemitix.alpha", "net.kemitix.beta");
         Log log = mock(Log.class);
         //when
