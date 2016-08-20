@@ -21,13 +21,6 @@ interface DependencyData {
     void addDependency(String user, String imported);
 
     /**
-     * Sets the base package.
-     *
-     * @param basePackage the base package within which to report
-     */
-    void setBasePackage(final String basePackage);
-
-    /**
      * Returns the base node.
      *
      * @return the base node

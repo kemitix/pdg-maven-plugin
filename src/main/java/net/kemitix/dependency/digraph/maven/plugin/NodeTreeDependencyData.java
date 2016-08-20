@@ -18,13 +18,16 @@ import net.kemitix.node.Nodes;
  *
  * @author Paul Campbell
  */
-class NodeTreeDependencyData implements DependencyData {
+final class NodeTreeDependencyData implements DependencyData {
 
     private final Node<PackageData> root = Nodes.unnamedRoot(
             PackageData.newInstance("[root]"));
 
     @Getter
     private Node<PackageData> baseNode;
+
+    private NodeTreeDependencyData() {
+    }
 
     static DependencyData newInstance(final String basePackage) {
         val dependencyData = new NodeTreeDependencyData();
@@ -49,8 +52,7 @@ class NodeTreeDependencyData implements DependencyData {
      *
      * @param basePackage the base package within which to report
      */
-    @Override
-    public void setBasePackage(final String basePackage) {
+    private void setBasePackage(final String basePackage) {
         final List<PackageData> baseLine = createPackageLineList(basePackage);
         root.createDescendantLine(baseLine);
         root.findInPath(baseLine)
