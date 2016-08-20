@@ -18,7 +18,6 @@ public final class PackageData {
     @Getter
     private final String name;
 
-    @Getter
     private final Set<Node<PackageData>> uses = new HashSet<>();
 
     private PackageData(final String name) {
@@ -64,6 +63,19 @@ public final class PackageData {
         }
         final PackageData other = (PackageData) obj;
         return Objects.equals(this.name, other.name);
+    }
+
+    Set<Node<PackageData>> getUses() {
+        return new HashSet<>(uses);
+    }
+
+    /**
+     * Notes that this package is a user of another package.
+     *
+     * @param packageDataNode the package that is used by this package
+     */
+    void uses(final Node<PackageData> packageDataNode) {
+        uses.add(packageDataNode);
     }
 
 }

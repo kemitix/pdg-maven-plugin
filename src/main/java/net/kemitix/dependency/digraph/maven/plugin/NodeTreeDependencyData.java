@@ -34,9 +34,7 @@ class NodeTreeDependencyData implements DependencyData {
         root.findInPath(importedLine)
             .ifPresent(i -> root.findInPath(userLine)
                                 .ifPresent(u -> u.getData()
-                                                 .ifPresent(upd -> upd.getUses()
-                                                                      .add(i)
-                                                 )));
+                                                 .ifPresent(d -> d.uses(i))));
     }
 
     /**
