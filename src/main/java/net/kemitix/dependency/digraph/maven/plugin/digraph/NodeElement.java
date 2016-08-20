@@ -35,9 +35,9 @@ public class NodeElement extends AbstractGraphElement
             final Node<PackageData> packageDataNode, final String id,
             final String label, final DotFileFormat dotFileFormat) {
         super(dotFileFormat);
-        setPackageDataNode(packageDataNode);
-        setId(id);
-        setLabel(label);
+        this.packageDataNode = packageDataNode;
+        this.id = id;
+        this.label = label;
     }
 
     @Override
