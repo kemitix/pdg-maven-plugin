@@ -39,27 +39,31 @@ public final class PackageData {
     @Override
     @SuppressWarnings("magicnumber")
     public int hashCode() {
-        int hash = 7;
-        hash = 29 * hash + Objects.hashCode(this.name);
-        return hash;
+        int result = 17;
+        result = 31 * result + Objects.hashCode(this.name);
+        return result;
     }
 
+    /**
+     * Checks whether two {@code PackageData} objects are "equal".
+     *
+     * <p>They are considered to be equal if they have the same name.</p>
+     *
+     * @param obj the other object to compare against
+     *
+     * @return {@code true} if this object is the same as the obj argument;
+     * {@code false} otherwise.
+     */
     @Override
     public boolean equals(final Object obj) {
         if (this == obj) {
             return true;
         }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
+        if (!(obj instanceof PackageData)) {
             return false;
         }
         final PackageData other = (PackageData) obj;
-        if (!Objects.equals(this.name, other.name)) {
-            return false;
-        }
-        return true;
+        return Objects.equals(this.name, other.name);
     }
 
 }
