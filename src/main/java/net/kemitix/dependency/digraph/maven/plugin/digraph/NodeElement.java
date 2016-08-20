@@ -29,12 +29,12 @@ public class NodeElement extends AbstractGraphElement
      * @param packageDataNode the package data node for this node element
      * @param id              the id of the node
      * @param label           the label of the node
-     * @param format          the output format
+     * @param dotFileFormat   the output format
      */
     public NodeElement(
             final Node<PackageData> packageDataNode, final String id,
-            final String label, final DotFileFormat format) {
-        super(format);
+            final String label, final DotFileFormat dotFileFormat) {
+        super(dotFileFormat);
         setPackageDataNode(packageDataNode);
         setId(id);
         setLabel(label);
@@ -42,6 +42,6 @@ public class NodeElement extends AbstractGraphElement
 
     @Override
     public final String render() {
-        return getFormat().render(this);
+        return getDotFileFormat().render(this);
     }
 }

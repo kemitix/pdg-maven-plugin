@@ -1,6 +1,7 @@
 package net.kemitix.dependency.digraph.maven.plugin.digraph;
 
 import lombok.Getter;
+import lombok.val;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,10 +27,10 @@ public class Digraph extends AbstractGraphElement implements ElementContainer {
     /**
      * Constructor.
      *
-     * @param format the output format
+     * @param dotFileFormat the output format
      */
-    public Digraph(final DotFileFormat format) {
-        super(format);
+    public Digraph(final DotFileFormat dotFileFormat) {
+        super(dotFileFormat);
     }
 
     @Override
@@ -39,7 +40,7 @@ public class Digraph extends AbstractGraphElement implements ElementContainer {
 
     @Override
     public final String render() {
-        return getFormat().render(this);
+        return getDotFileFormat().render(this);
     }
 
     /**
@@ -47,15 +48,15 @@ public class Digraph extends AbstractGraphElement implements ElementContainer {
      */
     public static class Builder {
 
-        private final DotFileFormat format;
+        private final DotFileFormat dotFileFormat;
 
         /**
          * Constructor.
          *
-         * @param format the output format
+         * @param dotFileFormat the output format
          */
-        public Builder(final DotFileFormat format) {
-            this.format = format;
+        public Builder(final DotFileFormat dotFileFormat) {
+            this.dotFileFormat = dotFileFormat;
         }
 
         /**
@@ -64,10 +65,11 @@ public class Digraph extends AbstractGraphElement implements ElementContainer {
          * @return a Digraph
          */
         public final Digraph build() {
-            Digraph digraph = new Digraph(format);
-            digraph.add(new PropertyElement("compound", "true", format));
-            final NodeProperties nodeProperties = new NodeProperties(format);
-            nodeProperties.add(new PropertyElement("shape", "box", format));
+            val digraph = new Digraph(dotFileFormat);
+            digraph.add(new PropertyElement("compound", "true", dotFileFormat));
+            val nodeProperties = new NodeProperties(dotFileFormat);
+            nodeProperties.add(
+                    new PropertyElement("shape", "box", dotFileFormat));
             digraph.add(nodeProperties);
             return digraph;
         }

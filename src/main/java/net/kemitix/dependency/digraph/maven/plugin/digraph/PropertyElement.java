@@ -19,19 +19,20 @@ public class PropertyElement extends AbstractGraphElement {
     /**
      * Constructor.
      *
-     * @param name   the name of the property
-     * @param value  the value of the property
-     * @param format the output format
+     * @param name          the name of the property
+     * @param value         the value of the property
+     * @param dotFileFormat the output format
      */
     public PropertyElement(
-            final String name, final String value, final DotFileFormat format) {
-        super(format);
+            final String name, final String value,
+            final DotFileFormat dotFileFormat) {
+        super(dotFileFormat);
         this.name = name;
         this.value = value;
     }
 
     @Override
     public final String render() {
-        return getFormat().render(this);
+        return getDotFileFormat().render(this);
     }
 }

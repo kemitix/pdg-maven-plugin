@@ -25,20 +25,20 @@ public class EdgeElement extends AbstractGraphElement {
     /**
      * Constructor.
      *
-     * @param tail   the tail (origin of the edge)
-     * @param head   the head (destination of the edge)
-     * @param format the output format
+     * @param tail          the tail (origin of the edge)
+     * @param head          the head (destination of the edge)
+     * @param dotFileFormat the output format
      */
     public EdgeElement(
             final EdgeEndpoint tail, final EdgeEndpoint head,
-            final DotFileFormat format) {
-        super(format);
+            final DotFileFormat dotFileFormat) {
+        super(dotFileFormat);
         this.tail = tail;
         this.head = head;
     }
 
     @Override
     public final String render() {
-        return getFormat().render(this);
+        return getDotFileFormat().render(this);
     }
 }

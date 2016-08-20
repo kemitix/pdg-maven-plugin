@@ -13,9 +13,9 @@ import net.kemitix.dependency.digraph.maven.plugin.DotFileFormat;
 abstract class AbstractGraphElement implements GraphElement {
 
     @Getter(AccessLevel.PROTECTED)
-    private final DotFileFormat format;
+    private final DotFileFormat dotFileFormat;
 
-    protected AbstractGraphElement(final DotFileFormat format) {
-        this.format = format;
+    protected AbstractGraphElement(final DotFileFormat dotFileFormat) {
+        this.dotFileFormat = dotFileFormat;
     }
 }

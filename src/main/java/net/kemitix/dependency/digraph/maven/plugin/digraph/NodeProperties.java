@@ -17,8 +17,13 @@ public class NodeProperties extends AbstractGraphElement {
     @Getter
     private final Set<PropertyElement> properties = new HashSet<>();
 
-    NodeProperties(final DotFileFormat format) {
-        super(format);
+    /**
+     * Constructor.
+     *
+     * @param dotFileFormat the output format
+     */
+    NodeProperties(final DotFileFormat dotFileFormat) {
+        super(dotFileFormat);
     }
 
     /**
@@ -34,6 +39,6 @@ public class NodeProperties extends AbstractGraphElement {
 
     @Override
     public final String render() {
-        return getFormat().render(this);
+        return getDotFileFormat().render(this);
     }
 }

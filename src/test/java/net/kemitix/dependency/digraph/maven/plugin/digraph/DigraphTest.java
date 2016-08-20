@@ -47,7 +47,7 @@ public class DigraphTest {
         //given
         val digraph = new Digraph(dotFileFormat);
         //then
-        assertThat(digraph.getFormat()).isSameAs(dotFileFormat);
+        assertThat(digraph.getDotFileFormat()).isSameAs(dotFileFormat);
     }
 
     @Test
