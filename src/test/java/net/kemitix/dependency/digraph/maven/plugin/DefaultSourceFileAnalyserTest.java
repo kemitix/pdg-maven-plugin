@@ -68,7 +68,7 @@ public class DefaultSourceFileAnalyserTest {
                 + "public class Src {}";
         InputStream stream = new ByteArrayInputStream(srcJava.getBytes(UTF_8));
         //when
-        analyser.analyse(stream);
+        analyser.analyse(dependencyData, stream);
         //then
         verify(dependencyData, times(3))
                 .addDependency("test.nested", "test.other");
@@ -83,7 +83,7 @@ public class DefaultSourceFileAnalyserTest {
         String nonJava = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<root/>";
         InputStream stream = new ByteArrayInputStream(nonJava.getBytes(UTF_8));
         //when
-        analyser.analyse(stream);
+        analyser.analyse(dependencyData, stream);
         //then
         // ParseException is not thrown
     }
@@ -101,7 +101,7 @@ public class DefaultSourceFileAnalyserTest {
                 + "//public class Src {}";
         InputStream stream = new ByteArrayInputStream(srcJava.getBytes(UTF_8));
         //when
-        analyser.analyse(stream);
+        analyser.analyse(dependencyData, stream);
         //then
         // ParseException is not thrown
     }

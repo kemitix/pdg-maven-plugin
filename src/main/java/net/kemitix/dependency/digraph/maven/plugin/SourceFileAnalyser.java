@@ -12,8 +12,9 @@ interface SourceFileAnalyser {
     /**
      * Analyse the file.
      *
-     * @param input the stream of the file to analyse
+     * @param dependencyData the dependency data
+     * @param input          the stream of the file to analyse
      */
-    void analyse(InputStream input);
+    void analyse(final DependencyData dependencyData, InputStream input);
 
 }

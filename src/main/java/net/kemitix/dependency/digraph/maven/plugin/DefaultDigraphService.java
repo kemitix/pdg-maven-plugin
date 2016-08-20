@@ -63,7 +63,7 @@ class DefaultDigraphService implements DigraphService {
                 directoryProvider.getDirectories(projects, includeTests))
                     .stream()
                     .map(fileLoader::asInputStream)
-                    .forEach(fileAnalyser::analyse);
+                    .forEach(in -> fileAnalyser.analyse(dependencyData, in));
         if (debug) {
             dependencyData.debugLog(mojo.getLog());
         }

@@ -27,22 +27,20 @@ class DefaultSourceFileAnalyser implements SourceFileAnalyser {
 
     private final DigraphMojo mojo;
 
-    private final DependencyData dependencyData;
-
     @Inject
-    DefaultSourceFileAnalyser(
-            final DigraphMojo mojo, final DependencyData dependencyData) {
+    DefaultSourceFileAnalyser(final DigraphMojo mojo) {
         this.mojo = mojo;
-        this.dependencyData = dependencyData;
     }
 
     @Override
-    public void analyse(final InputStream inputStream) {
+    public void analyse(
+            final DependencyData dependencyData,
+            final InputStream inputStream) {
         try {
             CompilationUnit cu = JavaParser.parse(inputStream);
             final PackageDeclaration aPackage = cu.getPackage();
             if (aPackage != null) {
-                analyseUnit(aPackage, cu);
+                analyseUnit(aPackage, cu, dependencyData);
             }
         } catch (ParseException ex) {
             mojo.getLog().error("Error parsing file " + inputStream, ex);
@@ -50,8 +48,9 @@ class DefaultSourceFileAnalyser implements SourceFileAnalyser {
 
     }
 
-    private void analyseUnit(final PackageDeclaration aPackage,
-            final CompilationUnit cu) {
+    private void analyseUnit(
+            final PackageDeclaration aPackage, final CompilationUnit cu,
+            final DependencyData dependencyData) {
         String packageName = aPackage.getName().toString();
         cu.getImports().forEach((ImportDeclaration id) -> {
             final String name = id.getName().toString();
@@ -62,8 +61,7 @@ class DefaultSourceFileAnalyser implements SourceFileAnalyser {
                 m = CLASS_IMPORT.matcher(name);
             }
             if (m.find()) {
-                dependencyData.addDependency(packageName,
-                        m.group("package"));
+                dependencyData.addDependency(packageName, m.group("package"));
             }
         });
     }
