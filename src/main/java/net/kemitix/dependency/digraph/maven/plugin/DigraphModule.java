@@ -9,8 +9,6 @@ import com.google.inject.AbstractModule;
  */
 class DigraphModule extends AbstractModule {
 
-    private final DependencyData dependencyData = new NodeTreeDependencyData();
-
     @Override
     protected void configure() {
         bind(DigraphService.class).to(DefaultDigraphService.class);
@@ -21,7 +19,6 @@ class DigraphModule extends AbstractModule {
         bind(SourceFileVisitor.class).to(DefaultSourceFileVisitor.class);
         bind(FileLoader.class).to(DefaultFileLoader.class);
         bind(SourceFileAnalyser.class).to(DefaultSourceFileAnalyser.class);
-        bind(DependencyData.class).toInstance(dependencyData);
         bind(ReportGenerator.class).to(DotFileReportGenerator.class);
         bind(ReportWriter.class).to(DefaultReportWriter.class);
         bind(PackageTreeBuilder.class).to(DefaultPackageTreeBuilder.class);
