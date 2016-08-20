@@ -31,8 +31,7 @@ public class DotFileFormatSimpleTest {
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-        dependencyData = new NodeTreeDependencyData();
-        dependencyData.setBasePackage("test");
+        dependencyData = DigraphFactory.newDependencyData("test");
         dotFileFormat = new DotFileFormatSimple(
                 dependencyData.getBaseNode(), new DefaultNodePathGenerator());
     }
