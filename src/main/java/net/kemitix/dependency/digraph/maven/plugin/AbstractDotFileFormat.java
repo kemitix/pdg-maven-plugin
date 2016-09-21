@@ -10,6 +10,8 @@ import java.util.Set;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
+import javax.annotation.concurrent.Immutable;
+
 import net.kemitix.dependency.digraph.maven.plugin.digraph.Digraph;
 import net.kemitix.dependency.digraph.maven.plugin.digraph.EdgeElement;
 import net.kemitix.dependency.digraph.maven.plugin.digraph.EdgeEndpoint;
@@ -26,6 +28,7 @@ import net.kemitix.node.Node;
  *
  * @author pcampbell
  */
+@Immutable
 public abstract class AbstractDotFileFormat implements DotFileFormat {
 
     public static final String CLOSE_BRACE = "]";
@@ -39,7 +42,7 @@ public abstract class AbstractDotFileFormat implements DotFileFormat {
 
     private final NodePackageDataComparator nodePackageDataComparator;
 
-    private Map<Node<PackageData>, GraphElement> graphElements
+    private final Map<Node<PackageData>, GraphElement> graphElements
             = new HashMap<>();
 
     /**
@@ -54,7 +57,6 @@ public abstract class AbstractDotFileFormat implements DotFileFormat {
         this.base = base;
         this.nodePathGenerator = nodePathGenerator;
         this.nodePackageDataComparator = new NodePackageDataComparator();
-        this.graphElements = new HashMap<>();
     }
 
     @Override
