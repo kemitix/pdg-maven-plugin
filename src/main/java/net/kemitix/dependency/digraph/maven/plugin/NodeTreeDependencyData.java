@@ -20,7 +20,7 @@ import net.kemitix.node.Nodes;
 class NodeTreeDependencyData implements DependencyData {
 
     private final Node<PackageData> root = Nodes.unnamedRoot(
-            new PackageData("[root]"));
+            PackageData.newInstance("[root]"));
 
     @Getter
     private Node<PackageData> baseNode;
@@ -60,7 +60,7 @@ class NodeTreeDependencyData implements DependencyData {
     private List<PackageData> createPackageLineList(final String userPackage) {
         List<PackageData> line = new ArrayList<>();
         Arrays.asList(userPackage.split("\\."))
-              .forEach((String n) -> line.add(new PackageData(n)));
+              .forEach((String n) -> line.add(PackageData.newInstance(n)));
         return line;
     }
 

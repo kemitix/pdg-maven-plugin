@@ -23,7 +23,7 @@ public class NodeHelperTest {
     @Test
     public void getRequiredDataReturnsData() throws Exception {
         //given
-        val data = new PackageData("data");
+        val data = PackageData.newInstance("data");
         val node = Nodes.unnamedRoot(data);
         //when
         val result = NodeHelper.getRequiredData(node);

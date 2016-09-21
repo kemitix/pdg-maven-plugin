@@ -35,7 +35,7 @@ public class DefaultNodePathGeneratorTest {
     @Test
     public void testGetPathForRoot() {
         //given
-        final PackageData rootData = new PackageData("root");
+        final PackageData rootData = PackageData.newInstance("root");
         final Node<PackageData> root = Nodes.unnamedRoot(rootData);
         //when
         final String result = generator.getPath(root, root, ".");
@@ -50,11 +50,11 @@ public class DefaultNodePathGeneratorTest {
     public void testGetPathForChild() {
         //given
         // root
-        final PackageData rootData = new PackageData("root");
+        final PackageData rootData = PackageData.newInstance("root");
         final Node<PackageData> root = Nodes.unnamedRoot(rootData);
         // child
         final String childName = "child";
-        final PackageData childData = new PackageData(childName);
+        final PackageData childData = PackageData.newInstance(childName);
         final Node<PackageData> child = Nodes.unnamedChild(childData, root);
         //when
         final String result = generator.getPath(child, root, ".");
@@ -69,15 +69,15 @@ public class DefaultNodePathGeneratorTest {
     public void testGetPathForGrandchild() {
         //given
         // root
-        final PackageData rootData = new PackageData("root");
+        final PackageData rootData = PackageData.newInstance("root");
         final Node<PackageData> root = Nodes.unnamedRoot(rootData);
         // child
         final String childName = "child";
-        final PackageData childData = new PackageData(childName);
+        final PackageData childData = PackageData.newInstance(childName);
         final Node<PackageData> child = Nodes.unnamedChild(childData, root);
         // grandchild
         final String grandchildName = "grandchild";
-        final PackageData grandchildData = new PackageData(grandchildName);
+        final PackageData grandchildData = PackageData.newInstance(grandchildName);
         final Node<PackageData> grandchild = Nodes.unnamedChild(grandchildData,
                 child);
         //when

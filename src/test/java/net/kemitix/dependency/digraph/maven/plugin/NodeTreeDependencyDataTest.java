@@ -56,9 +56,9 @@ public class NodeTreeDependencyDataTest {
         //when
         data.addDependency("net.kemitix.alpha", "net.kemitix.beta");
         //then
-        assertThat(baseNode.findChild(new PackageData("alpha"))
+        assertThat(baseNode.findChild(PackageData.newInstance("alpha"))
                            .isPresent(), is(true));
-        assertThat(baseNode.findChild(new PackageData("beta"))
+        assertThat(baseNode.findChild(PackageData.newInstance("beta"))
                            .isPresent(), is(true));
     }
 

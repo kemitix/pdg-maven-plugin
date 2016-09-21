@@ -13,7 +13,7 @@ import net.kemitix.node.Node;
  *
  * @author pcampbell
  */
-public class PackageData {
+public final class PackageData {
 
     @Getter
     private final String name;
@@ -21,25 +21,31 @@ public class PackageData {
     @Getter
     private final Set<Node<PackageData>> uses = new HashSet<>();
 
+    private PackageData(final String name) {
+        this.name = name;
+    }
+
     /**
-     * Constructor.
+     * Static factory.
      *
      * @param name the name of the package
+     *
+     * @return new instance of PackageData
      */
-    public PackageData(final String name) {
-        this.name = name;
+    static PackageData newInstance(final String name) {
+        return new PackageData(name);
     }
 
     @Override
     @SuppressWarnings("magicnumber")
-    public final int hashCode() {
+    public int hashCode() {
         int hash = 7;
         hash = 29 * hash + Objects.hashCode(this.name);
         return hash;
     }
 
     @Override
-    public final boolean equals(final Object obj) {
+    public boolean equals(final Object obj) {
         if (this == obj) {
             return true;
         }
