@@ -13,12 +13,4 @@ public interface HasLabel {
      * @return the label
      */
     String getLabel();
-
-    /**
-     * Sets the label.
-     *
-     * @param label the label
-     */
-    void setLabel(String label);
-
 }

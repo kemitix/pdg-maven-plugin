@@ -75,7 +75,6 @@ public class DigraphTest {
         val subgraphAlpha = new Subgraph(alphaNode, "a", "alpha",
                 dotFileFormat);
         val nodeElement = new NodeElement(testNode, "t", "test", dotFileFormat);
-        nodeElement.setStyle("dotted");
         subgraphAlpha.add(nodeElement);
         digraph.add(subgraphAlpha);
 

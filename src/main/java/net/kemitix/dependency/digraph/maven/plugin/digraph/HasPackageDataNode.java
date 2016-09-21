@@ -15,12 +15,4 @@ public interface HasPackageDataNode {
      * @return the package data node
      */
     Node<PackageData> getPackageDataNode();
-
-    /**
-     * Sets the package data node.
-     *
-     * @param packageDataNode the package data node
-     */
-    void setPackageDataNode(Node<PackageData> packageDataNode);
-
 }

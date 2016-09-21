@@ -1,7 +1,6 @@
 package net.kemitix.dependency.digraph.maven.plugin.digraph;
 
 import lombok.Getter;
-import lombok.Setter;
 
 import net.kemitix.dependency.digraph.maven.plugin.DotFileFormat;
 import net.kemitix.dependency.digraph.maven.plugin.PackageData;
@@ -10,16 +9,13 @@ import net.kemitix.node.Node;
 /**
  * Represents a node on the graph.
  */
-@Setter
 @Getter
 public class NodeElement extends AbstractGraphElement
-        implements HasId, HasLabel, HasStyle, EdgeEndpoint {
+        implements HasId, HasLabel, EdgeEndpoint {
 
     private String id;
 
     private String label;
-
-    private String style = "";
 
     private Node<PackageData> packageDataNode;
 
