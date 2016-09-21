@@ -1,7 +1,6 @@
 package net.kemitix.dependency.digraph.maven.plugin.digraph;
 
 import lombok.Getter;
-import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +14,6 @@ import net.kemitix.node.Node;
  *
  * @author pcampbell
  */
-@Setter
 @Getter
 public class Subgraph extends AbstractGraphElement
         implements ElementContainer, HasId, HasLabel, EdgeEndpoint {

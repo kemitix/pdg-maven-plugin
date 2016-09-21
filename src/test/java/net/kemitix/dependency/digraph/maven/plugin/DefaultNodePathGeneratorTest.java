@@ -1,12 +1,13 @@
 package net.kemitix.dependency.digraph.maven.plugin;
 
-import net.kemitix.node.Node;
-import net.kemitix.node.NodeItem;
 import org.junit.Before;
 import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
+
+import net.kemitix.node.Node;
+import net.kemitix.node.Nodes;
 
 /**
  * Tests for {@link DefaultNodePathGenerator}.
@@ -35,7 +36,7 @@ public class DefaultNodePathGeneratorTest {
     public void testGetPathForRoot() {
         //given
         final PackageData rootData = new PackageData("root");
-        final Node<PackageData> root = new NodeItem<>(rootData);
+        final Node<PackageData> root = Nodes.unnamedRoot(rootData);
         //when
         final String result = generator.getPath(root, root, ".");
         //then
@@ -50,11 +51,11 @@ public class DefaultNodePathGeneratorTest {
         //given
         // root
         final PackageData rootData = new PackageData("root");
-        final Node<PackageData> root = new NodeItem<>(rootData);
+        final Node<PackageData> root = Nodes.unnamedRoot(rootData);
         // child
         final String childName = "child";
         final PackageData childData = new PackageData(childName);
-        final Node<PackageData> child = new NodeItem<>(childData, root);
+        final Node<PackageData> child = Nodes.unnamedChild(childData, root);
         //when
         final String result = generator.getPath(child, root, ".");
         //then
@@ -69,16 +70,16 @@ public class DefaultNodePathGeneratorTest {
         //given
         // root
         final PackageData rootData = new PackageData("root");
-        final Node<PackageData> root = new NodeItem<>(rootData);
+        final Node<PackageData> root = Nodes.unnamedRoot(rootData);
         // child
         final String childName = "child";
         final PackageData childData = new PackageData(childName);
-        final Node<PackageData> child = new NodeItem<>(childData, root);
+        final Node<PackageData> child = Nodes.unnamedChild(childData, root);
         // grandchild
         final String grandchildName = "grandchild";
         final PackageData grandchildData = new PackageData(grandchildName);
-        final Node<PackageData> grandchild
-                = new NodeItem<>(grandchildData, child);
+        final Node<PackageData> grandchild = Nodes.unnamedChild(grandchildData,
+                child);
         //when
         final String result = generator.getPath(grandchild, root, ".");
         //then

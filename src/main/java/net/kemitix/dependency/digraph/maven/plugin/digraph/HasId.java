@@ -13,12 +13,4 @@ public interface HasId {
      * @return the id
      */
     String getId();
-
-    /**
-     * Sets the id.
-     *
-     * @param id the id
-     */
-    void setId(String id);
-
 }
