@@ -34,6 +34,7 @@
         <node.version>0.5.0</node.version>
         <assertj.version>3.4.1</assertj.version>
         <trajano-commons-testing.version>2.1.0</trajano-commons-testing.version>
+        <findbugs-maven-plugin.version>3.0.4</findbugs-maven-plugin.version>
     </properties>
 
     <dependencies>
@@ -116,6 +117,12 @@
             <version>${trajano-commons-testing.version}</version>
             <scope>test</scope>
         </dependency>
+
+        <dependency>
+            <groupId>com.google.code.findbugs</groupId>
+            <artifactId>jsr305</artifactId>
+            <version>3.0.1</version>
+        </dependency>
     </dependencies>
     <build>
         <plugins>
@@ -135,6 +142,31 @@
                     </execution>
                 </executions>
             </plugin>
+
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>findbugs-maven-plugin</artifactId>
+                <version>${findbugs-maven-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>check</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <plugins>
+                        <dependency>
+                            <groupId>org.mutabilitydetector</groupId>
+                            <artifactId>MutabilityDetector4FindBugs</artifactId>
+                            <version>0.9.1</version>
+                        </dependency>
+                    </plugins>
+                </configuration>
+            </plugin><!-- findbugs-maven-plugin -->
+
             <plugin>
                 <groupId>net.kemitix</groupId>
                 <artifactId>digraph-dependency-maven-plugin</artifactId>
