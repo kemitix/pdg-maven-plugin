@@ -1,5 +1,6 @@
 package net.kemitix.dependency.digraph.maven.plugin;
 
+import javax.annotation.concurrent.Immutable;
 import javax.inject.Inject;
 
 import net.kemitix.node.Node;
@@ -9,6 +10,7 @@ import net.kemitix.node.Node;
  *
  * @author pcampbell
  */
+@Immutable
 class DefaultDotFileFormatFactory implements DotFileFormatFactory {
 
     private final NodePathGenerator nodePathGenerator;

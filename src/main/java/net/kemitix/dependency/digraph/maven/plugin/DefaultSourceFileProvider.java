@@ -6,6 +6,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 
+import javax.annotation.concurrent.Immutable;
 import javax.inject.Inject;
 
 /**
@@ -13,6 +14,7 @@ import javax.inject.Inject;
  *
  * @author pcampbell
  */
+@Immutable
 class DefaultSourceFileProvider implements SourceFileProvider {
 
     private final SourceFileVisitor fileVisitor;

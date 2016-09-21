@@ -1,11 +1,13 @@
 package net.kemitix.dependency.digraph.maven.plugin;
 
+import lombok.val;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.project.MavenProject;
 
 import java.io.IOException;
 import java.util.List;
 
+import javax.annotation.concurrent.Immutable;
 import javax.inject.Inject;
 
 /**
@@ -13,6 +15,7 @@ import javax.inject.Inject;
  *
  * @author pcampbell
  */
+@Immutable
 class DefaultDigraphService implements DigraphService {
 
     private static final String REPORT_FILE = "target/digraph.dot";
@@ -25,8 +28,6 @@ class DefaultDigraphService implements DigraphService {
 
     private final SourceFileAnalyser fileAnalyser;
 
-    private final DependencyData dependencyData;
-
     private final ReportGenerator reportGenerator;
 
     private final ReportWriter reportWriter;
@@ -34,12 +35,10 @@ class DefaultDigraphService implements DigraphService {
     private final DotFileFormatFactory dotFileFormatFactory;
 
     @Inject
-    @SuppressWarnings("parameternumber")
     DefaultDigraphService(
             final SourceDirectoryProvider directoryProvider,
             final SourceFileProvider fileProvider, final FileLoader fileLoader,
             final SourceFileAnalyser fileAnalyser,
-            final DependencyData dependencyData,
             final ReportGenerator reportGenerator,
             final ReportWriter reportWriter,
             final DotFileFormatFactory dotFileFormatFactory) {
@@ -47,7 +46,6 @@ class DefaultDigraphService implements DigraphService {
         this.fileProvider = fileProvider;
         this.fileLoader = fileLoader;
         this.fileAnalyser = fileAnalyser;
-        this.dependencyData = dependencyData;
         this.reportGenerator = reportGenerator;
         this.reportWriter = reportWriter;
         this.dotFileFormatFactory = dotFileFormatFactory;
@@ -58,12 +56,12 @@ class DefaultDigraphService implements DigraphService {
             final AbstractMojo mojo, final List<MavenProject> projects,
             final boolean includeTests, final String basePackage,
             final String format, final boolean debug) {
-        dependencyData.setBasePackage(basePackage);
+        val dependencyData = DigraphFactory.newDependencyData(basePackage);
         fileProvider.process(
                 directoryProvider.getDirectories(projects, includeTests))
                     .stream()
                     .map(fileLoader::asInputStream)
-                    .forEach(fileAnalyser::analyse);
+                    .forEach(in -> fileAnalyser.analyse(dependencyData, in));
         if (debug) {
             dependencyData.debugLog(mojo.getLog());
         }

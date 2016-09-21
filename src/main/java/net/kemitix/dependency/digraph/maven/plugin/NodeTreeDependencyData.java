@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import javax.annotation.concurrent.Immutable;
+
 import net.kemitix.node.Node;
 import net.kemitix.node.Nodes;
 
@@ -17,13 +19,24 @@ import net.kemitix.node.Nodes;
  *
  * @author Paul Campbell
  */
-class NodeTreeDependencyData implements DependencyData {
+@Immutable
+final class NodeTreeDependencyData implements DependencyData {
 
     private final Node<PackageData> root = Nodes.unnamedRoot(
-            new PackageData("[root]"));
+            PackageData.newInstance("[root]"));
 
     @Getter
-    private Node<PackageData> baseNode;
+    private final Node<PackageData> baseNode;
+
+    private NodeTreeDependencyData(final String basePackage) {
+        final List<PackageData> baseLine = createPackageLineList(basePackage);
+        root.createDescendantLine(baseLine);
+        baseNode = root.findInPath(baseLine).orElse(null);
+    }
+
+    static DependencyData newInstance(final String basePackage) {
+        return new NodeTreeDependencyData(basePackage);
+    }
 
     @Override
     public void addDependency(final String user, final String imported) {
@@ -34,22 +47,7 @@ class NodeTreeDependencyData implements DependencyData {
         root.findInPath(importedLine)
             .ifPresent(i -> root.findInPath(userLine)
                                 .ifPresent(u -> u.getData()
-                                                 .ifPresent(upd -> upd.getUses()
-                                                                      .add(i)
-                                                 )));
-    }
-
-    /**
-     * Sets the base package.
-     *
-     * @param basePackage the base package within which to report
-     */
-    @Override
-    public void setBasePackage(final String basePackage) {
-        final List<PackageData> baseLine = createPackageLineList(basePackage);
-        root.createDescendantLine(baseLine);
-        root.findInPath(baseLine)
-            .ifPresent((Node<PackageData> base) -> baseNode = base);
+                                                 .ifPresent(d -> d.uses(i))));
     }
 
     @Override
@@ -60,7 +58,7 @@ class NodeTreeDependencyData implements DependencyData {
     private List<PackageData> createPackageLineList(final String userPackage) {
         List<PackageData> line = new ArrayList<>();
         Arrays.asList(userPackage.split("\\."))
-              .forEach((String n) -> line.add(new PackageData(n)));
+              .forEach((String n) -> line.add(PackageData.newInstance(n)));
         return line;
     }
 

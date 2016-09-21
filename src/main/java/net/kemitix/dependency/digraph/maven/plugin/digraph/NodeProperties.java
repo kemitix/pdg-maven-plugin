@@ -5,6 +5,8 @@ import lombok.Getter;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.annotation.concurrent.Immutable;
+
 import net.kemitix.dependency.digraph.maven.plugin.DotFileFormat;
 
 /**
@@ -12,6 +14,7 @@ import net.kemitix.dependency.digraph.maven.plugin.DotFileFormat;
  *
  * @author pcampbell
  */
+@Immutable
 public class NodeProperties extends AbstractGraphElement {
 
     @Getter

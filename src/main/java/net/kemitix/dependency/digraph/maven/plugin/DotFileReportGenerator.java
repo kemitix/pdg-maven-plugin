@@ -1,5 +1,6 @@
 package net.kemitix.dependency.digraph.maven.plugin;
 
+import javax.annotation.concurrent.Immutable;
 import javax.inject.Inject;
 
 /**
@@ -7,6 +8,7 @@ import javax.inject.Inject;
  *
  * @author pcampbell
  */
+@Immutable
 class DotFileReportGenerator implements ReportGenerator {
 
     private final NodePathGenerator nodePathGenerator;

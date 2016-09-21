@@ -2,6 +2,8 @@ package net.kemitix.dependency.digraph.maven.plugin.digraph;
 
 import lombok.Getter;
 
+import javax.annotation.concurrent.Immutable;
+
 import net.kemitix.dependency.digraph.maven.plugin.DotFileFormat;
 
 /**
@@ -10,6 +12,7 @@ import net.kemitix.dependency.digraph.maven.plugin.DotFileFormat;
  * @author pcampbell
  */
 @Getter
+@Immutable
 public class PropertyElement extends AbstractGraphElement {
 
     private final String name;
