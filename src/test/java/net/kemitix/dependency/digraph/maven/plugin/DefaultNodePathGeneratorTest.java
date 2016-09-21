@@ -1,5 +1,6 @@
 package net.kemitix.dependency.digraph.maven.plugin;
 
+import lombok.val;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -35,10 +36,10 @@ public class DefaultNodePathGeneratorTest {
     @Test
     public void testGetPathForRoot() {
         //given
-        final PackageData rootData = PackageData.newInstance("root");
-        final Node<PackageData> root = Nodes.unnamedRoot(rootData);
+        val rootData = PackageData.newInstance("root");
+        val root = Nodes.unnamedRoot(rootData);
         //when
-        final String result = generator.getPath(root, root, ".");
+        val result = generator.getPath(root, root, ".");
         //then
         assertThat(result, is(""));
     }
@@ -50,14 +51,14 @@ public class DefaultNodePathGeneratorTest {
     public void testGetPathForChild() {
         //given
         // root
-        final PackageData rootData = PackageData.newInstance("root");
-        final Node<PackageData> root = Nodes.unnamedRoot(rootData);
+        val rootData = PackageData.newInstance("root");
+        val root = Nodes.unnamedRoot(rootData);
         // child
-        final String childName = "child";
-        final PackageData childData = PackageData.newInstance(childName);
-        final Node<PackageData> child = Nodes.unnamedChild(childData, root);
+        val childName = "child";
+        val childData = PackageData.newInstance(childName);
+        val child = Nodes.unnamedChild(childData, root);
         //when
-        final String result = generator.getPath(child, root, ".");
+        val result = generator.getPath(child, root, ".");
         //then
         assertThat(result, is(childName));
     }
@@ -69,19 +70,18 @@ public class DefaultNodePathGeneratorTest {
     public void testGetPathForGrandchild() {
         //given
         // root
-        final PackageData rootData = PackageData.newInstance("root");
-        final Node<PackageData> root = Nodes.unnamedRoot(rootData);
+        val rootData = PackageData.newInstance("root");
+        val root = Nodes.unnamedRoot(rootData);
         // child
-        final String childName = "child";
-        final PackageData childData = PackageData.newInstance(childName);
-        final Node<PackageData> child = Nodes.unnamedChild(childData, root);
+        val childName = "child";
+        val childData = PackageData.newInstance(childName);
+        val child = Nodes.unnamedChild(childData, root);
         // grandchild
-        final String grandchildName = "grandchild";
-        final PackageData grandchildData = PackageData.newInstance(grandchildName);
-        final Node<PackageData> grandchild = Nodes.unnamedChild(grandchildData,
-                child);
+        val grandchildName = "grandchild";
+        val grandchildData = PackageData.newInstance(grandchildName);
+        val grandchild = Nodes.unnamedChild(grandchildData, child);
         //when
-        final String result = generator.getPath(grandchild, root, ".");
+        val result = generator.getPath(grandchild, root, ".");
         //then
         assertThat(result, is(childName + "." + grandchildName));
     }
