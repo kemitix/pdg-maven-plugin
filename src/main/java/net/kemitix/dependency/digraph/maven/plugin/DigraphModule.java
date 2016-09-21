@@ -24,7 +24,6 @@ class DigraphModule extends AbstractModule {
         bind(SourceFileAnalyser.class).to(DefaultSourceFileAnalyser.class);
         bind(ReportGenerator.class).to(DotFileReportGenerator.class);
         bind(ReportWriter.class).to(DefaultReportWriter.class);
-        bind(PackageTreeBuilder.class).to(DefaultPackageTreeBuilder.class);
         bind(NodePathGenerator.class).to(DefaultNodePathGenerator.class);
     }
 
