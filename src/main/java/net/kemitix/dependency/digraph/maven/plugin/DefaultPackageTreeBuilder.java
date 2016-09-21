@@ -7,7 +7,7 @@ import java.util.Arrays;
 
 import net.kemitix.node.Node;
 import net.kemitix.node.NodeException;
-import net.kemitix.node.NodeItem;
+import net.kemitix.node.Nodes;
 
 /**
  * Builds a tree of packages.
@@ -26,7 +26,7 @@ class DefaultPackageTreeBuilder implements PackageTreeBuilder {
     @Override
     public void init(@NonNull final String thePackage) {
         this.basePackage = thePackage;
-        this.tree = new NodeItem<>(thePackage);
+        this.tree = Nodes.unnamedRoot(thePackage);
     }
 
     /**

@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import net.kemitix.node.Node;
-import net.kemitix.node.NodeItem;
+import net.kemitix.node.Nodes;
 
 /**
  * Implementation of {@link DependencyData} using a node tree.
@@ -19,7 +19,7 @@ import net.kemitix.node.NodeItem;
  */
 class NodeTreeDependencyData implements DependencyData {
 
-    private final Node<PackageData> root = new NodeItem<>(
+    private final Node<PackageData> root = Nodes.unnamedRoot(
             new PackageData("[root]"));
 
     @Getter

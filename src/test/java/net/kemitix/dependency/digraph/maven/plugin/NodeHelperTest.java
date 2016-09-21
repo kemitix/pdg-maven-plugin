@@ -8,7 +8,7 @@ import org.junit.rules.ExpectedException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import net.kemitix.node.NodeItem;
+import net.kemitix.node.Nodes;
 
 /**
  * Tests for {@link NodeHelper}.
@@ -24,7 +24,7 @@ public class NodeHelperTest {
     public void getRequiredDataReturnsData() throws Exception {
         //given
         val data = new PackageData("data");
-        val node = new NodeItem<PackageData>(data);
+        val node = Nodes.unnamedRoot(data);
         //when
         val result = NodeHelper.getRequiredData(node);
         //then
@@ -36,7 +36,7 @@ public class NodeHelperTest {
         //given
         exception.expect(IllegalStateException.class);
         exception.expectMessage("Node has no package data");
-        val node = new NodeItem<PackageData>(null);
+        val node = Nodes.unnamedRoot((PackageData) null);
         //when
         NodeHelper.getRequiredData(node);
     }
