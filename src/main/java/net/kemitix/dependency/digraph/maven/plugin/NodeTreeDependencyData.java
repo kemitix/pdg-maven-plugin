@@ -1,7 +1,6 @@
 package net.kemitix.dependency.digraph.maven.plugin;
 
 import lombok.Getter;
-import lombok.val;
 import org.apache.maven.plugin.logging.Log;
 
 import java.util.ArrayList;
@@ -9,6 +8,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+
+import javax.annotation.concurrent.Immutable;
 
 import net.kemitix.node.Node;
 import net.kemitix.node.Nodes;
@@ -18,21 +19,23 @@ import net.kemitix.node.Nodes;
  *
  * @author Paul Campbell
  */
+@Immutable
 final class NodeTreeDependencyData implements DependencyData {
 
     private final Node<PackageData> root = Nodes.unnamedRoot(
             PackageData.newInstance("[root]"));
 
     @Getter
-    private Node<PackageData> baseNode;
+    private final Node<PackageData> baseNode;
 
-    private NodeTreeDependencyData() {
+    private NodeTreeDependencyData(final String basePackage) {
+        final List<PackageData> baseLine = createPackageLineList(basePackage);
+        root.createDescendantLine(baseLine);
+        baseNode = root.findInPath(baseLine).orElse(null);
     }
 
     static DependencyData newInstance(final String basePackage) {
-        val dependencyData = new NodeTreeDependencyData();
-        dependencyData.setBasePackage(basePackage);
-        return dependencyData;
+        return new NodeTreeDependencyData(basePackage);
     }
 
     @Override
@@ -45,18 +48,6 @@ final class NodeTreeDependencyData implements DependencyData {
             .ifPresent(i -> root.findInPath(userLine)
                                 .ifPresent(u -> u.getData()
                                                  .ifPresent(d -> d.uses(i))));
-    }
-
-    /**
-     * Sets the base package.
-     *
-     * @param basePackage the base package within which to report
-     */
-    private void setBasePackage(final String basePackage) {
-        final List<PackageData> baseLine = createPackageLineList(basePackage);
-        root.createDescendantLine(baseLine);
-        root.findInPath(baseLine)
-            .ifPresent((Node<PackageData> base) -> baseNode = base);
     }
 
     @Override
