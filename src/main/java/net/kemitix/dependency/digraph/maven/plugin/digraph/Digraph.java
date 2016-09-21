@@ -6,6 +6,8 @@ import lombok.val;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.concurrent.Immutable;
+
 import net.kemitix.dependency.digraph.maven.plugin.DotFileFormat;
 
 /**
@@ -13,6 +15,7 @@ import net.kemitix.dependency.digraph.maven.plugin.DotFileFormat;
  *
  * @author pcampbell
  */
+@Immutable
 public class Digraph extends AbstractGraphElement implements ElementContainer {
 
     /**

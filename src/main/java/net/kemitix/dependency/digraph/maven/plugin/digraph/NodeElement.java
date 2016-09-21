@@ -2,6 +2,8 @@ package net.kemitix.dependency.digraph.maven.plugin.digraph;
 
 import lombok.Getter;
 
+import javax.annotation.concurrent.Immutable;
+
 import net.kemitix.dependency.digraph.maven.plugin.DotFileFormat;
 import net.kemitix.dependency.digraph.maven.plugin.PackageData;
 import net.kemitix.node.Node;
@@ -10,6 +12,7 @@ import net.kemitix.node.Node;
  * Represents a node on the graph.
  */
 @Getter
+@Immutable
 public final class NodeElement extends AbstractEdgeEndpoint
         implements HasId, HasLabel {
 

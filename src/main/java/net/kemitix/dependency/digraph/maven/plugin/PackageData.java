@@ -6,6 +6,8 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+import javax.annotation.concurrent.Immutable;
+
 import net.kemitix.node.Node;
 
 /**
@@ -13,6 +15,7 @@ import net.kemitix.node.Node;
  *
  * @author pcampbell
  */
+@Immutable
 public final class PackageData {
 
     @Getter

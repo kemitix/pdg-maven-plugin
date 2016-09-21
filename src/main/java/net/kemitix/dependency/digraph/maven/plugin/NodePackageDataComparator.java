@@ -3,11 +3,14 @@ package net.kemitix.dependency.digraph.maven.plugin;
 import java.io.Serializable;
 import java.util.Comparator;
 
+import javax.annotation.concurrent.Immutable;
+
 import net.kemitix.node.Node;
 
 /**
  * Comparator for sorting {@link PackageData} {@link Node}s.
  */
+@Immutable
 @SuppressWarnings("serial")
 class NodePackageDataComparator
         implements Comparator<Node<PackageData>>, Serializable {

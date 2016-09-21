@@ -2,6 +2,8 @@ package net.kemitix.dependency.digraph.maven.plugin;
 
 import lombok.val;
 
+import javax.annotation.concurrent.Immutable;
+
 import net.kemitix.node.Node;
 
 /**
@@ -9,6 +11,7 @@ import net.kemitix.node.Node;
  *
  * @author Paul Campbell
  */
+@Immutable
 class DefaultNodePathGenerator implements NodePathGenerator {
 
     @Override

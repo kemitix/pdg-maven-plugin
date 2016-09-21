@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 
+import javax.annotation.concurrent.Immutable;
 import javax.inject.Inject;
 
 /**
@@ -12,6 +13,7 @@ import javax.inject.Inject;
  *
  * @author pcampbell
  */
+@Immutable
 class DefaultFileLoader implements FileLoader {
 
     private final DigraphMojo mojo;

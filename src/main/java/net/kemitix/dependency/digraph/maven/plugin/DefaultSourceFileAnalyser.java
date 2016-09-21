@@ -10,6 +10,7 @@ import java.io.InputStream;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.annotation.concurrent.Immutable;
 import javax.inject.Inject;
 
 /**
@@ -17,6 +18,7 @@ import javax.inject.Inject;
  *
  * @author pcampbell
  */
+@Immutable
 class DefaultSourceFileAnalyser implements SourceFileAnalyser {
 
     private static final Pattern METHOD_IMPORT = Pattern.compile(

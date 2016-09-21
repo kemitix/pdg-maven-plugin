@@ -1,5 +1,7 @@
 package net.kemitix.dependency.digraph.maven.plugin.digraph;
 
+import javax.annotation.concurrent.Immutable;
+
 import net.kemitix.dependency.digraph.maven.plugin.DotFileFormat;
 import net.kemitix.dependency.digraph.maven.plugin.NodeHelper;
 import net.kemitix.dependency.digraph.maven.plugin.PackageData;
@@ -10,6 +12,7 @@ import net.kemitix.node.Node;
  *
  * @author pcampbell
  */
+@Immutable
 abstract class AbstractEdgeEndpoint extends AbstractGraphElement
         implements EdgeEndpoint {
 

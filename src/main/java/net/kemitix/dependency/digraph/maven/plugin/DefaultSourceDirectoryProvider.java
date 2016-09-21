@@ -8,11 +8,14 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.concurrent.Immutable;
+
 /**
  * Implementation of a provider for the list of source directories.
  *
  * @author pcampbell
  */
+@Immutable
 class DefaultSourceDirectoryProvider implements SourceDirectoryProvider {
 
     @Override

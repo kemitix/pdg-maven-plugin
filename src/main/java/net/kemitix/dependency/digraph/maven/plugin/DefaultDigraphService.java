@@ -7,6 +7,7 @@ import org.apache.maven.project.MavenProject;
 import java.io.IOException;
 import java.util.List;
 
+import javax.annotation.concurrent.Immutable;
 import javax.inject.Inject;
 
 /**
@@ -14,6 +15,7 @@ import javax.inject.Inject;
  *
  * @author pcampbell
  */
+@Immutable
 class DefaultDigraphService implements DigraphService {
 
     private static final String REPORT_FILE = "target/digraph.dot";

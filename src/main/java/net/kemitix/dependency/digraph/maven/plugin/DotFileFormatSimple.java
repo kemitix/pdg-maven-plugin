@@ -2,6 +2,8 @@ package net.kemitix.dependency.digraph.maven.plugin;
 
 import java.util.stream.Collectors;
 
+import javax.annotation.concurrent.Immutable;
+
 import net.kemitix.dependency.digraph.maven.plugin.digraph.EdgeElement;
 import net.kemitix.dependency.digraph.maven.plugin.digraph.GraphElement;
 import net.kemitix.dependency.digraph.maven.plugin.digraph.NodeElement;
@@ -13,6 +15,7 @@ import net.kemitix.node.Node;
  *
  * @author pcampbell
  */
+@Immutable
 class DotFileFormatSimple extends AbstractDotFileFormat {
 
     public static final String NEWLINE = "\n";

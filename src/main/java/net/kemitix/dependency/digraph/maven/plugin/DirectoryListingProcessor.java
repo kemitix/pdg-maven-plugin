@@ -6,6 +6,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.concurrent.Immutable;
 import javax.inject.Inject;
 
 /**
@@ -13,6 +14,7 @@ import javax.inject.Inject;
  *
  * @author pcampbell
  */
+@Immutable
 class DirectoryListingProcessor implements SourceFileProvider {
 
     private final DigraphMojo mojo;

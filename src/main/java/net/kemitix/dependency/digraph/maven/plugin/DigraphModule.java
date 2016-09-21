@@ -2,11 +2,14 @@ package net.kemitix.dependency.digraph.maven.plugin;
 
 import com.google.inject.AbstractModule;
 
+import javax.annotation.concurrent.Immutable;
+
 /**
  * Google Guice Configuration.
  *
  * @author pcampbell
  */
+@Immutable
 class DigraphModule extends AbstractModule {
 
     @Override

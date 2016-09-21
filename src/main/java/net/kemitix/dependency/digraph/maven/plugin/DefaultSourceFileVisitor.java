@@ -11,11 +11,14 @@ import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.concurrent.Immutable;
+
 /**
  * Implementation of the source file visitor.
  *
  * @author pcampbell
  */
+@Immutable
 class DefaultSourceFileVisitor extends SimpleFileVisitor<Path>
         implements SourceFileVisitor {
 

@@ -3,6 +3,8 @@ package net.kemitix.dependency.digraph.maven.plugin.digraph;
 import lombok.AccessLevel;
 import lombok.Getter;
 
+import javax.annotation.concurrent.Immutable;
+
 import net.kemitix.dependency.digraph.maven.plugin.DotFileFormat;
 
 /**
@@ -10,6 +12,7 @@ import net.kemitix.dependency.digraph.maven.plugin.DotFileFormat;
  *
  * @author pcampbell
  */
+@Immutable
 abstract class AbstractGraphElement implements GraphElement {
 
     @Getter(AccessLevel.PROTECTED)

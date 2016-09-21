@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.annotation.concurrent.Immutable;
+
 import net.kemitix.dependency.digraph.maven.plugin.digraph.EdgeElement;
 import net.kemitix.dependency.digraph.maven.plugin.digraph.NodeElement;
 import net.kemitix.dependency.digraph.maven.plugin.digraph.Subgraph;
@@ -14,6 +16,7 @@ import net.kemitix.node.Node;
  *
  * @author pcampbell
  */
+@Immutable
 class DotFileFormatNested extends AbstractDotFileFormat {
 
     DotFileFormatNested(

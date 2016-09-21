@@ -2,6 +2,8 @@ package net.kemitix.dependency.digraph.maven.plugin;
 
 import lombok.val;
 
+import javax.annotation.concurrent.Immutable;
+
 import net.kemitix.node.Node;
 import net.kemitix.node.Nodes;
 
@@ -10,6 +12,7 @@ import net.kemitix.node.Nodes;
  *
  * @author pcampbell
  */
+@Immutable
 public final class NodeHelper {
 
     private NodeHelper() {

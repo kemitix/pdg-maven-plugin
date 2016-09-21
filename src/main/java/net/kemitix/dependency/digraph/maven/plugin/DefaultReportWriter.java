@@ -6,11 +6,14 @@ import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.nio.charset.StandardCharsets;
 
+import javax.annotation.concurrent.Immutable;
+
 /**
  * Writer for the report.
  *
  * @author pcampbell
  */
+@Immutable
 class DefaultReportWriter implements ReportWriter {
 
     @Override
