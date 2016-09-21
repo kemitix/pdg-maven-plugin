@@ -5,6 +5,8 @@ import lombok.Getter;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.concurrent.Immutable;
+
 import net.kemitix.dependency.digraph.maven.plugin.DotFileFormat;
 import net.kemitix.dependency.digraph.maven.plugin.PackageData;
 import net.kemitix.node.Node;
@@ -15,16 +17,17 @@ import net.kemitix.node.Node;
  * @author pcampbell
  */
 @Getter
+@Immutable
 public class Subgraph extends AbstractGraphElement
         implements ElementContainer, HasId, HasLabel, EdgeEndpoint {
 
     private final List<GraphElement> elements = new ArrayList<>();
 
-    private String id;
+    private final String id;
 
-    private String label;
+    private final String label;
 
-    private Node<PackageData> packageDataNode;
+    private final Node<PackageData> packageDataNode;
 
     /**
      * Constructor.
