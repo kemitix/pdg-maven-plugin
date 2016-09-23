@@ -30,6 +30,7 @@
     <properties>
         <lombok.version>1.16.10</lombok.version>
         <maven.version>3.3.9</maven.version>
+        <maven-plugin-plugin.version>3.5</maven-plugin-plugin.version>
         <maven-plugin-annotations.version>3.5</maven-plugin-annotations.version>
         <javaparser-core.version>2.5.1</javaparser-core.version>
         <coveralls-maven-plugin.version>4.2.0</coveralls-maven-plugin.version>
@@ -131,7 +132,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-plugin-plugin</artifactId>
-                <version>3.4</version>
+                <version>${maven-plugin-plugin.version}</version>
                 <configuration>
                     <skipErrorNoDescriptorsFound>true</skipErrorNoDescriptorsFound>
                 </configuration>
