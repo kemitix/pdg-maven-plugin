@@ -28,6 +28,7 @@
     </scm>
 
     <properties>
+        <lombok.version>1.16.10</lombok.version>
         <maven.version>3.3.9</maven.version>
         <javaparser-core.version>2.4.0</javaparser-core.version>
         <coveralls-maven-plugin.version>4.2.0</coveralls-maven-plugin.version>
@@ -104,7 +105,7 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.16.8</version>
+            <version>${lombok.version}</version>
         </dependency>
         <dependency>
             <groupId>net.kemitix</groupId>
