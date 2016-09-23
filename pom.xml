@@ -30,7 +30,7 @@
     <properties>
         <lombok.version>1.16.10</lombok.version>
         <maven.version>3.3.9</maven.version>
-        <javaparser-core.version>2.4.0</javaparser-core.version>
+        <javaparser-core.version>2.5.1</javaparser-core.version>
         <coveralls-maven-plugin.version>4.2.0</coveralls-maven-plugin.version>
         <node.version>0.5.0</node.version>
         <assertj.version>3.4.1</assertj.version>
