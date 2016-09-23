@@ -32,12 +32,18 @@
         <maven.version>3.3.9</maven.version>
         <maven-plugin-plugin.version>3.5</maven-plugin-plugin.version>
         <maven-plugin-annotations.version>3.5</maven-plugin-annotations.version>
+        <maven-plugin-testing-harness.version>3.3.0</maven-plugin-testing-harness.version>
         <javaparser-core.version>2.5.1</javaparser-core.version>
         <coveralls-maven-plugin.version>4.2.0</coveralls-maven-plugin.version>
         <node.version>0.5.0</node.version>
+        <junit.version>4.12</junit.version>
+        <hamcrest.version>1.3</hamcrest.version>
+        <mockito.version>1.10.19</mockito.version>
         <assertj.version>3.5.2</assertj.version>
         <trajano-commons-testing.version>2.1.0</trajano-commons-testing.version>
         <findbugs-maven-plugin.version>3.0.4</findbugs-maven-plugin.version>
+        <jsr.version>3.0.1</jsr.version>
+        <MutabilityDetector4FindBugs.version>0.9.1</MutabilityDetector4FindBugs.version>
     </properties>
 
     <dependencies>
@@ -65,19 +71,19 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.12</version>
+            <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.hamcrest</groupId>
             <artifactId>hamcrest-core</artifactId>
-            <version>1.3</version>
+            <version>${hamcrest.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
-            <version>1.10.19</version>
+            <version>${mockito.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -95,7 +101,7 @@
         <dependency>
             <groupId>org.apache.maven.plugin-testing</groupId>
             <artifactId>maven-plugin-testing-harness</artifactId>
-            <version>3.3.0</version>
+            <version>${maven-plugin-testing-harness.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -124,7 +130,7 @@
         <dependency>
             <groupId>com.google.code.findbugs</groupId>
             <artifactId>jsr305</artifactId>
-            <version>3.0.1</version>
+            <version>${jsr.version}</version>
         </dependency>
     </dependencies>
     <build>
@@ -164,7 +170,7 @@
                         <dependency>
                             <groupId>org.mutabilitydetector</groupId>
                             <artifactId>MutabilityDetector4FindBugs</artifactId>
-                            <version>0.9.1</version>
+                            <version>${MutabilityDetector4FindBugs.version}</version>
                         </dependency>
                     </plugins>
                 </configuration>
