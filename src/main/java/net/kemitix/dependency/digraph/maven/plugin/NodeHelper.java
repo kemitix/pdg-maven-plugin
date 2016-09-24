@@ -24,8 +24,6 @@ SOFTWARE.
 
 package net.kemitix.dependency.digraph.maven.plugin;
 
-import lombok.val;
-
 import javax.annotation.concurrent.Immutable;
 
 import net.kemitix.node.Node;
@@ -67,20 +65,11 @@ public final class NodeHelper {
      * @return a copy of the package data node
      */
     public static Node<PackageData> copyOf(final Node<PackageData> source) {
-        val optionalData = source.getData();
-        PackageData data = null;
-        if (optionalData.isPresent()) {
-            data = optionalData.get();
-        }
-        val optionalParent = source.getParent();
-        Node<PackageData> parent = null;
-        if (optionalParent.isPresent()) {
-            parent = optionalParent.get();
-        }
+        PackageData data = source.getData().orElse(null);
+        Node<PackageData> parent = source.getParent().orElse(null);
         if (parent != null) {
             return Nodes.namedChild(data, source.getName(), parent);
         }
         return Nodes.namedRoot(data, source.getName());
     }
-
 }
