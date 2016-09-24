@@ -230,7 +230,7 @@ public abstract class AbstractDotFileFormat implements DotFileFormat {
     interface GraphNodeInjector {
 
         void injectNodes(
-                final ElementContainer container, final Node<PackageData> node);
+                ElementContainer container, Node<PackageData> node);
 
     }
 
@@ -241,7 +241,7 @@ public abstract class AbstractDotFileFormat implements DotFileFormat {
     interface GraphUsageInjector {
 
         void injectUsages(
-                final ElementContainer container, final Node<PackageData> node);
+                ElementContainer container, Node<PackageData> node);
 
     }
 

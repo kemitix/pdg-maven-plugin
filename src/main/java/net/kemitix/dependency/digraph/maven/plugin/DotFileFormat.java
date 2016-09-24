@@ -79,7 +79,7 @@ public interface DotFileFormat {
      *
      * @return the rendered node properties
      */
-    String render(final NodeProperties nodeProperties);
+    String render(NodeProperties nodeProperties);
 
     /**
      * Render the property element as a string.
@@ -88,7 +88,7 @@ public interface DotFileFormat {
      *
      * @return the rendered property element
      */
-    String render(final PropertyElement propertyElement);
+    String render(PropertyElement propertyElement);
 
     /**
      * Render the subgraph as a string.
@@ -97,5 +97,5 @@ public interface DotFileFormat {
      *
      * @return the rendered subgraph
      */
-    String render(final Subgraph subgraph);
+    String render(Subgraph subgraph);
 }
