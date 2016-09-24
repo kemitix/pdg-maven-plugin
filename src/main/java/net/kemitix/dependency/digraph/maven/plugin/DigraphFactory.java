@@ -29,7 +29,7 @@ import javax.annotation.concurrent.Immutable;
 /**
  * Factory class for Digraph objects.
  *
- * @author pcampbell
+ * @author Paul Campbell (pcampbell@kemitix.net)
  */
 @Immutable
 final class DigraphFactory {

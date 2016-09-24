@@ -35,7 +35,7 @@ import javax.annotation.concurrent.Immutable;
 /**
  * Writer for the report.
  *
- * @author pcampbell
+ * @author Paul Campbell (pcampbell@kemitix.net)
  */
 @Immutable
 class DefaultReportWriter implements ReportWriter {

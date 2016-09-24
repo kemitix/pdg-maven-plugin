@@ -38,7 +38,7 @@ import net.kemitix.node.Node;
 /**
  * Represets a subgraph/cluster.
  *
- * @author pcampbell
+ * @author Paul Campbell (pcampbell@kemitix.net)
  */
 @Getter
 @Immutable

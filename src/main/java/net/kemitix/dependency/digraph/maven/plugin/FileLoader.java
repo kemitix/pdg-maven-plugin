@@ -30,7 +30,7 @@ import java.io.InputStream;
 /**
  * Interface for loading a file.
  *
- * @author pcampbell
+ * @author Paul Campbell (pcampbell@kemitix.net)
  */
 interface FileLoader {
 

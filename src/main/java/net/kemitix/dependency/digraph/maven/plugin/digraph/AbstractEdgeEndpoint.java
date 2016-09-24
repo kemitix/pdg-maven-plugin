@@ -34,7 +34,7 @@ import net.kemitix.node.Node;
 /**
  * .
  *
- * @author pcampbell
+ * @author Paul Campbell (pcampbell@kemitix.net)
  */
 @Immutable
 abstract class AbstractEdgeEndpoint extends AbstractGraphElement

@@ -36,7 +36,7 @@ import net.kemitix.dependency.digraph.maven.plugin.DotFileFormat;
 /**
  * Properties for the nodes that follow.
  *
- * @author pcampbell
+ * @author Paul Campbell (pcampbell@kemitix.net)
  */
 @Immutable
 public class NodeProperties extends AbstractGraphElement {

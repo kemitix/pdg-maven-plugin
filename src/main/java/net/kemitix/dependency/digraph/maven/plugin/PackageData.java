@@ -37,7 +37,7 @@ import net.kemitix.node.Node;
 /**
  * Defines a package.
  *
- * @author pcampbell
+ * @author Paul Campbell (pcampbell@kemitix.net)
  */
 @Immutable
 public final class PackageData {

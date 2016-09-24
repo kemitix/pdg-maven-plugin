@@ -50,7 +50,7 @@ import net.kemitix.node.Node;
 /**
  * Abstract base for {@link DotFileFormat} implementations.
  *
- * @author pcampbell
+ * @author Paul Campbell (pcampbell@kemitix.net)
  */
 @Immutable
 public abstract class AbstractDotFileFormat implements DotFileFormat {

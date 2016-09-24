@@ -34,7 +34,7 @@ import net.kemitix.node.Nodes;
 /**
  * Helpers for Node.
  *
- * @author pcampbell
+ * @author Paul Campbell (pcampbell@kemitix.net)
  */
 @Immutable
 public final class NodeHelper {

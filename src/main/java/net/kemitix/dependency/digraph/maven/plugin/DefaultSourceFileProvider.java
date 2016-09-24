@@ -36,7 +36,7 @@ import javax.inject.Inject;
 /**
  * Provider walks the directory and builds a list of discovered Java files.
  *
- * @author pcampbell
+ * @author Paul Campbell (pcampbell@kemitix.net)
  */
 @Immutable
 class DefaultSourceFileProvider implements SourceFileProvider {

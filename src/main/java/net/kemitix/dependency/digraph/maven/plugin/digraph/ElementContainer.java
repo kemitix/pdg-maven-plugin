@@ -29,7 +29,7 @@ import java.util.Collection;
 /**
  * A container of {@link GraphElement} objects.
  *
- * @author pcampbell
+ * @author Paul Campbell (pcampbell@kemitix.net)
  */
 public interface ElementContainer {
 

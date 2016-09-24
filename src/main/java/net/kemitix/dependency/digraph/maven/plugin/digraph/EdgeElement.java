@@ -33,7 +33,7 @@ import net.kemitix.dependency.digraph.maven.plugin.DotFileFormat;
 /**
  * Represents an edge (line) on the graph.
  *
- * @author pcampbell
+ * @author Paul Campbell (pcampbell@kemitix.net)
  */
 @Getter
 @Immutable

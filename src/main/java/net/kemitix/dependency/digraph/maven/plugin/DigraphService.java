@@ -32,7 +32,7 @@ import java.util.List;
 /**
  * The Digraph Service.
  *
- * @author pcampbell
+ * @author Paul Campbell (pcampbell@kemitix.net)
  */
 interface DigraphService {
 

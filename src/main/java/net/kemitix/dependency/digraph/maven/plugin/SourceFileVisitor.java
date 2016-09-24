@@ -32,7 +32,7 @@ import java.util.List;
 /**
  * File visitor to discover Java source files.
  *
- * @author pcampbell
+ * @author Paul Campbell (pcampbell@kemitix.net)
  */
 interface SourceFileVisitor extends FileVisitor<Path> {
 

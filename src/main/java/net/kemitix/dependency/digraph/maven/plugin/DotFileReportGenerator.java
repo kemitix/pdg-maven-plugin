@@ -30,7 +30,7 @@ import javax.inject.Inject;
 /**
  * Generates a dot file as dependency report generator.
  *
- * @author pcampbell
+ * @author Paul Campbell (pcampbell@kemitix.net)
  */
 @Immutable
 class DotFileReportGenerator implements ReportGenerator {

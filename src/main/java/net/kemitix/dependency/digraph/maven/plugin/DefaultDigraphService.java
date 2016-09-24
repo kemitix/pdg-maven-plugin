@@ -37,7 +37,7 @@ import javax.inject.Inject;
 /**
  * Default implementation of the Digraph Service.
  *
- * @author pcampbell
+ * @author Paul Campbell (pcampbell@kemitix.net)
  */
 @Immutable
 class DefaultDigraphService implements DigraphService {

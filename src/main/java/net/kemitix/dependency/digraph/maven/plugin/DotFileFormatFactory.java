@@ -29,7 +29,7 @@ import net.kemitix.node.Node;
 /**
  * Interface for generating a {@link DotFileFormat}.
  *
- * @author pcampbell
+ * @author Paul Campbell (pcampbell@kemitix.net)
  */
 interface DotFileFormatFactory {
 

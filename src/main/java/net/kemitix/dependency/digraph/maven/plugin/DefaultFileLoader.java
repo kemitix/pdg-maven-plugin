@@ -35,7 +35,7 @@ import javax.inject.Inject;
 /**
  * Implementation of {@link FileLoader}.
  *
- * @author pcampbell
+ * @author Paul Campbell (pcampbell@kemitix.net)
  */
 @Immutable
 class DefaultFileLoader implements FileLoader {

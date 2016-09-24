@@ -30,7 +30,7 @@ import java.util.List;
 /**
  * Interface for processing a list of directories.
  *
- * @author pcampbell
+ * @author Paul Campbell (pcampbell@kemitix.net)
  */
 interface SourceFileProvider {
 

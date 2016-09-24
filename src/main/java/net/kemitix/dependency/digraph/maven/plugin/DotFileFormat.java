@@ -34,7 +34,7 @@ import net.kemitix.dependency.digraph.maven.plugin.digraph.Subgraph;
 /**
  * Interface for report generators in a specific format.
  *
- * @author pcampbell
+ * @author Paul Campbell (pcampbell@kemitix.net)
  */
 public interface DotFileFormat {
 

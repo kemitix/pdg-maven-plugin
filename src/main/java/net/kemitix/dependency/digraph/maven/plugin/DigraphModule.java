@@ -31,7 +31,7 @@ import javax.annotation.concurrent.Immutable;
 /**
  * Google Guice Configuration.
  *
- * @author pcampbell
+ * @author Paul Campbell (pcampbell@kemitix.net)
  */
 @Immutable
 class DigraphModule extends AbstractModule {

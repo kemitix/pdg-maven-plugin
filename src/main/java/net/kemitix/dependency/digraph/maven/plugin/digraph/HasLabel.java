@@ -27,7 +27,7 @@ package net.kemitix.dependency.digraph.maven.plugin.digraph;
 /**
  * Interface for elements that have a label.
  *
- * @author pcampbell
+ * @author Paul Campbell (pcampbell@kemitix.net)
  */
 public interface HasLabel {
 

@@ -38,7 +38,7 @@ import net.kemitix.node.Node;
 /**
  * Generates a dot file dependency report as nested clusters.
  *
- * @author pcampbell
+ * @author Paul Campbell (pcampbell@kemitix.net)
  */
 @Immutable
 class DotFileFormatNested extends AbstractDotFileFormat {

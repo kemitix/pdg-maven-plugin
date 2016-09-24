@@ -31,7 +31,7 @@ import java.util.List;
 /**
  * Provider for the list of source directories.
  *
- * @author pcampbell
+ * @author Paul Campbell (pcampbell@kemitix.net)
  */
 interface SourceDirectoryProvider {
 

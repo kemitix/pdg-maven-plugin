@@ -40,7 +40,7 @@ import javax.inject.Inject;
 /**
  * Analyses a Java source file for package and import statements.
  *
- * @author pcampbell
+ * @author Paul Campbell (pcampbell@kemitix.net)
  */
 @Immutable
 class DefaultSourceFileAnalyser implements SourceFileAnalyser {

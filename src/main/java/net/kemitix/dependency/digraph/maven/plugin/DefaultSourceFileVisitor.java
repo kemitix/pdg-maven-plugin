@@ -40,7 +40,7 @@ import javax.annotation.concurrent.Immutable;
 /**
  * Implementation of the source file visitor.
  *
- * @author pcampbell
+ * @author Paul Campbell (pcampbell@kemitix.net)
  */
 @Immutable
 class DefaultSourceFileVisitor extends SimpleFileVisitor<Path>

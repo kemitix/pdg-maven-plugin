@@ -29,7 +29,7 @@ import java.io.IOException;
 /**
  * Interface for writing the report.
  *
- * @author pcampbell
+ * @author Paul Campbell (pcampbell@kemitix.net)
  */
 interface ReportWriter {
 

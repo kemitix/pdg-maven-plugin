@@ -31,7 +31,7 @@ import net.kemitix.node.Node;
 /**
  * Interface for storing package and class dependency data.
  *
- * @author pcampbell
+ * @author Paul Campbell (pcampbell@kemitix.net)
  */
 interface DependencyData {
 

@@ -37,7 +37,7 @@ import net.kemitix.dependency.digraph.maven.plugin.DotFileFormat;
 /**
  * A GraphViz Directed Graph root node.
  *
- * @author pcampbell
+ * @author Paul Campbell (pcampbell@kemitix.net)
  */
 @Immutable
 public class Digraph extends AbstractGraphElement implements ElementContainer {

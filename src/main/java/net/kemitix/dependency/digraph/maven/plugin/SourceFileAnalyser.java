@@ -29,7 +29,7 @@ import java.io.InputStream;
 /**
  * Interface for a source code file analyser.
  *
- * @author pcampbell
+ * @author Paul Campbell (pcampbell@kemitix.net)
  */
 interface SourceFileAnalyser {
 

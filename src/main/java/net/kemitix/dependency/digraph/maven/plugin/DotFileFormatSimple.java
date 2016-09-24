@@ -37,7 +37,7 @@ import net.kemitix.node.Node;
 /**
  * Generates a dot file dependency report as a simple digraph.
  *
- * @author pcampbell
+ * @author Paul Campbell (pcampbell@kemitix.net)
  */
 @Immutable
 class DotFileFormatSimple extends AbstractDotFileFormat {

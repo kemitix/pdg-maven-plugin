@@ -33,7 +33,7 @@ import net.kemitix.dependency.digraph.maven.plugin.DotFileFormat;
 /**
  * A key, value property.
  *
- * @author pcampbell
+ * @author Paul Campbell (pcampbell@kemitix.net)
  */
 @Getter
 @Immutable

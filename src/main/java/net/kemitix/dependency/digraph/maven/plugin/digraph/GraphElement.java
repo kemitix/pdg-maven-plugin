@@ -27,7 +27,7 @@ package net.kemitix.dependency.digraph.maven.plugin.digraph;
 /**
  * An element appearing in a Dot Graph.
  *
- * @author pcampbell
+ * @author Paul Campbell (pcampbell@kemitix.net)
  */
 public interface GraphElement {
 

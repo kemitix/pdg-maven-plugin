@@ -36,7 +36,7 @@ import javax.inject.Inject;
 /**
  * Processor to list directories to console.
  *
- * @author pcampbell
+ * @author Paul Campbell (pcampbell@kemitix.net)
  */
 @Immutable
 class DirectoryListingProcessor implements SourceFileProvider {

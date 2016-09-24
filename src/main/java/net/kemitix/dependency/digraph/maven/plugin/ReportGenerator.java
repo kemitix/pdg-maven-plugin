@@ -27,7 +27,7 @@ package net.kemitix.dependency.digraph.maven.plugin;
 /**
  * Interface for creating dependency data report.
  *
- * @author pcampbell
+ * @author Paul Campbell (pcampbell@kemitix.net)
  */
 interface ReportGenerator {
 

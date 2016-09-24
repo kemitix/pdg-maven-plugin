@@ -32,7 +32,7 @@ import net.kemitix.node.Node;
 /**
  * Default implementation of the {@link DotFileFormatFactory}.
  *
- * @author pcampbell
+ * @author Paul Campbell (pcampbell@kemitix.net)
  */
 @Immutable
 class DefaultDotFileFormatFactory implements DotFileFormatFactory {

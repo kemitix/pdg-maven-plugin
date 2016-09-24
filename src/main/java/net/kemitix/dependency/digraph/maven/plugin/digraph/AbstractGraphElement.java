@@ -34,7 +34,7 @@ import net.kemitix.dependency.digraph.maven.plugin.DotFileFormat;
 /**
  * Common base for any element to be added to a graph.
  *
- * @author pcampbell
+ * @author Paul Campbell (pcampbell@kemitix.net)
  */
 @Immutable
 abstract class AbstractGraphElement implements GraphElement {
