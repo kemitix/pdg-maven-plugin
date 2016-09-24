@@ -42,6 +42,12 @@ abstract class AbstractEdgeEndpoint extends AbstractGraphElement
 
     private final Node<PackageData> packageDataNode;
 
+    /**
+     * Constructor.
+     *
+     * @param dotFileFormat The generator for the Dot File
+     * @param packageDataNode The Node containing the PackageData
+     */
     AbstractEdgeEndpoint(
             final DotFileFormat dotFileFormat,
             final Node<PackageData> packageDataNode) {

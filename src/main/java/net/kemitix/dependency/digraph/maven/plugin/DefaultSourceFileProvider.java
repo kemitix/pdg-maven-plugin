@@ -45,6 +45,12 @@ class DefaultSourceFileProvider implements SourceFileProvider {
 
     private final DigraphMojo mojo;
 
+    /**
+     * Constructor.
+     *
+     * @param fileVisitor The File Visitor
+     * @param mojo        The Maven Mojo
+     */
     @Inject
     DefaultSourceFileProvider(
             final SourceFileVisitor fileVisitor, final DigraphMojo mojo) {

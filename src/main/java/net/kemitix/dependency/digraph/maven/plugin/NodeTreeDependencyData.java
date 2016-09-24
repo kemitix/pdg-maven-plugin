@@ -58,6 +58,13 @@ final class NodeTreeDependencyData implements DependencyData {
         baseNode = root.findInPath(baseLine).orElse(null);
     }
 
+    /**
+     * Creates a new instance of DependencyData.
+     *
+     * @param basePackage The root node for the dependency data
+     *
+     * @return the DependencyData
+     */
     static DependencyData newInstance(final String basePackage) {
         return new NodeTreeDependencyData(basePackage);
     }

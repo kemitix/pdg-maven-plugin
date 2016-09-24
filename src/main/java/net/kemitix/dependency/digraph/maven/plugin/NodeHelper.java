@@ -42,8 +42,18 @@ public final class NodeHelper {
     private NodeHelper() {
     }
 
+    /**
+     * Fetch the {@link PackageData} from the node or throw an Exception if it
+     * has none.
+     *
+     * @param node The Node to extract the PackageData from
+     *
+     * @return the PackageData within the Node
+     *
+     * @throws IllegalStateException if the node has no data content
+     */
     static PackageData getRequiredData(
-            final Node<PackageData> node) {
+            final Node<PackageData> node) throws IllegalStateException {
         return node.getData()
                    .orElseThrow(() -> new IllegalStateException(
                            "Node has no package data"));

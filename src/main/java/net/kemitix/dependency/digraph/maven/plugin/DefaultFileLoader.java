@@ -42,6 +42,11 @@ class DefaultFileLoader implements FileLoader {
 
     private final DigraphMojo mojo;
 
+    /**
+     * Constructor.
+     *
+     * @param mojo The Maven Mojo
+     */
     @Inject
     DefaultFileLoader(final DigraphMojo mojo) {
         this.mojo = mojo;

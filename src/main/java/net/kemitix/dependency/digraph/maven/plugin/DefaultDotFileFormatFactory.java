@@ -39,6 +39,11 @@ class DefaultDotFileFormatFactory implements DotFileFormatFactory {
 
     private final NodePathGenerator nodePathGenerator;
 
+    /**
+     * Constructor.
+     *
+     * @param nodePathGenerator The Node Path Generator
+     */
     @Inject
     DefaultDotFileFormatFactory(final NodePathGenerator nodePathGenerator) {
         this.nodePathGenerator = nodePathGenerator;

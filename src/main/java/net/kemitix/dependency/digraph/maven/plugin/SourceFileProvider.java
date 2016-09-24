@@ -38,6 +38,8 @@ interface SourceFileProvider {
      * Process the list of directories and return the list of java files.
      *
      * @param directories the directories to process
+     *
+     *                    @return a list of files
      */
     List<File> process(List<String> directories);
 

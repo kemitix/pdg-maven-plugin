@@ -44,6 +44,12 @@ class DotFileFormatSimple extends AbstractDotFileFormat {
 
     public static final String NEWLINE = "\n";
 
+    /**
+     * Constructor.
+     *
+     * @param base The root node
+     * @param nodePathGenerator     The Node Path Generator
+     */
     DotFileFormatSimple(
             final Node<PackageData> base,
             final NodePathGenerator nodePathGenerator) {

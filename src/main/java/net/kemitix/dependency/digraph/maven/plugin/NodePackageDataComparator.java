@@ -24,6 +24,8 @@ SOFTWARE.
 
 package net.kemitix.dependency.digraph.maven.plugin;
 
+import lombok.NoArgsConstructor;
+
 import java.io.Serializable;
 import java.util.Comparator;
 
@@ -36,13 +38,11 @@ import net.kemitix.node.Node;
  *
  * @author Paul Campbell (pcampbell@kemitix.net)
  */
+@NoArgsConstructor
 @Immutable
 @SuppressWarnings("serial")
 class NodePackageDataComparator
         implements Comparator<Node<PackageData>>, Serializable {
-
-    NodePackageDataComparator() {
-    }
 
     @Override
     public int compare(

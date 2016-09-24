@@ -58,6 +58,17 @@ class DefaultDigraphService implements DigraphService {
 
     private final DotFileFormatFactory dotFileFormatFactory;
 
+    /**
+     * Constructor.
+     *
+     * @param directoryProvider    The Directory Provider
+     * @param fileProvider         The File Provider
+     * @param fileLoader           The File Loader
+     * @param fileAnalyser         The File Analyser
+     * @param reportGenerator      The Report Generator
+     * @param reportWriter         The Report Writer
+     * @param dotFileFormatFactory The Dot File Format Factory
+     */
     @Inject
     DefaultDigraphService(
             final SourceDirectoryProvider directoryProvider,

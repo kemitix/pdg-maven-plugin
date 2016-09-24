@@ -43,6 +43,11 @@ class DirectoryListingProcessor implements SourceFileProvider {
 
     private final DigraphMojo mojo;
 
+    /**
+     * Constructor.
+     *
+     * @param mojo The Maven Mojo
+     */
     @Inject
     DirectoryListingProcessor(final DigraphMojo mojo) {
         this.mojo = mojo;

@@ -43,14 +43,21 @@ import net.kemitix.node.Node;
 @Immutable
 class DotFileFormatNested extends AbstractDotFileFormat {
 
+    /**
+     * Constructor.
+     *
+     * @param base              The root node
+     * @param nodePathGenerator The Node Path Generator
+     */
     DotFileFormatNested(
             final Node<PackageData> base,
             final NodePathGenerator nodePathGenerator) {
         super(base, nodePathGenerator);
     }
 
-    private void addAnyLHead(final Node<PackageData> headNode,
-            final Node<PackageData> tailNode, final List<String> attributes) {
+    private void addAnyLHead(
+            final Node<PackageData> headNode, final Node<PackageData> tailNode,
+            final List<String> attributes) {
         // if head node has children, then add lhead attribute
         if (headNode.getChildren().size() > 0 && !tailNode.isDescendantOf(
                 headNode)) {
@@ -59,8 +66,9 @@ class DotFileFormatNested extends AbstractDotFileFormat {
         }
     }
 
-    private void addAnyLTail(final Node<PackageData> tailNode,
-            final Node<PackageData> headNode, final List<String> attributes) {
+    private void addAnyLTail(
+            final Node<PackageData> tailNode, final Node<PackageData> headNode,
+            final List<String> attributes) {
         // if tail node has children, then add ltail attribute
         if (tailNode.getChildren().size() > 0 && !headNode.isDescendantOf(
                 tailNode)) {
@@ -83,7 +91,7 @@ class DotFileFormatNested extends AbstractDotFileFormat {
         final String label = quoted(subgraph.getLabel());
         final String id = quoted(subgraph.getId());
         return String.format("subgraph %s{%n" + "label=%s%n"
-                + "%s[label=\"\",style=\"invis\",width=0]%n" + "%s%n}",
+                        + "%s[label=\"\",style=\"invis\",width=0]%n" + "%s%n}",
                 quoted("cluster" + subgraph.getId()), label, id,
                 renderElements(subgraph.getElements()));
     }
@@ -93,9 +101,9 @@ class DotFileFormatNested extends AbstractDotFileFormat {
             final EdgeElement edgeElement) {
         List<String> attributes = new ArrayList<>();
         final Node<PackageData> tailNode = edgeElement.getTail()
-                .getPackageDataNode();
+                                                      .getPackageDataNode();
         final Node<PackageData> headNode = edgeElement.getHead()
-                .getPackageDataNode();
+                                                      .getPackageDataNode();
         addAnyLTail(tailNode, headNode, attributes);
         addAnyLHead(headNode, tailNode, attributes);
         String attributeTag = buildAttributeTag(attributes);

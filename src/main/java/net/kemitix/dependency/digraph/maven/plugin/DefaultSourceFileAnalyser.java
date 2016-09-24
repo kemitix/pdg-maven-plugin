@@ -53,6 +53,11 @@ class DefaultSourceFileAnalyser implements SourceFileAnalyser {
 
     private final DigraphMojo mojo;
 
+    /**
+     * Constructor.
+     *
+     * @param mojo The Maven Mojo
+     */
     @Inject
     DefaultSourceFileAnalyser(final DigraphMojo mojo) {
         this.mojo = mojo;

@@ -37,6 +37,13 @@ final class DigraphFactory {
     private DigraphFactory() {
     }
 
+    /**
+     * Creates a new instance of DependencyData.
+     *
+     * @param basePackage The root node for the dependency data
+     *
+     * @return the DependencyData
+     */
     static DependencyData newDependencyData(final String basePackage) {
         return NodeTreeDependencyData.newInstance(basePackage);
     }
