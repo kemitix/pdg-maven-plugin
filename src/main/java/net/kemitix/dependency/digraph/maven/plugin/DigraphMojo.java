@@ -38,6 +38,8 @@ import java.util.List;
 
 /**
  * Generates digraph.
+ *
+ * @author Paul Campbell (pcampbell@kemitix.net)
  */
 @Mojo(name = "digraph", aggregator = true)
 public class DigraphMojo extends AbstractMojo {

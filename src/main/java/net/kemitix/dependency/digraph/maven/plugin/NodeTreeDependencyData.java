@@ -41,7 +41,7 @@ import net.kemitix.node.Nodes;
 /**
  * Implementation of {@link DependencyData} using a node tree.
  *
- * @author Paul Campbell
+ * @author Paul Campbell (pcampbell@kemitix.net)
  */
 @Immutable
 final class NodeTreeDependencyData implements DependencyData {

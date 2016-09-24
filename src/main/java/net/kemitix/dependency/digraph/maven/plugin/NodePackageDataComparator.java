@@ -33,6 +33,8 @@ import net.kemitix.node.Node;
 
 /**
  * Comparator for sorting {@link PackageData} {@link Node}s.
+ *
+ * @author Paul Campbell (pcampbell@kemitix.net)
  */
 @Immutable
 @SuppressWarnings("serial")

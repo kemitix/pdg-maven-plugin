@@ -29,7 +29,7 @@ import net.kemitix.node.Node;
 /**
  * Interface for creating node paths.
  *
- * @author Paul Campbell
+ * @author Paul Campbell (pcampbell@kemitix.net)
  */
 interface NodePathGenerator {
 

@@ -28,8 +28,10 @@ import net.kemitix.dependency.digraph.maven.plugin.PackageData;
 import net.kemitix.node.Node;
 
 /**
- * Represents and object that contains a {@link net.kemitix.node.Node}
- * containing a {@link net.kemitix.dependency.digraph.maven.plugin.PackageData}.
+ * Represents an object that contains a {@link Node} containing a {@link
+ * PackageData}.
+ *
+ * @author Paul Campbell (pcampbell@kemitix.net)
  */
 public interface HasPackageDataNode {
 

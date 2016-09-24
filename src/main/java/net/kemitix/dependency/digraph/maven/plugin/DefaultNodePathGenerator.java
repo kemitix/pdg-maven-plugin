@@ -33,7 +33,7 @@ import net.kemitix.node.Node;
 /**
  * Default implementation of the Node ID Generator.
  *
- * @author Paul Campbell
+ * @author Paul Campbell (pcampbell@kemitix.net)
  */
 @Immutable
 class DefaultNodePathGenerator implements NodePathGenerator {

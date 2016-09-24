@@ -34,6 +34,8 @@ import net.kemitix.node.Node;
 
 /**
  * Represents a node on the graph.
+ *
+ * @author Paul Campbell (pcampbell@kemitix.net)
  */
 @Getter
 @Immutable
