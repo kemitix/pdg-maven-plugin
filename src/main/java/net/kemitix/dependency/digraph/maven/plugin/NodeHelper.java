@@ -1,6 +1,28 @@
-package net.kemitix.dependency.digraph.maven.plugin;
+/*
+The MIT License (MIT)
 
-import lombok.val;
+Copyright (c) 2016 Paul Campbell
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+*/
+
+package net.kemitix.dependency.digraph.maven.plugin;
 
 import javax.annotation.concurrent.Immutable;
 
@@ -10,7 +32,7 @@ import net.kemitix.node.Nodes;
 /**
  * Helpers for Node.
  *
- * @author pcampbell
+ * @author Paul Campbell (pcampbell@kemitix.net)
  */
 @Immutable
 public final class NodeHelper {
@@ -18,8 +40,18 @@ public final class NodeHelper {
     private NodeHelper() {
     }
 
+    /**
+     * Fetch the {@link PackageData} from the node or throw an Exception if it
+     * has none.
+     *
+     * @param node The Node to extract the PackageData from
+     *
+     * @return the PackageData within the Node
+     *
+     * @throws IllegalStateException if the node has no data content
+     */
     static PackageData getRequiredData(
-            final Node<PackageData> node) {
+            final Node<PackageData> node) throws IllegalStateException {
         return node.getData()
                    .orElseThrow(() -> new IllegalStateException(
                            "Node has no package data"));
@@ -33,20 +65,11 @@ public final class NodeHelper {
      * @return a copy of the package data node
      */
     public static Node<PackageData> copyOf(final Node<PackageData> source) {
-        val optionalData = source.getData();
-        PackageData data = null;
-        if (optionalData.isPresent()) {
-            data = optionalData.get();
-        }
-        val optionalParent = source.getParent();
-        Node<PackageData> parent = null;
-        if (optionalParent.isPresent()) {
-            parent = optionalParent.get();
-        }
+        PackageData data = source.getData().orElse(null);
+        Node<PackageData> parent = source.getParent().orElse(null);
         if (parent != null) {
             return Nodes.namedChild(data, source.getName(), parent);
         }
         return Nodes.namedRoot(data, source.getName());
     }
-
 }
