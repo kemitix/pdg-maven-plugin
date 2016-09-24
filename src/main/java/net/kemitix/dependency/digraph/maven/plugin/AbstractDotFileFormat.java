@@ -1,3 +1,27 @@
+/*
+The MIT License (MIT)
+
+Copyright (c) 2016 Paul Campbell
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+*/
+
 package net.kemitix.dependency.digraph.maven.plugin;
 
 import lombok.AccessLevel;
@@ -9,6 +33,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
+
+import javax.annotation.concurrent.Immutable;
 
 import net.kemitix.dependency.digraph.maven.plugin.digraph.Digraph;
 import net.kemitix.dependency.digraph.maven.plugin.digraph.EdgeElement;
@@ -24,61 +50,98 @@ import net.kemitix.node.Node;
 /**
  * Abstract base for {@link DotFileFormat} implementations.
  *
- * @author pcampbell
+ * @author Paul Campbell (pcampbell@kemitix.net)
  */
+@Immutable
 public abstract class AbstractDotFileFormat implements DotFileFormat {
+
+    public static final String CLOSE_BRACE = "]";
+
+    public static final String DOUBLE_QUOTE = "\"";
 
     @Getter(AccessLevel.PROTECTED)
     private final Node<PackageData> base;
 
     private final NodePathGenerator nodePathGenerator;
 
-    private final NodePackageDataComparator nodePackageDataComparator
-            = new NodePackageDataComparator();
+    private final NodePackageDataComparator nodePackageDataComparator;
 
-    private Map<Node<PackageData>, GraphElement> graphElements
+    private final Map<Node<PackageData>, GraphElement> graphElements
             = new HashMap<>();
 
     /**
      * Constructor.
      *
-     * @param base              the base package
-     * @param nodePathGenerator the node path generator
+     * @param base              The root node
+     * @param nodePathGenerator The Node Path Generator
      */
     public AbstractDotFileFormat(
             final Node<PackageData> base,
             final NodePathGenerator nodePathGenerator) {
         this.base = base;
         this.nodePathGenerator = nodePathGenerator;
-    }
-
-    protected String getClusterId(final Node<PackageData> node) {
-        return getPath(node, "_");
-    }
-
-    protected String getPath(
-            final Node<PackageData> headNode, final String delimiter) {
-        return nodePathGenerator.getPath(headNode, getBase(), delimiter);
-    }
-
-    protected Digraph createDigraph() {
-        Digraph digraph = new Digraph();
-        digraph.add(new PropertyElement("compound", "true"));
-        final NodeProperties nodeProperties = new NodeProperties();
-        nodeProperties.add(new PropertyElement("shape", "box"));
-        digraph.add(nodeProperties);
-        return digraph;
+        this.nodePackageDataComparator = new NodePackageDataComparator();
     }
 
     @Override
-    public String renderReport() {
+    public final String renderReport() {
         Digraph digraph = createDigraph();
         getNodeInjector().injectNodes(digraph, base);
         getUsageInjector().injectUsages(digraph, base);
         return render(digraph);
     }
 
-    protected GraphUsageInjector getUsageInjector() {
+    @Override
+    public final String render(final Digraph digraph) {
+        return "digraph{\n" + renderElements(digraph.getElements()) + "}\n";
+    }
+
+    @Override
+    public final String render(final NodeProperties nodeProperties) {
+        return "node[" + renderProperties(nodeProperties.getProperties())
+                + CLOSE_BRACE;
+    }
+
+    @Override
+    public final String render(final PropertyElement propertyElement) {
+        return propertyElement.getName() + "=" + quoted(
+                propertyElement.getValue());
+    }
+
+    /**
+     * Returns the ID of the node in Cluster format.
+     *
+     * @param node the cluster node
+     *
+     * @return the cluster id
+     */
+    final String getClusterId(final Node<PackageData> node) {
+        return getPath(node, "_");
+    }
+
+    /**
+     * Returns the node path for the node, using the delimiter.
+     *
+     * @param headNode  The node to get the path for
+     * @param delimiter The delimiter to separate each path element
+     *
+     * @return the path to of the node
+     */
+    final String getPath(
+            final Node<PackageData> headNode, final String delimiter) {
+        return nodePathGenerator.getPath(headNode, getBase(), delimiter);
+    }
+
+    /**
+     * Creates a new Digraph.
+     *
+     * @return the Digraph
+     */
+    final Digraph createDigraph() {
+        return new Digraph.Builder(this).build();
+    }
+
+    final GraphUsageInjector getUsageInjector() {
         return (container, node) -> node.getChildren()
                                         .stream()
                                         .sorted(nodePackageDataComparator)
@@ -102,32 +165,71 @@ public abstract class AbstractDotFileFormat implements DotFileFormat {
         };
     }
 
-    EdgeEndpoint findEdgeEndpoint(final Node<PackageData> node) {
+    /**
+     * Searches for the NodeElement for leaf nodes, or a Subgraph, for the node.
+     *
+     * @param node The node to search for
+     *
+     * @return the EdgeEndpoint for the node
+     */
+    final EdgeEndpoint findEdgeEndpoint(final Node<PackageData> node) {
         if (node.getChildren().isEmpty()) {
             return findNodeElement(node);
         }
         return findSubgraph(node);
     }
 
-    NodeElement createNodeElement(
-            final Node<PackageData> packageDataNode) {
-        return new NodeElement(packageDataNode, getNodeId(packageDataNode),
-                NodeHelper.getRequiredData(packageDataNode).getName());
+    /**
+     * Creates a new NodeElement for the Node PackageData.
+     *
+     * @param node The node to create the NodeElement for
+     *
+     * @return the NodeElement for the node
+     */
+    final NodeElement createNodeElement(
+            final Node<PackageData> node) {
+        return new NodeElement(node, getNodeId(node),
+                NodeHelper.getRequiredData(node).getName(), this);
     }
 
-    EdgeElement createEdgeElement(
+    /**
+     * Creates a new EdgeElement linking the tail node to the head node.
+     *
+     * @param tail The node at the tail of the link
+     * @param head The node at the head of the link
+     *
+     * @return the EdgeElement linking tail to head
+     */
+    final EdgeElement createEdgeElement(
             final Node<PackageData> tail, final Node<PackageData> head) {
-        return new EdgeElement(findEdgeEndpoint(tail), findEdgeEndpoint(head));
+        return new EdgeElement(findEdgeEndpoint(tail), findEdgeEndpoint(head),
+                this);
     }
 
-    protected NodeElement findNodeElement(final Node<PackageData> node) {
+    /**
+     * Finds the NodeElement for the given node in the graphElements, adding a
+     * new one if one is not found.
+     *
+     * @param node The node to find the equivalent NodeElement for
+     *
+     * @return the NodeElement
+     */
+    final NodeElement findNodeElement(final Node<PackageData> node) {
         if (!graphElements.containsKey(node)) {
             graphElements.put(node, createNodeElement(node));
         }
         return (NodeElement) graphElements.get(node);
     }
 
-    Subgraph findSubgraph(final Node<PackageData> node) {
+    /**
+     * Finds the Subgraph for the given node in the graphElements, adding a new
+     * one if one is not found.
+     *
+     * @param node The node to find the equivalent Subgraph for
+     *
+     * @return the Subgraph
+     */
+    final Subgraph findSubgraph(final Node<PackageData> node) {
         if (!graphElements.containsKey(node)) {
             graphElements.put(node, createSubgraph(node));
         }
@@ -136,10 +238,10 @@ public abstract class AbstractDotFileFormat implements DotFileFormat {
 
     private Subgraph createSubgraph(final Node<PackageData> node) {
         return new Subgraph(node, getClusterId(node),
-                NodeHelper.getRequiredData(node).getName());
+                NodeHelper.getRequiredData(node).getName(), this);
     }
 
-    protected GraphNodeInjector getNodeInjector() {
+    final GraphNodeInjector getNodeInjector() {
         return new GraphNodeInjector() {
             @Override
             public void injectNodes(
@@ -159,86 +261,68 @@ public abstract class AbstractDotFileFormat implements DotFileFormat {
         };
     }
 
-    protected String getNodeId(final Node<PackageData> node) {
+    /**
+     * Returns the ID of the node in dot node format.
+     *
+     * @param node the node
+     *
+     * @return the dotnode id
+     */
+    final String getNodeId(final Node<PackageData> node) {
         return getPath(node, ".");
     }
 
-    String render(final GraphElement graphElement) {
-        if (graphElement instanceof Digraph) {
-            return render((Digraph) graphElement);
-        }
-        if (graphElement instanceof Subgraph) {
-            return render((Subgraph) graphElement);
-        }
-        if (graphElement instanceof NodeProperties) {
-            return render((NodeProperties) graphElement);
-        }
-        if (graphElement instanceof NodeElement) {
-            return render((NodeElement) graphElement);
-        }
-        if (graphElement instanceof EdgeElement) {
-            return render((EdgeElement) graphElement);
-        }
-        if (graphElement instanceof PropertyElement) {
-            return render((PropertyElement) graphElement);
-        }
-        return "(graph-element)";
-    }
-
-    String render(final Digraph digraph) {
-        return "digraph{\n" + renderElements(digraph.getElements()) + "}\n";
-    }
-
-    abstract String render(final Subgraph subgraph);
-
-    String render(
-            final NodeProperties nodeProperties) {
-        return "node[" + renderProperties(nodeProperties.getProperties()) + "]";
-    }
-
-    String render(
-            final NodeElement nodeElement) {
-        final String id = nodeElement.getId();
-        final String label = nodeElement.getLabel();
-        if (id.equals(label)) {
-            return quoted(id);
-        } else {
-            return quoted(id) + "[label=" + quoted(label) + "]";
-        }
-    }
-
-    abstract String render(final EdgeElement edgeElement);
-
-    String render(
-            final PropertyElement propertyElement) {
-        return propertyElement.getName() + "=" + quoted(
-                propertyElement.getValue());
-    }
-
-    String renderElements(final Collection<GraphElement> elements) {
+    /**
+     * Renders the GraphElements.
+     *
+     * @param elements The GraphElements to be rendered
+     *
+     * @return the rendered GraphElements
+     */
+    final String renderElements(final Collection<GraphElement> elements) {
         return elements.stream()
-                       .map(this::render)
+                       .map(GraphElement::render)
                        .collect(Collectors.joining("\n"));
     }
 
-    String renderProperties(final Set<PropertyElement> properties) {
+    /**
+     * Renders the PropertyElements.
+     *
+     * @param properties The PropertyElements to be rendered
+     *
+     * @return the rendered PropertyElements
+     */
+    final String renderProperties(final Set<PropertyElement> properties) {
         return properties.stream()
-                         .map(this::render)
+                         .map(GraphElement::render)
                          .collect(Collectors.joining(";\n"));
     }
 
-    protected String quoted(final String text) {
-        return "\"" + text + "\"";
+    /**
+     * Wraps the string in double quotes.
+     *
+     * @param text The string to be surrounded
+     *
+     * @return The string wrapped in double quotes
+     */
+    final String quoted(final String text) {
+        return DOUBLE_QUOTE + text + DOUBLE_QUOTE;
     }
 
     /**
      * Functional Interface for rendering a node.
      */
     @FunctionalInterface
-    protected interface GraphNodeInjector {
+    interface GraphNodeInjector {
 
+        /**
+         * Adds the node and its child nodes to the container.
+         *
+         * @param container The container to add the node and its children to
+         * @param node      The node to add to the container
+         */
         void injectNodes(
-                final ElementContainer container, final Node<PackageData> node);
+                ElementContainer container, Node<PackageData> node);
 
     }
 
@@ -246,10 +330,16 @@ public abstract class AbstractDotFileFormat implements DotFileFormat {
      * Functional Interface for rendering a usage.
      */
     @FunctionalInterface
-    protected interface GraphUsageInjector {
+    interface GraphUsageInjector {
 
+        /**
+         * Adds uses of packages be the node's children to the container.
+         *
+         * @param container The container to add the usages to
+         * @param node      The node to scan to find uses
+         */
         void injectUsages(
-                final ElementContainer container, final Node<PackageData> node);
+                ElementContainer container, Node<PackageData> node);
 
     }
 

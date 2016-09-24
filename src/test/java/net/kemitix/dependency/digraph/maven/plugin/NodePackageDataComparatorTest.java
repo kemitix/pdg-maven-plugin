@@ -8,7 +8,7 @@ import org.junit.rules.ExpectedException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import net.kemitix.node.NodeItem;
+import net.kemitix.node.Nodes;
 
 /**
  * Tests for {@link NodePackageDataComparator}.
@@ -30,10 +30,10 @@ public class NodePackageDataComparatorTest {
     @Test
     public void compareAlphaComesBeforeBetaWhenAlphaBeta() throws Exception {
         //given
-        val alphaPackage = new PackageData("alpha");
-        val alphaNode = new NodeItem<PackageData>(alphaPackage);
-        val betaPackage = new PackageData("beta");
-        val betaNode = new NodeItem<PackageData>(betaPackage);
+        val alphaPackage = PackageData.newInstance("alpha");
+        val alphaNode = Nodes.unnamedRoot(alphaPackage);
+        val betaPackage = PackageData.newInstance("beta");
+        val betaNode = Nodes.unnamedRoot(betaPackage);
         //when
         val result = comparator.compare(alphaNode, betaNode);
         //then
@@ -43,10 +43,10 @@ public class NodePackageDataComparatorTest {
     @Test
     public void compareAlphaComesBeforeBetaWhenBetaAlpha() throws Exception {
         //given
-        val alphaPackage = new PackageData("alpha");
-        val alphaNode = new NodeItem<PackageData>(alphaPackage);
-        val betaPackage = new PackageData("beta");
-        val betaNode = new NodeItem<PackageData>(betaPackage);
+        val alphaPackage = PackageData.newInstance("alpha");
+        val alphaNode = Nodes.unnamedRoot(alphaPackage);
+        val betaPackage = PackageData.newInstance("beta");
+        val betaNode = Nodes.unnamedRoot(betaPackage);
         //when
         val result = comparator.compare(betaNode, alphaNode);
         //then
@@ -57,10 +57,10 @@ public class NodePackageDataComparatorTest {
     public void compareAlphaEqualsBetaWhenPackageNameNamesAreSame()
             throws Exception {
         //given
-        val alphaPackage = new PackageData("alpha");
-        val alphaNode = new NodeItem<PackageData>(alphaPackage);
-        val betaPackage = new PackageData("alpha");
-        val betaNode = new NodeItem<PackageData>(betaPackage);
+        val alphaPackage = PackageData.newInstance("alpha");
+        val alphaNode = Nodes.unnamedRoot(alphaPackage);
+        val betaPackage = PackageData.newInstance("alpha");
+        val betaNode = Nodes.unnamedRoot(betaPackage);
         //when
         val result = comparator.compare(betaNode, alphaNode);
         //then
@@ -72,9 +72,9 @@ public class NodePackageDataComparatorTest {
         //given
         exception.expect(IllegalStateException.class);
         exception.expectMessage("Node has no package data");
-        val alphaNode = new NodeItem<PackageData>(null);
-        val betaPackage = new PackageData("beta");
-        val betaNode = new NodeItem<PackageData>(betaPackage);
+        val alphaNode = Nodes.unnamedRoot((PackageData) null);
+        val betaPackage = PackageData.newInstance("beta");
+        val betaNode = Nodes.unnamedRoot(betaPackage);
         //when
         comparator.compare(betaNode, alphaNode);
     }
@@ -84,9 +84,9 @@ public class NodePackageDataComparatorTest {
         //given
         exception.expect(IllegalStateException.class);
         exception.expectMessage("Node has no package data");
-        val alphaPackage = new PackageData("alpha");
-        val alphaNode = new NodeItem<PackageData>(alphaPackage);
-        val betaNode = new NodeItem<PackageData>(null);
+        val alphaPackage = PackageData.newInstance("alpha");
+        val alphaNode = Nodes.unnamedRoot(alphaPackage);
+        val betaNode = Nodes.unnamedRoot((PackageData) null);
         //when
         comparator.compare(betaNode, alphaNode);
     }
@@ -96,8 +96,8 @@ public class NodePackageDataComparatorTest {
         //given
         exception.expect(IllegalStateException.class);
         exception.expectMessage("Node has no package data");
-        val alphaNode = new NodeItem<PackageData>(null);
-        val betaNode = new NodeItem<PackageData>(null);
+        val alphaNode = Nodes.unnamedRoot((PackageData) null);
+        val betaNode = Nodes.unnamedRoot((PackageData) null);
         //when
         comparator.compare(betaNode, alphaNode);
     }

@@ -22,40 +22,25 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-package net.kemitix.dependency.digraph.maven.plugin;
+package net.kemitix.dependency.digraph.maven.plugin.digraph;
 
-import org.apache.maven.plugin.logging.Log;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
-import net.kemitix.node.Node;
+import javax.annotation.concurrent.Immutable;
+
+import net.kemitix.dependency.digraph.maven.plugin.DotFileFormat;
 
 /**
- * Interface for storing package and class dependency data.
+ * Common base for any element to be added to a graph.
  *
  * @author Paul Campbell (pcampbell@kemitix.net)
  */
-interface DependencyData {
+@RequiredArgsConstructor(access = AccessLevel.PROTECTED)
+@Immutable
+abstract class AbstractGraphElement implements GraphElement {
 
-    /**
-     * Records a dependency between the user class and the imported class.
-     *
-     * @param user     the package that is using the import
-     * @param imported the package that contains the class that is being
-     *                 imported
-     */
-    void addDependency(String user, String imported);
-
-    /**
-     * Returns the base node.
-     *
-     * @return the base node
-     */
-    Node<PackageData> getBaseNode();
-
-    /**
-     * Log the statue of the dependency data.
-     *
-     * @param log the log to send the output
-     */
-    void debugLog(Log log);
-
+    @Getter(AccessLevel.PROTECTED)
+    private final DotFileFormat dotFileFormat;
 }

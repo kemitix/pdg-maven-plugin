@@ -1,26 +1,50 @@
+/*
+The MIT License (MIT)
+
+Copyright (c) 2016 Paul Campbell
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+*/
+
 package net.kemitix.dependency.digraph.maven.plugin.digraph;
 
 import lombok.Getter;
-import lombok.Setter;
 
+import javax.annotation.concurrent.Immutable;
+
+import net.kemitix.dependency.digraph.maven.plugin.DotFileFormat;
 import net.kemitix.dependency.digraph.maven.plugin.PackageData;
 import net.kemitix.node.Node;
 
 /**
  * Represents a node on the graph.
+ *
+ * @author Paul Campbell (pcampbell@kemitix.net)
  */
-@Setter
 @Getter
-public class NodeElement extends GraphElement
-        implements HasId, HasLabel, HasStyle, EdgeEndpoint {
+@Immutable
+public final class NodeElement extends AbstractEdgeEndpoint
+        implements HasId, HasLabel {
 
-    private String id;
+    private final String id;
 
-    private String label;
-
-    private String style = "";
-
-    private Node<PackageData> packageDataNode;
+    private final String label;
 
     /**
      * Constructor.
@@ -28,13 +52,19 @@ public class NodeElement extends GraphElement
      * @param packageDataNode the package data node for this node element
      * @param id              the id of the node
      * @param label           the label of the node
+     * @param dotFileFormat   the output format
      */
     public NodeElement(
             final Node<PackageData> packageDataNode, final String id,
-            final String label) {
-        setPackageDataNode(packageDataNode);
-        setId(id);
-        setLabel(label);
+            final String label, final DotFileFormat dotFileFormat) {
+        super(dotFileFormat, packageDataNode);
+        this.id = id;
+        this.label = label;
+    }
+
+    @Override
+    public String render() {
+        return getDotFileFormat().render(this);
     }
 
 }

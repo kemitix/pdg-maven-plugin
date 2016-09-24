@@ -8,7 +8,8 @@ import org.mockito.MockitoAnnotations;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import net.kemitix.node.NodeItem;
+import net.kemitix.node.Node;
+import net.kemitix.node.Nodes;
 
 /**
  * Tests for {@link DefaultDotFileFormatFactory}.
@@ -23,12 +24,12 @@ public class DefaultDotFileFormatFactoryTest {
     @Mock
     private NodePathGenerator nodePathGenerator;
 
-    private NodeItem<PackageData> base;
+    private Node<PackageData> base;
 
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
-        base = new NodeItem<>(null);
+        base = Nodes.unnamedRoot(null);
     }
 
     @Test

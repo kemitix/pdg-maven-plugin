@@ -15,6 +15,7 @@ import static org.mockito.Mockito.verify;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -41,9 +42,6 @@ public class DefaultDigraphServiceTest {
 
     @Mock
     private SourceFileAnalyser fileAnalyser;
-
-    @Mock
-    private DependencyData dependencyData;
 
     @Mock
     private ReportGenerator reportGenerator;
@@ -77,6 +75,9 @@ public class DefaultDigraphServiceTest {
     public void setUp() {
         MockitoAnnotations.initMocks(this);
         given(digraphMojo.getLog()).willReturn(log);
+        basePackage = "net.kemitix";
+        mavenProjects = new ArrayList<>();
+        format = "simple";
     }
 
     @Test
@@ -94,7 +95,7 @@ public class DefaultDigraphServiceTest {
         digraphService.execute(digraphMojo, mavenProjects, includeTests,
                 basePackage, format, debug);
         //then
-        verify(dependencyData).debugLog(log);
+        verify(digraphMojo).getLog();
     }
 
     @Test

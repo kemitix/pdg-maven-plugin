@@ -1,6 +1,18 @@
 CHANGELOG
 =========
 
+0.6.0
+------
+
+* Use immutable objects internally
+* Upgrade kemitix-parent to 2.1.0
+* Upgrade lombok to 1.16.10
+* Upgrade javaparser to 2.5.1
+* Upgrade maven-plugin-annotations to 3.5
+* Upgrade assertj-core to 3.5.2
+* Upgrade maven-plugin-plugin to 3.5
+* Upgrade node to 0.5.0
+
 0.5.0
 ------
 

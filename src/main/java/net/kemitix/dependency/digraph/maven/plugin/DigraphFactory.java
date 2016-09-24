@@ -24,38 +24,28 @@ SOFTWARE.
 
 package net.kemitix.dependency.digraph.maven.plugin;
 
-import org.apache.maven.plugin.logging.Log;
-
-import net.kemitix.node.Node;
+import javax.annotation.concurrent.Immutable;
 
 /**
- * Interface for storing package and class dependency data.
+ * Factory class for Digraph objects.
  *
  * @author Paul Campbell (pcampbell@kemitix.net)
  */
-interface DependencyData {
+@Immutable
+final class DigraphFactory {
+
+    private DigraphFactory() {
+    }
 
     /**
-     * Records a dependency between the user class and the imported class.
+     * Creates a new instance of DependencyData.
      *
-     * @param user     the package that is using the import
-     * @param imported the package that contains the class that is being
-     *                 imported
-     */
-    void addDependency(String user, String imported);
-
-    /**
-     * Returns the base node.
+     * @param basePackage The root node for the dependency data
      *
-     * @return the base node
+     * @return the DependencyData
      */
-    Node<PackageData> getBaseNode();
-
-    /**
-     * Log the statue of the dependency data.
-     *
-     * @param log the log to send the output
-     */
-    void debugLog(Log log);
+    static DependencyData newDependencyData(final String basePackage) {
+        return NodeTreeDependencyData.newInstance(basePackage);
+    }
 
 }

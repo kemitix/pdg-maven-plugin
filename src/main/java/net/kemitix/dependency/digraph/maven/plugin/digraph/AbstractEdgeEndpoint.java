@@ -22,40 +22,45 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-package net.kemitix.dependency.digraph.maven.plugin;
+package net.kemitix.dependency.digraph.maven.plugin.digraph;
 
-import org.apache.maven.plugin.logging.Log;
+import javax.annotation.concurrent.Immutable;
 
+import net.kemitix.dependency.digraph.maven.plugin.DotFileFormat;
+import net.kemitix.dependency.digraph.maven.plugin.NodeHelper;
+import net.kemitix.dependency.digraph.maven.plugin.PackageData;
 import net.kemitix.node.Node;
 
 /**
- * Interface for storing package and class dependency data.
+ * .
  *
  * @author Paul Campbell (pcampbell@kemitix.net)
  */
-interface DependencyData {
+@Immutable
+abstract class AbstractEdgeEndpoint extends AbstractGraphElement
+        implements EdgeEndpoint {
+
+    private final Node<PackageData> packageDataNode;
 
     /**
-     * Records a dependency between the user class and the imported class.
+     * Constructor.
      *
-     * @param user     the package that is using the import
-     * @param imported the package that contains the class that is being
-     *                 imported
+     * @param dotFileFormat The generator for the Dot File
+     * @param packageDataNode The Node containing the PackageData
      */
-    void addDependency(String user, String imported);
+    AbstractEdgeEndpoint(
+            final DotFileFormat dotFileFormat,
+            final Node<PackageData> packageDataNode) {
+        super(dotFileFormat);
+        this.packageDataNode = packageDataNode;
+    }
 
     /**
-     * Returns the base node.
+     * Creates a copy of the package data node and returns it.
      *
-     * @return the base node
+     * @return a copy of the package data node
      */
-    Node<PackageData> getBaseNode();
-
-    /**
-     * Log the statue of the dependency data.
-     *
-     * @param log the log to send the output
-     */
-    void debugLog(Log log);
-
+    public Node<PackageData> getPackageDataNode() {
+        return NodeHelper.copyOf(packageDataNode);
+    }
 }

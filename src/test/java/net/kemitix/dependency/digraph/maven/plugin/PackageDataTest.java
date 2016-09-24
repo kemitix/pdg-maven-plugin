@@ -1,5 +1,6 @@
 package net.kemitix.dependency.digraph.maven.plugin;
 
+import lombok.val;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -31,7 +32,7 @@ public class PackageDataTest {
     @Before
     public void setUp() {
         name = "name";
-        data = new PackageData(name);
+        data = PackageData.newInstance(name);
     }
 
     /**
@@ -49,7 +50,7 @@ public class PackageDataTest {
     public void shouldCreateUniqueHashCode() {
         //given
         String name2 = "name2";
-        PackageData data2 = new PackageData(name2);
+        val data2 = PackageData.newInstance(name2);
         //then
         assertThat(data.hashCode(), is(not(data2.hashCode())));
     }
@@ -60,7 +61,7 @@ public class PackageDataTest {
     @Test
     public void shouldBeEqualWhenSameName() {
         //given
-        PackageData data2 = new PackageData(name);
+        val data2 = PackageData.newInstance(name);
         //then
         assertThat(data, is(data2));
     }
@@ -72,7 +73,7 @@ public class PackageDataTest {
     @Test
     public void shouldBeInSetIfNameMatches() {
         //given
-        final PackageData data2 = new PackageData(name);
+        val data2 = PackageData.newInstance(name);
         final Set<PackageData> set = new HashSet<>();
         //when
         set.add(data);
@@ -83,7 +84,7 @@ public class PackageDataTest {
     @Test
     public void equalsShouldBeFalseWhenOtherIsNull() {
         //given
-        final PackageData data = new PackageData("name");
+        val data = PackageData.newInstance("name");
         //then
         assertThat(data.equals(null), is(false));
     }
@@ -91,7 +92,7 @@ public class PackageDataTest {
     @Test
     public void equalsShouldBeFalseWhenOtherIsNotPackageData() {
         //given
-        final PackageData data = new PackageData("name");
+        val data = PackageData.newInstance("name");
         //then
         assertThat(data.equals("not PackageData"), is(false));
     }
