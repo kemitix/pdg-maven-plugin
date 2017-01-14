@@ -4,14 +4,13 @@ import org.apache.maven.plugin.logging.Log;
 import org.apache.maven.project.MavenProject;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.doThrow;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.verify;
+import static org.mockito.BDDMockito.then;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -25,7 +24,6 @@ import java.util.List;
  */
 public class DefaultDigraphServiceTest {
 
-    @InjectMocks
     private DefaultDigraphService digraphService;
 
     @Mock
@@ -74,10 +72,14 @@ public class DefaultDigraphServiceTest {
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
+        digraphService = new DefaultDigraphService(directoryProvider,
+                fileProvider, fileLoader, fileAnalyser, reportGenerator,
+                reportWriter, dotFileFormatFactory);
         given(digraphMojo.getLog()).willReturn(log);
         basePackage = "net.kemitix";
         mavenProjects = new ArrayList<>();
         format = "simple";
+        includeTests = false;
     }
 
     @Test
@@ -95,7 +97,7 @@ public class DefaultDigraphServiceTest {
         digraphService.execute(digraphMojo, mavenProjects, includeTests,
                 basePackage, format, debug);
         //then
-        verify(digraphMojo).getLog();
+        then(digraphMojo).should().getLog();
     }
 
     @Test
@@ -103,11 +105,11 @@ public class DefaultDigraphServiceTest {
         //given
         String message = "message";
         doThrow(new IOException(message)).when(reportWriter)
-                                         .write(anyString(), anyString());
+                                         .write(any(), any());
         //when
         digraphService.execute(digraphMojo, mavenProjects, includeTests,
                 basePackage, format, debug);
         //then
-        verify(log).error(message);
+        then(log).should().error(message);
     }
 }

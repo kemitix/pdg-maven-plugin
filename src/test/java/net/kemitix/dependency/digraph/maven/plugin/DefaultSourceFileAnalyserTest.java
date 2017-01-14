@@ -7,17 +7,16 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.invocation.InvocationOnMock;
-import org.mockito.stubbing.Answer;
-
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
-import static org.mockito.Matchers.any;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 
 /**
  * Tests for {@link DefaultSourceFileAnalyser}.
@@ -48,8 +47,8 @@ public class DefaultSourceFileAnalyserTest {
     public void setUp() {
         MockitoAnnotations.initMocks(this);
         doReturn(log).when(mojo).getLog();
-        doAnswer((Answer) (InvocationOnMock invocation) -> {
-            System.out.println(invocation.getArgumentAt(0, String.class));
+        doAnswer((InvocationOnMock invocation) -> {
+            System.out.println(invocation.<String>getArgument(0));
             return null;
         }).when(log).info(any(String.class));
     }
@@ -70,8 +69,8 @@ public class DefaultSourceFileAnalyserTest {
         //when
         analyser.analyse(dependencyData, stream);
         //then
-        verify(dependencyData, times(3))
-                .addDependency("test.nested", "test.other");
+        verify(dependencyData, times(3)).addDependency("test.nested",
+                "test.other");
     }
 
     /**
