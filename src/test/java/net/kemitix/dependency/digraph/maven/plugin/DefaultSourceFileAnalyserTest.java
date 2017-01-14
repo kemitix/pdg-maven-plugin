@@ -10,10 +10,10 @@ import org.mockito.invocation.InvocationOnMock;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doAnswer;
-import static org.mockito.Mockito.doReturn;
+import static org.mockito.BDDMockito.doAnswer;
+import static org.mockito.BDDMockito.doReturn;
+import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -69,8 +69,8 @@ public class DefaultSourceFileAnalyserTest {
         //when
         analyser.analyse(dependencyData, stream);
         //then
-        verify(dependencyData, times(3)).addDependency("test.nested",
-                "test.other");
+        then(dependencyData).should(times(3))
+                            .addDependency("test.nested", "test.other");
     }
 
     /**

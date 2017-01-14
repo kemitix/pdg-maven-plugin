@@ -4,21 +4,20 @@ import com.google.common.io.Files;
 import org.apache.maven.plugin.logging.Log;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+
+import static java.nio.charset.StandardCharsets.UTF_8;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.nullValue;
+import static org.junit.Assert.assertThat;
+import static org.mockito.BDDMockito.doReturn;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-
-import static java.nio.charset.StandardCharsets.UTF_8;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.nullValue;
-import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.doReturn;
 
 /**
  * Tests for {@link DefaultFileLoader}.
@@ -27,7 +26,6 @@ import static org.mockito.Mockito.doReturn;
  */
 public class DefaultFileLoaderTest {
 
-    @InjectMocks
     private DefaultFileLoader fileLoader;
 
     @Mock
@@ -39,6 +37,7 @@ public class DefaultFileLoaderTest {
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
+        fileLoader = new DefaultFileLoader(mojo);
         doReturn(log).when(mojo).getLog();
     }
 
@@ -48,8 +47,8 @@ public class DefaultFileLoaderTest {
         File file = new File("src/test/projects/src-only/pom.xml");
         String expectedFirstLine = Files.readFirstLine(file, UTF_8);
         //when
-        BufferedReader reader = new BufferedReader(new InputStreamReader(
-                fileLoader.asInputStream(file), UTF_8));
+        BufferedReader reader = new BufferedReader(
+                new InputStreamReader(fileLoader.asInputStream(file), UTF_8));
         String streamedFirstLine = reader.readLine();
         //then
         assertThat(streamedFirstLine, is(expectedFirstLine));

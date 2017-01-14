@@ -7,7 +7,6 @@ import org.junit.Test;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
-import net.kemitix.node.Node;
 import net.kemitix.node.Nodes;
 
 /**

@@ -3,12 +3,12 @@ package net.kemitix.dependency.digraph.maven.plugin;
 import org.apache.maven.plugin.logging.Log;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.mockito.BDDMockito.then;
 
 import net.kemitix.node.Node;
 
@@ -19,22 +19,17 @@ import net.kemitix.node.Node;
  */
 public class NodeTreeDependencyDataTest {
 
-    /**
-     * Class under test.
-     */
     private DependencyData data;
 
-    /**
-     * Prepare each test.
-     */
+    @Mock
+    private Log log;
+
     @Before
     public void setUp() {
+        MockitoAnnotations.initMocks(this);
         data = DigraphFactory.newDependencyData("net.kemitix");
     }
 
-    /**
-     * Set and return the base node.
-     */
     @Test
     public void shouldReturnTheSetBaseNode() {
         //when
@@ -43,9 +38,6 @@ public class NodeTreeDependencyDataTest {
         assertThat(baseNode.getData().get().getName(), is("kemitix"));
     }
 
-    /**
-     * Adding dependency creates descendant nodes.
-     */
     @Test
     public void shouldCreateDescendantNodes() {
         //given
@@ -66,13 +58,11 @@ public class NodeTreeDependencyDataTest {
     public void shouldLogDebugTree() {
         //given
         data.addDependency("net.kemitix.alpha", "net.kemitix.beta");
-        Log log = mock(Log.class);
         //when
         data.debugLog(log);
         //then
-        verify(log, times(1)).info("kemitix");
-        verify(log, times(1)).info("  alpha");
-        verify(log, times(1)).info("  beta");
+        then(log).should().info("kemitix");
+        then(log).should().info("  alpha");
+        then(log).should().info("  beta");
     }
-
 }

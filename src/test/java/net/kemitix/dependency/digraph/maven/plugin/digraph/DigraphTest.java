@@ -22,6 +22,8 @@ import net.kemitix.node.Node;
  */
 public class DigraphTest {
 
+    private Digraph digraph;
+
     @Mock
     private Node<PackageData> testNode;
 
@@ -40,20 +42,17 @@ public class DigraphTest {
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
+        digraph = new Digraph(dotFileFormat);
     }
 
     @Test
     public void shouldGetDotFileFormat() {
-        //given
-        val digraph = new Digraph(dotFileFormat);
-        //then
         assertThat(digraph.getDotFileFormat()).isSameAs(dotFileFormat);
     }
 
     @Test
     public void shouldRenderDigraph() {
         //given
-        val digraph = new Digraph(dotFileFormat);
         val expected = "rendered digraph";
         given(dotFileFormat.render(digraph)).willReturn(expected);
         //then
@@ -63,7 +62,6 @@ public class DigraphTest {
     @Test
     public void shouldConstructDigraphModel() {
         //given
-        val digraph = new Digraph(dotFileFormat);
         digraph.add(new PropertyElement("compound", "true", dotFileFormat));
 
         // define the appearance of nodes
@@ -105,5 +103,4 @@ public class DigraphTest {
         Assert.assertThat(subgraphElements, hasItem(nodeElement));
         Assert.assertThat(subgraphElements, hasItem(nodeBeta));
     }
-
 }
