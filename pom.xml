@@ -40,9 +40,7 @@
         <mockito.version>2.6.2</mockito.version>
         <assertj.version>3.5.2</assertj.version>
         <trajano-commons-testing.version>2.1.0</trajano-commons-testing.version>
-        <findbugs-maven-plugin.version>3.0.4</findbugs-maven-plugin.version>
         <jsr.version>3.0.1</jsr.version>
-        <MutabilityDetector4FindBugs.version>0.9.1</MutabilityDetector4FindBugs.version>
     </properties>
 
     <dependencies>
@@ -145,30 +143,6 @@
                     </execution>
                 </executions>
             </plugin>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>findbugs-maven-plugin</artifactId>
-                <version>${findbugs-maven-plugin.version}</version>
-                <executions>
-                    <execution>
-                        <id>check</id>
-                        <phase>verify</phase>
-                        <goals>
-                            <goal>check</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <plugins>
-                        <dependency>
-                            <groupId>org.mutabilitydetector</groupId>
-                            <artifactId>MutabilityDetector4FindBugs</artifactId>
-                            <version>${MutabilityDetector4FindBugs.version}</version>
-                        </dependency>
-                    </plugins>
-                </configuration>
-            </plugin><!-- findbugs-maven-plugin -->
-
             <plugin>
                 <groupId>net.kemitix</groupId>
                 <artifactId>digraph-dependency-maven-plugin</artifactId>
