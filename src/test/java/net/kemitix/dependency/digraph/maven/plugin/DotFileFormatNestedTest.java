@@ -4,11 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.MockitoAnnotations;
 
-import static org.hamcrest.CoreMatchers.containsString;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.not;
-import static org.hamcrest.CoreMatchers.nullValue;
-import static org.junit.Assert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import net.kemitix.node.Node;
 
@@ -19,15 +15,11 @@ import net.kemitix.node.Node;
  */
 public class DotFileFormatNestedTest {
 
-    /**
-     * Class under test.
-     */
     private DotFileFormat dotFileFormat;
 
     private DependencyData dependencyData;
 
-    private NodePathGenerator nodePathGenerator
-            = new DefaultNodePathGenerator();
+    private NodePathGenerator nodePathGenerator;
 
     /**
      * Prepare each test.
@@ -36,6 +28,7 @@ public class DotFileFormatNestedTest {
     public void setUp() {
         MockitoAnnotations.initMocks(this);
         dependencyData = DigraphFactory.newDependencyData("test");
+        nodePathGenerator = new DefaultNodePathGenerator();
         dotFileFormat = new DotFileFormatNested(dependencyData.getBaseNode(),
                 nodePathGenerator);
     }
@@ -50,8 +43,8 @@ public class DotFileFormatNestedTest {
         //when
         Node<PackageData> baseNode = dependencyData.getBaseNode();
         //then
-        assertThat(baseNode, is(not(nullValue())));
-        assertThat(baseNode.getData().get().getName(), is("test"));
+        assertThat(baseNode).isNotNull();
+        assertThat(baseNode.getData().get().getName()).isEqualTo("test");
     }
 
     /**
@@ -65,13 +58,12 @@ public class DotFileFormatNestedTest {
                 + "node[shape=\"box\"]\n" + "subgraph \"cluster_test\"{\n"
                 + "label=\"test\"\n"
                 + "\"_test\"[label=\"\",style=\"invis\",width=0]\n"
-                + "\"nested\"\n"
-                + "\"other\"\n" + "}\n"
+                + "\"nested\"\n" + "\"other\"\n" + "}\n"
                 + "\"nested\"->\"other\"" + "}\n";
         //when
         String report = dotFileFormat.renderReport();
         //then
-        assertThat(report, is(expected));
+        assertThat(report).isEqualTo(expected);
     }
 
     /**
@@ -90,7 +82,7 @@ public class DotFileFormatNestedTest {
         //when
         String report = dotFileFormat.renderReport();
         //then
-        assertThat(report, is(expected));
+        assertThat(report).isEqualTo(expected);
     }
 
     /**
@@ -109,7 +101,7 @@ public class DotFileFormatNestedTest {
         //when
         String report = dotFileFormat.renderReport();
         //then
-        assertThat(report, is(expected));
+        assertThat(report).isEqualTo(expected);
     }
 
     /**
@@ -126,18 +118,17 @@ public class DotFileFormatNestedTest {
                 + "node[shape=\"box\"]\n" + "subgraph \"cluster_test\"{\n"
                 + "label=\"test\"\n"
                 + "\"_test\"[label=\"\",style=\"invis\",width=0]\n"
-                + "\"nested\"\n"
-                + "subgraph \"clusterother\"{\n" + "label=\"other\"\n"
+                + "\"nested\"\n" + "subgraph \"clusterother\"{\n"
+                + "label=\"other\"\n"
                 + "\"other\"[label=\"\",style=\"invis\",width=0]\n"
-                + "\"other.more\"[label=\"more\"]\n" + "}\n"
-                + "\"yetmore\"\n" + "}\n"
-                + "\"nested\"->\"other.more\"\n"
+                + "\"other.more\"[label=\"more\"]\n" + "}\n" + "\"yetmore\"\n"
+                + "}\n" + "\"nested\"->\"other.more\"\n"
                 + "\"nested\"->\"other\"[lhead=\"clusterother\"]\n"
                 + "\"other\"->\"yetmore\"[ltail=\"clusterother\"]" + "}\n";
         //when
         String report = dotFileFormat.renderReport();
         //then
-        assertThat(report, is(expected));
+        assertThat(report).isEqualTo(expected);
     }
 
     /**
@@ -161,7 +152,7 @@ public class DotFileFormatNestedTest {
         //when
         String report = dotFileFormat.renderReport();
         //then
-        assertThat(report, is(expected));
+        assertThat(report).isEqualTo(expected);
     }
 
     /**
@@ -176,8 +167,8 @@ public class DotFileFormatNestedTest {
         //when
         String report = dotFileFormat.renderReport();
         //then
-        assertThat(report, containsString("\n\"one.two\"->\"one\""));
-        assertThat(report, not(containsString("lhead=\"clusterone\"")));
+        assertThat(report).contains("\n\"one.two\"->\"one\"")
+                          .doesNotContain("lhead=\"clusterone\"");
     }
 
     /**
@@ -193,8 +184,7 @@ public class DotFileFormatNestedTest {
         //when
         String report = dotFileFormat.renderReport();
         //then
-        assertThat(report, containsString("\n\"one\"->\"one.two\""));
-        assertThat(report, not(containsString("ltail=\"clusterone\"")));
+        assertThat(report).contains("\n\"one\"->\"one.two\"")
+                          .doesNotContain("ltail=\"clusterone\"");
     }
-
 }

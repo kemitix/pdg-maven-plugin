@@ -1,16 +1,12 @@
 package net.kemitix.dependency.digraph.maven.plugin;
 
-import com.google.common.io.Files;
 import org.apache.maven.plugin.logging.Log;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import static java.nio.charset.StandardCharsets.UTF_8;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.nullValue;
-import static org.junit.Assert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.doReturn;
 
 import java.io.BufferedReader;
@@ -18,6 +14,9 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.util.stream.Collectors;
 
 /**
  * Tests for {@link DefaultFileLoader}.
@@ -45,13 +44,16 @@ public class DefaultFileLoaderTest {
     public void shouldLoadFile() throws IOException {
         //given
         File file = new File("src/test/projects/src-only/pom.xml");
-        String expectedFirstLine = Files.readFirstLine(file, UTF_8);
+        String expectedFirstLine = Files.lines(file.toPath(), StandardCharsets.UTF_8)
+                         .limit(1)
+                         .collect(Collectors.joining());
         //when
         BufferedReader reader = new BufferedReader(
-                new InputStreamReader(fileLoader.asInputStream(file), UTF_8));
+                new InputStreamReader(fileLoader.asInputStream(file),
+                        StandardCharsets.UTF_8));
         String streamedFirstLine = reader.readLine();
         //then
-        assertThat(streamedFirstLine, is(expectedFirstLine));
+        assertThat(streamedFirstLine).isEqualTo(expectedFirstLine);
     }
 
     @Test
@@ -61,7 +63,6 @@ public class DefaultFileLoaderTest {
         //when
         InputStream stream = fileLoader.asInputStream(file);
         //then
-        assertThat(stream, is(nullValue()));
+        assertThat(stream).isNull();
     }
-
 }

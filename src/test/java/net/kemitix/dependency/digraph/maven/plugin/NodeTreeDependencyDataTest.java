@@ -6,8 +6,7 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.then;
 
 import net.kemitix.node.Node;
@@ -35,7 +34,7 @@ public class NodeTreeDependencyDataTest {
         //when
         Node<PackageData> baseNode = data.getBaseNode();
         //then
-        assertThat(baseNode.getData().get().getName(), is("kemitix"));
+        assertThat(baseNode.getData().get().getName()).isEqualTo("kemitix");
     }
 
     @Test
@@ -45,10 +44,10 @@ public class NodeTreeDependencyDataTest {
         //when
         data.addDependency("net.kemitix.alpha", "net.kemitix.beta");
         //then
-        assertThat(baseNode.findChild(PackageData.newInstance("alpha"))
-                           .isPresent(), is(true));
-        assertThat(baseNode.findChild(PackageData.newInstance("beta"))
-                           .isPresent(), is(true));
+        assertThat(baseNode.findChild(
+                PackageData.newInstance("alpha"))).isNotEmpty();
+        assertThat(baseNode.findChild(
+                PackageData.newInstance("beta"))).isNotEmpty();
     }
 
     /**

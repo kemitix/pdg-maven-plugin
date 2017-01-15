@@ -1,16 +1,12 @@
 package net.kemitix.dependency.digraph.maven.plugin.digraph;
 
 import lombok.val;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.CoreMatchers.hasItem;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.not;
 import static org.mockito.BDDMockito.given;
 
 import net.kemitix.dependency.digraph.maven.plugin.DotFileFormat;
@@ -91,16 +87,12 @@ public class DigraphTest {
 
         //then
         val digraphElements = digraph.getElements();
-        Assert.assertThat(digraphElements.size(), is(5));
-        Assert.assertThat(digraphElements, hasItem(nodeProperties));
-        Assert.assertThat(digraphElements, hasItem(subgraphAlpha));
-        Assert.assertThat(digraphElements, hasItem(nodeGamma));
-        Assert.assertThat(digraphElements, hasItem(gammaUsesBeta));
-        Assert.assertThat(digraphElements, not(hasItem(nodeBeta)));
+        assertThat(digraphElements).hasSize(5)
+                                   .contains(nodeProperties, subgraphAlpha,
+                                           nodeGamma, gammaUsesBeta)
+                                   .doesNotContain(nodeBeta);
 
         val subgraphElements = subgraphAlpha.getElements();
-        Assert.assertThat(subgraphElements.size(), is(2));
-        Assert.assertThat(subgraphElements, hasItem(nodeElement));
-        Assert.assertThat(subgraphElements, hasItem(nodeBeta));
+        assertThat(subgraphElements).hasSize(2).contains(nodeElement, nodeBeta);
     }
 }

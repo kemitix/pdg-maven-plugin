@@ -28,5 +28,4 @@ public class DigraphFactoryTest {
         //then
         assertThat(result).isInstanceOf(NodeTreeDependencyData.class);
     }
-
 }

@@ -7,14 +7,11 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
 
 /**
  * Tests for {@link DefaultSourceDirectoryProviderTest}.
@@ -41,8 +38,7 @@ public class DefaultSourceDirectoryProviderTest {
     /**
      * Temporary Files and Directories.
      */
-    private final TemporaryFileManager fileManager
-            = new TemporaryFileManager();
+    private final TemporaryFileManager fileManager = new TemporaryFileManager();
 
     /**
      * Prepare each test.
@@ -75,8 +71,11 @@ public class DefaultSourceDirectoryProviderTest {
         //when
         build.setSourceDirectory(directory);
         //then
-        assertThat(projects.get(0).getModel().getBuild().getSourceDirectory(),
-                is(directory));
+        final String sourceDirectory = projects.get(0)
+                                               .getModel()
+                                               .getBuild()
+                                               .getSourceDirectory();
+        assertThat(sourceDirectory).isEqualTo(directory);
     }
 
     /**
@@ -94,9 +93,7 @@ public class DefaultSourceDirectoryProviderTest {
         //when
         List<String> directories = provider.getDirectories(projects, true);
         //then
-        assertThat(directories.size(), is(2));
-        assertTrue(directories.contains(sources));
-        assertTrue(directories.contains(tests));
+        assertThat(directories).containsExactly(sources, tests);
     }
 
     /**
@@ -115,9 +112,7 @@ public class DefaultSourceDirectoryProviderTest {
         //when
         List<String> directories = provider.getDirectories(projects, true);
         //then
-        assertThat(directories.size(), is(1));
-        assertTrue(directories.contains(sources));
-        assertFalse(directories.contains(tests));
+        assertThat(directories).containsExactly(sources).doesNotContain(tests);
     }
 
     /**
@@ -133,8 +128,7 @@ public class DefaultSourceDirectoryProviderTest {
         //when
         List<String> directories = provider.getDirectories(projects, true);
         //then
-        assertThat(directories.size(), is(1));
-        assertTrue(directories.contains(sources));
+        assertThat(directories).containsExactly(sources);
     }
 
     /**
@@ -148,8 +142,6 @@ public class DefaultSourceDirectoryProviderTest {
         //when
         List<String> directories = provider.getDirectories(projects, true);
         //then
-        assertThat(directories.size(), is(0));
-        assertFalse(directories.contains(sources));
+        assertThat(directories).isEmpty();
     }
-
 }

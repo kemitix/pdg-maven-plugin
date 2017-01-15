@@ -1,14 +1,12 @@
 package net.kemitix.dependency.digraph.maven.plugin.digraph;
 
 import lombok.val;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.CoreMatchers.is;
 import static org.mockito.BDDMockito.given;
 
 import net.kemitix.dependency.digraph.maven.plugin.DotFileFormat;
@@ -53,8 +51,7 @@ public class EdgeElementTest {
         //when
         val edgeElement = new EdgeElement(tail, head, dotFileFormat);
         //then
-        Assert.assertThat(edgeElement.getTail(), is(tail));
-        Assert.assertThat(edgeElement.getHead(), is(head));
+        assertThat(edgeElement.getTail()).isEqualTo(tail);
+        assertThat(edgeElement.getHead()).isEqualTo(head);
     }
-
 }

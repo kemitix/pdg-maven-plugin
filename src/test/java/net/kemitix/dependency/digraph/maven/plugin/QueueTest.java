@@ -2,13 +2,12 @@ package net.kemitix.dependency.digraph.maven.plugin;
 
 import org.junit.Test;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
 import java.util.List;
-
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
 
 /**
  * Tests to confirm the behaviour of the Deque implementation.
@@ -32,8 +31,7 @@ public class QueueTest {
         queue.push(item1);
         queue.push(item2);
         //then
-        queue.forEach((String item) -> readOrder.add(item));
-        assertThat(readOrder.get(0), is(item2));
-        assertThat(readOrder.get(1), is(item1));
+        readOrder.addAll(queue);
+        assertThat(readOrder).containsExactly(item2, item1);
     }
 }

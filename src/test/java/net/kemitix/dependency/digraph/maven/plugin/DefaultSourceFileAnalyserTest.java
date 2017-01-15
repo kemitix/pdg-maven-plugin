@@ -3,7 +3,6 @@ package net.kemitix.dependency.digraph.maven.plugin;
 import org.apache.maven.plugin.logging.Log;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.invocation.InvocationOnMock;
@@ -25,10 +24,6 @@ import java.io.InputStream;
  */
 public class DefaultSourceFileAnalyserTest {
 
-    /**
-     * Class under test.
-     */
-    @InjectMocks
     private DefaultSourceFileAnalyser analyser;
 
     @Mock
@@ -46,6 +41,7 @@ public class DefaultSourceFileAnalyserTest {
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
+        analyser = new DefaultSourceFileAnalyser(mojo);
         doReturn(log).when(mojo).getLog();
         doAnswer((InvocationOnMock invocation) -> {
             System.out.println(invocation.<String>getArgument(0));
