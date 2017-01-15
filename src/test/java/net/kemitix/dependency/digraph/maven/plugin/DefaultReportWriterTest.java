@@ -4,15 +4,13 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.List;
-
-import static java.nio.charset.StandardCharsets.UTF_8;
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
 
 /**
  * Tests for {@link DefaultReportWriter}.
@@ -59,8 +57,7 @@ public class DefaultReportWriterTest {
         reportWriter.write(report, file.toString());
         //then
         List<String> content = Files.readAllLines(file.toPath(), UTF_8);
-        assertThat(content.size(), is(1));
-        assertEquals(report, content.get(0));
+        assertThat(content).containsExactly(report);
     }
 
     /**
@@ -78,5 +75,4 @@ public class DefaultReportWriterTest {
         //then
         // no exception is thrown
     }
-
 }

@@ -48,5 +48,4 @@ public class DefaultSourceFileVisitorTest {
         //then
         assertThat(fileVisitor.getJavaFiles()).doesNotContain(file.toFile());
     }
-
 }

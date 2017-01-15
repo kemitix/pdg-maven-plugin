@@ -4,10 +4,8 @@ import lombok.val;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
-import net.kemitix.node.Node;
 import net.kemitix.node.Nodes;
 
 /**
@@ -41,7 +39,7 @@ public class DefaultNodePathGeneratorTest {
         //when
         val result = generator.getPath(root, root, ".");
         //then
-        assertThat(result, is(""));
+        assertThat(result).isEmpty();
     }
 
     /**
@@ -60,7 +58,7 @@ public class DefaultNodePathGeneratorTest {
         //when
         val result = generator.getPath(child, root, ".");
         //then
-        assertThat(result, is(childName));
+        assertThat(result).isEqualTo(childName);
     }
 
     /**
@@ -83,7 +81,6 @@ public class DefaultNodePathGeneratorTest {
         //when
         val result = generator.getPath(grandchild, root, ".");
         //then
-        assertThat(result, is(childName + "." + grandchildName));
+        assertThat(result).isEqualTo(childName + "." + grandchildName);
     }
-
 }

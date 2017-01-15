@@ -4,10 +4,7 @@ import lombok.val;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.hamcrest.CoreMatchers.hasItem;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.not;
-import static org.junit.Assert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -19,16 +16,10 @@ import java.util.Set;
  */
 public class PackageDataTest {
 
-    /**
-     * Class under test.
-     */
     private PackageData data;
 
     private String name;
 
-    /**
-     * Prepare each test.
-     */
     @Before
     public void setUp() {
         name = "name";
@@ -40,7 +31,7 @@ public class PackageDataTest {
      */
     @Test
     public void shouldGetName() {
-        assertThat(data.getName(), is(name));
+        assertThat(data.getName()).isEqualTo(name);
     }
 
     /**
@@ -52,7 +43,7 @@ public class PackageDataTest {
         String name2 = "name2";
         val data2 = PackageData.newInstance(name2);
         //then
-        assertThat(data.hashCode(), is(not(data2.hashCode())));
+        assertThat(data.hashCode()).isNotEqualTo(data2.hashCode());
     }
 
     /**
@@ -63,7 +54,7 @@ public class PackageDataTest {
         //given
         val data2 = PackageData.newInstance(name);
         //then
-        assertThat(data, is(data2));
+        assertThat(data).isEqualTo(data2).isNotSameAs(data2);
     }
 
     /**
@@ -78,7 +69,7 @@ public class PackageDataTest {
         //when
         set.add(data);
         //then
-        assertThat(set, hasItem(data2));
+        assertThat(set).contains(data2);
     }
 
     @Test
@@ -86,7 +77,7 @@ public class PackageDataTest {
         //given
         val data = PackageData.newInstance("name");
         //then
-        assertThat(data.equals(null), is(false));
+        assertThat(data).isNotNull();
     }
 
     @Test
@@ -94,6 +85,6 @@ public class PackageDataTest {
         //given
         val data = PackageData.newInstance("name");
         //then
-        assertThat(data.equals("not PackageData"), is(false));
+        assertThat(data).isNotEqualTo("not PackageData");
     }
 }
