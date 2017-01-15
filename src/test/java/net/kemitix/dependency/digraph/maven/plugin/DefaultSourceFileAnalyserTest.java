@@ -3,21 +3,19 @@ package net.kemitix.dependency.digraph.maven.plugin;
 import org.apache.maven.plugin.logging.Log;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.invocation.InvocationOnMock;
-import org.mockito.stubbing.Answer;
+
+import static java.nio.charset.StandardCharsets.UTF_8;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.doAnswer;
+import static org.mockito.BDDMockito.doReturn;
+import static org.mockito.BDDMockito.then;
+import static org.mockito.Mockito.times;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
-
-import static java.nio.charset.StandardCharsets.UTF_8;
-import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.doAnswer;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
 
 /**
  * Tests for {@link DefaultSourceFileAnalyser}.
@@ -26,10 +24,6 @@ import static org.mockito.Mockito.verify;
  */
 public class DefaultSourceFileAnalyserTest {
 
-    /**
-     * Class under test.
-     */
-    @InjectMocks
     private DefaultSourceFileAnalyser analyser;
 
     @Mock
@@ -47,9 +41,10 @@ public class DefaultSourceFileAnalyserTest {
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
+        analyser = new DefaultSourceFileAnalyser(mojo);
         doReturn(log).when(mojo).getLog();
-        doAnswer((Answer) (InvocationOnMock invocation) -> {
-            System.out.println(invocation.getArgumentAt(0, String.class));
+        doAnswer((InvocationOnMock invocation) -> {
+            System.out.println(invocation.<String>getArgument(0));
             return null;
         }).when(log).info(any(String.class));
     }
@@ -70,8 +65,8 @@ public class DefaultSourceFileAnalyserTest {
         //when
         analyser.analyse(dependencyData, stream);
         //then
-        verify(dependencyData, times(3))
-                .addDependency("test.nested", "test.other");
+        then(dependencyData).should(times(3))
+                            .addDependency("test.nested", "test.other");
     }
 
     /**

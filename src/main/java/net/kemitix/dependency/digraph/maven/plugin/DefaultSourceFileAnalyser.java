@@ -25,7 +25,7 @@ SOFTWARE.
 package net.kemitix.dependency.digraph.maven.plugin;
 
 import com.github.javaparser.JavaParser;
-import com.github.javaparser.ParseException;
+import com.github.javaparser.ParseProblemException;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.ImportDeclaration;
 import com.github.javaparser.ast.PackageDeclaration;
@@ -69,14 +69,11 @@ class DefaultSourceFileAnalyser implements SourceFileAnalyser {
             final InputStream inputStream) {
         try {
             CompilationUnit cu = JavaParser.parse(inputStream);
-            final PackageDeclaration aPackage = cu.getPackage();
-            if (aPackage != null) {
-                analyseUnit(aPackage, cu, dependencyData);
-            }
-        } catch (ParseException ex) {
+            cu.getPackageDeclaration()
+              .ifPresent(pd -> analyseUnit(pd, cu, dependencyData));
+        } catch (ParseProblemException ex) {
             mojo.getLog().error("Error parsing file " + inputStream, ex);
         }
-
     }
 
     private void analyseUnit(

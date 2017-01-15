@@ -28,7 +28,7 @@ public class NodeHelperTest {
         //when
         val result = NodeHelper.getRequiredData(node);
         //then
-        assertThat(result).isSameAs(data);
+        assertThat(result).isEqualTo(data);
     }
 
     @Test
@@ -36,14 +36,12 @@ public class NodeHelperTest {
         //given
         exception.expect(IllegalStateException.class);
         exception.expectMessage("Node has no package data");
-        val node = Nodes.unnamedRoot((PackageData) null);
         //when
-        NodeHelper.getRequiredData(node);
+        NodeHelper.getRequiredData(Nodes.unnamedRoot(null));
     }
 
     @Test
     public void exercisePrivateDefaultConstructor() {
         ReflectUtils.newInstance(NodeHelper.class);
     }
-
 }

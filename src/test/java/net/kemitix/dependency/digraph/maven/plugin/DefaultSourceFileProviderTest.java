@@ -3,17 +3,15 @@ package net.kemitix.dependency.digraph.maven.plugin;
 import org.apache.maven.plugin.logging.Log;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.BDDMockito.doThrow;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.verify;
+import static org.mockito.BDDMockito.then;
 
 import java.io.File;
 import java.io.IOException;
@@ -29,7 +27,6 @@ import java.util.List;
  */
 public class DefaultSourceFileProviderTest {
 
-    @InjectMocks
     private DefaultSourceFileProvider sourceFileProvider;
 
     @Mock
@@ -48,6 +45,7 @@ public class DefaultSourceFileProviderTest {
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
+        sourceFileProvider = new DefaultSourceFileProvider(fileVisitor, mojo);
         directories = new ArrayList<>();
         fileList = new ArrayList<>();
     }
@@ -69,27 +67,31 @@ public class DefaultSourceFileProviderTest {
         //when
         List<File> files = sourceFileProvider.process(directories);
         //then
-        verify(fileVisitor).visitFile(
-                eq(Paths.get(src, "test/nested/package-info.java")
-                        .toAbsolutePath()), any());
-        verify(fileVisitor).visitFile(
-                eq(Paths.get(src, "test/nested/Src.java").toAbsolutePath()),
-                any());
-        verify(fileVisitor).visitFile(
-                eq(Paths.get(src, "test/other/Imported.java").toAbsolutePath()),
-                any());
-        verify(fileVisitor).visitFile(
-                eq(Paths.get(src, "test/other/Static.java").toAbsolutePath()),
-                any());
-        verify(fileVisitor).visitFile(
-                eq(Paths.get(src, "test/other/StaticAll.java")
-                        .toAbsolutePath()), any());
-        verify(fileVisitor).visitFile(
-                eq(Paths.get(test, "ignored.properties").toAbsolutePath()),
-                any());
-        verify(fileVisitor).visitFile(
-                eq(Paths.get(test, "test/Tst.java").toAbsolutePath()), any());
-        assertThat(files, is(fileList));
+        then(fileVisitor).should()
+                         .visitFile(eq(Paths.get(src,
+                                 "test/nested/package-info.java")
+                                            .toAbsolutePath()), any());
+        then(fileVisitor).should()
+                         .visitFile(eq(Paths.get(src, "test/nested/Src.java")
+                                            .toAbsolutePath()), any());
+        then(fileVisitor).should()
+                         .visitFile(
+                                 eq(Paths.get(src, "test/other/Imported.java")
+                                         .toAbsolutePath()), any());
+        then(fileVisitor).should()
+                         .visitFile(eq(Paths.get(src, "test/other/Static.java")
+                                            .toAbsolutePath()), any());
+        then(fileVisitor).should()
+                         .visitFile(
+                                 eq(Paths.get(src, "test/other/StaticAll.java")
+                                         .toAbsolutePath()), any());
+        then(fileVisitor).should()
+                         .visitFile(eq(Paths.get(test, "ignored.properties")
+                                            .toAbsolutePath()), any());
+        then(fileVisitor).should()
+                         .visitFile(eq(Paths.get(test, "test/Tst.java")
+                                            .toAbsolutePath()), any());
+        assertThat(files).isEqualTo(fileList);
     }
 
     @Test
@@ -103,7 +105,6 @@ public class DefaultSourceFileProviderTest {
         //when
         sourceFileProvider.process(directories);
         //then
-        verify(mojo.getLog()).error(ex);
+        then(log).should().error(ex);
     }
-
 }

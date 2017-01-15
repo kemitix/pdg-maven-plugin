@@ -2,7 +2,6 @@ package net.kemitix.dependency.digraph.maven.plugin;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
@@ -18,7 +17,6 @@ import net.kemitix.node.Nodes;
  */
 public class DefaultDotFileFormatFactoryTest {
 
-    @InjectMocks
     private DefaultDotFileFormatFactory factory;
 
     @Mock
@@ -29,6 +27,7 @@ public class DefaultDotFileFormatFactoryTest {
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
+        factory = new DefaultDotFileFormatFactory(nodePathGenerator);
         base = Nodes.unnamedRoot(null);
     }
 
@@ -55,5 +54,4 @@ public class DefaultDotFileFormatFactoryTest {
         //then
         assertThat(result).isInstanceOf(DotFileFormatNested.class);
     }
-
 }
