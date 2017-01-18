@@ -26,7 +26,6 @@ package net.kemitix.dependency.digraph.maven.plugin;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
-import com.google.inject.Injector;
 import lombok.Setter;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugins.annotations.Mojo;
@@ -42,8 +41,6 @@ import java.util.List;
  */
 @Mojo(name = "digraph", aggregator = true)
 public class DigraphMojo extends AbstractMojo {
-
-    private final Injector injector;
 
     private final DigraphService digraphService;
 
@@ -69,14 +66,13 @@ public class DigraphMojo extends AbstractMojo {
      * Default constructor.
      */
     public DigraphMojo() {
-        injector = Guice.createInjector(new DigraphModule(),
+        digraphService = Guice.createInjector(new DigraphModule(),
                 new AbstractModule() {
                     @Override
                     protected void configure() {
                         bind(DigraphMojo.class).toInstance(DigraphMojo.this);
                     }
-                });
-        digraphService = injector.getInstance(DigraphService.class);
+                }).getInstance(DigraphService.class);
     }
 
     @Override
@@ -84,5 +80,4 @@ public class DigraphMojo extends AbstractMojo {
         digraphService.execute(this, projects, includeTests, basePackage,
                 format, debug);
     }
-
 }
