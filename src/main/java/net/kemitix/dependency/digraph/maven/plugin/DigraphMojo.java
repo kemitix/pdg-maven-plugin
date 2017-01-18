@@ -27,7 +27,6 @@ package net.kemitix.dependency.digraph.maven.plugin;
 import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
-import lombok.NonNull;
 import lombok.Setter;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugins.annotations.Mojo;
@@ -55,7 +54,6 @@ public class DigraphMojo extends AbstractMojo {
     @Parameter(name = "includeTests", defaultValue = "false")
     private boolean includeTests;
 
-    @NonNull
     @Setter
     @Parameter(name = "basePackage", required = true)
     private String basePackage;
