@@ -2,6 +2,7 @@ package net.kemitix.dependency.digraph.maven.plugin;
 
 import lombok.val;
 import net.kemitix.node.Node;
+import org.assertj.core.api.SoftAssertions;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -443,5 +444,25 @@ public class DefaultTreeFilterTest {
 
         // game depends on only model
         assertDependency(game, Collections.singletonList(model));
+    }
+
+    @Test
+    public void usesInFilteredTreeShouldShareNewRoot() {
+        //given
+        val dependencyData = TestBlackJackDependencyData.getDependencyData();
+        val baseNode = dependencyData.getBaseNode();
+        //when
+        /// include all nodes
+        val treeFilter = new DefaultTreeFilter(GraphFilter.of("", "", nodePathGenerator));
+        val filtered = treeFilter.filterTree(baseNode);
+        //then
+        SoftAssertions.assertSoftly(softly -> {
+            filtered.stream()
+                    .map(Node::getData)
+                    .flatMap(data -> data.getUses()
+                                         .stream())
+                    .forEach(use -> softly.assertThat(use.isDescendantOf(filtered))
+                                          .isTrue());
+        });
     }
 }
