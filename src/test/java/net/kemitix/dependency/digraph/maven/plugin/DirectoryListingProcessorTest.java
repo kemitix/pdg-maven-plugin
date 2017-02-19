@@ -6,11 +6,11 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import static org.mockito.BDDMockito.doReturn;
-import static org.mockito.BDDMockito.then;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.mockito.BDDMockito.doReturn;
+import static org.mockito.BDDMockito.then;
 
 /**
  * Tests for {@link DirectoryListingProcessor}.
@@ -31,7 +31,8 @@ public class DirectoryListingProcessorTest {
     public void setUp() {
         MockitoAnnotations.initMocks(this);
         listingProcessor = new DirectoryListingProcessor(mojo);
-        doReturn(log).when(mojo).getLog();
+        doReturn(log).when(mojo)
+                     .getLog();
     }
 
     /**
@@ -48,7 +49,9 @@ public class DirectoryListingProcessorTest {
         //when
         listingProcessor.process(directories);
         //then
-        then(log).should().info("* " + alpha);
-        then(log).should().info("* " + beta);
+        then(log).should()
+                 .info("* " + alpha);
+        then(log).should()
+                 .info("* " + beta);
     }
 }

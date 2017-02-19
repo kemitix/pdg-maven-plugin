@@ -30,12 +30,11 @@ import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.ImportDeclaration;
 import com.github.javaparser.ast.PackageDeclaration;
 
+import javax.annotation.concurrent.Immutable;
+import javax.inject.Inject;
 import java.io.InputStream;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import javax.annotation.concurrent.Immutable;
-import javax.inject.Inject;
 
 /**
  * Analyses a Java source file for package and import statements.
@@ -45,11 +44,9 @@ import javax.inject.Inject;
 @Immutable
 class DefaultSourceFileAnalyser implements SourceFileAnalyser {
 
-    private static final Pattern METHOD_IMPORT = Pattern.compile(
-            "^(?<package>.+)\\.(?<class>.+)\\.(?<method>.+)");
+    private static final Pattern METHOD_IMPORT = Pattern.compile("^(?<package>.+)\\.(?<class>.+)\\.(?<method>.+)");
 
-    private static final Pattern CLASS_IMPORT = Pattern.compile(
-            "^(?<package>.+)\\.(?<class>.+)");
+    private static final Pattern CLASS_IMPORT = Pattern.compile("^(?<package>.+)\\.(?<class>.+)");
 
     private final DigraphMojo mojo;
 
@@ -65,32 +62,36 @@ class DefaultSourceFileAnalyser implements SourceFileAnalyser {
 
     @Override
     public void analyse(
-            final DependencyData dependencyData,
-            final InputStream inputStream) {
+            final DependencyData dependencyData, final InputStream inputStream
+                       ) {
         try {
             CompilationUnit cu = JavaParser.parse(inputStream);
             cu.getPackageDeclaration()
               .ifPresent(pd -> analyseUnit(pd, cu, dependencyData));
         } catch (ParseProblemException ex) {
-            mojo.getLog().error("Error parsing file " + inputStream, ex);
+            mojo.getLog()
+                .error("Error parsing file " + inputStream, ex);
         }
     }
 
     private void analyseUnit(
-            final PackageDeclaration aPackage, final CompilationUnit cu,
-            final DependencyData dependencyData) {
-        String packageName = aPackage.getName().toString();
-        cu.getImports().forEach((ImportDeclaration id) -> {
-            final String name = id.getName().toString();
-            Matcher m;
-            if (id.isStatic() && !id.isAsterisk()) {
-                m = METHOD_IMPORT.matcher(name);
-            } else {
-                m = CLASS_IMPORT.matcher(name);
-            }
-            if (m.find()) {
-                dependencyData.addDependency(packageName, m.group("package"));
-            }
-        });
+            final PackageDeclaration aPackage, final CompilationUnit cu, final DependencyData dependencyData
+                            ) {
+        String packageName = aPackage.getName()
+                                     .toString();
+        cu.getImports()
+          .forEach((ImportDeclaration id) -> {
+              final String name = id.getName()
+                                    .toString();
+              Matcher m;
+              if (id.isStatic() && !id.isAsterisk()) {
+                  m = METHOD_IMPORT.matcher(name);
+              } else {
+                  m = CLASS_IMPORT.matcher(name);
+              }
+              if (m.find()) {
+                  dependencyData.addDependency(packageName, m.group("package"));
+              }
+          });
     }
 }

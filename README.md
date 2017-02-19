@@ -27,6 +27,8 @@ Add the following build plugin to your pom.xml:
                     <!-- <includeTests>false</includeTests> -->
                     <!-- <debug>true</debug> -->
                     <!-- <format>nested</format> -->
+                    <!-- <exclude>string</exclude> -->
+                    <!-- <include>string</include> -->
                 </configuration>
             </plugin>
 
@@ -50,3 +52,13 @@ nested packages that were scanned. Default is `true`.
 
 Which style of digraph to create. Default is `nested` which attempts to cluster
 packages within their parent package. The alternative is `simple`.
+
+### exclude
+
+Any package that matches the exclude string will be excluded.
+
+### include
+
+Only packages that match the include string will be included. Packages
+that are used by or use such included packages directly will also be
+included.

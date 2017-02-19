@@ -25,14 +25,12 @@ SOFTWARE.
 package net.kemitix.dependency.digraph.maven.plugin;
 
 import lombok.Getter;
+import net.kemitix.node.Node;
 
+import javax.annotation.concurrent.Immutable;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
-
-import javax.annotation.concurrent.Immutable;
-
-import net.kemitix.node.Node;
 
 /**
  * Defines a package.
@@ -77,8 +75,7 @@ public final class PackageData {
      *
      * @param obj the other object to compare against
      *
-     * @return {@code true} if this object is the same as the obj argument;
-     * {@code false} otherwise.
+     * @return {@code true} if this object is the same as the obj argument; {@code false} otherwise.
      */
     @Override
     public boolean equals(final Object obj) {
@@ -94,6 +91,16 @@ public final class PackageData {
 
     Set<Node<PackageData>> getUses() {
         return new HashSet<>(uses);
+    }
+
+    /**
+     * Replace the set of packages used by this node.
+     *
+     * @param uses The new package used set
+     */
+    void setUses(final Set<Node<PackageData>> uses) {
+        this.uses.clear();
+        this.uses.addAll(uses);
     }
 
     /**

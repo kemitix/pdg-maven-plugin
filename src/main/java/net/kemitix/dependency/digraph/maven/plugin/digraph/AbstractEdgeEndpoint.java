@@ -24,12 +24,12 @@ SOFTWARE.
 
 package net.kemitix.dependency.digraph.maven.plugin.digraph;
 
-import javax.annotation.concurrent.Immutable;
-
+import lombok.Getter;
 import net.kemitix.dependency.digraph.maven.plugin.DotFileFormat;
-import net.kemitix.dependency.digraph.maven.plugin.NodeHelper;
 import net.kemitix.dependency.digraph.maven.plugin.PackageData;
 import net.kemitix.node.Node;
+
+import javax.annotation.concurrent.Immutable;
 
 /**
  * .
@@ -37,30 +37,21 @@ import net.kemitix.node.Node;
  * @author Paul Campbell (pcampbell@kemitix.net)
  */
 @Immutable
-abstract class AbstractEdgeEndpoint extends AbstractGraphElement
-        implements EdgeEndpoint {
+abstract class AbstractEdgeEndpoint extends AbstractGraphElement implements EdgeEndpoint {
 
+    @Getter
     private final Node<PackageData> packageDataNode;
 
     /**
      * Constructor.
      *
-     * @param dotFileFormat The generator for the Dot File
+     * @param dotFileFormat   The generator for the Dot File
      * @param packageDataNode The Node containing the PackageData
      */
     AbstractEdgeEndpoint(
-            final DotFileFormat dotFileFormat,
-            final Node<PackageData> packageDataNode) {
+            final DotFileFormat dotFileFormat, final Node<PackageData> packageDataNode
+                        ) {
         super(dotFileFormat);
         this.packageDataNode = packageDataNode;
-    }
-
-    /**
-     * Creates a copy of the package data node and returns it.
-     *
-     * @return a copy of the package data node
-     */
-    public Node<PackageData> getPackageDataNode() {
-        return NodeHelper.copyOf(packageDataNode);
     }
 }

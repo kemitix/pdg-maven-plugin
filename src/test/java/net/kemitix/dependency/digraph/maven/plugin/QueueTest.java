@@ -2,12 +2,12 @@ package net.kemitix.dependency.digraph.maven.plugin;
 
 import org.junit.Test;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
 import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Tests to confirm the behaviour of the Deque implementation.

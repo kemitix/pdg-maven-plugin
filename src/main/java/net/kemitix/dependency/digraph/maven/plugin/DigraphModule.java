@@ -25,6 +25,7 @@ SOFTWARE.
 package net.kemitix.dependency.digraph.maven.plugin;
 
 import com.google.inject.AbstractModule;
+import lombok.RequiredArgsConstructor;
 
 import javax.annotation.concurrent.Immutable;
 
@@ -34,14 +35,20 @@ import javax.annotation.concurrent.Immutable;
  * @author Paul Campbell (pcampbell@kemitix.net)
  */
 @Immutable
+@RequiredArgsConstructor
 class DigraphModule extends AbstractModule {
+
+    private final DigraphMojo digraphMojo;
+
+    private final GraphFilter graphFilter;
 
     @Override
     protected void configure() {
+        bind(DigraphMojo.class).toInstance(digraphMojo);
+        bind(GraphFilter.class).toInstance(graphFilter);
         bind(DigraphService.class).to(DefaultDigraphService.class);
         bind(DotFileFormatFactory.class).to(DefaultDotFileFormatFactory.class);
-        bind(SourceDirectoryProvider.class).to(
-                DefaultSourceDirectoryProvider.class);
+        bind(SourceDirectoryProvider.class).to(DefaultSourceDirectoryProvider.class);
         bind(SourceFileProvider.class).to(DefaultSourceFileProvider.class);
         bind(SourceFileVisitor.class).to(DefaultSourceFileVisitor.class);
         bind(FileLoader.class).to(DefaultFileLoader.class);
@@ -49,6 +56,7 @@ class DigraphModule extends AbstractModule {
         bind(ReportGenerator.class).to(DotFileReportGenerator.class);
         bind(ReportWriter.class).to(DefaultReportWriter.class);
         bind(NodePathGenerator.class).to(DefaultNodePathGenerator.class);
+        bind(TreeFilter.class).to(DefaultTreeFilter.class);
     }
 
 }

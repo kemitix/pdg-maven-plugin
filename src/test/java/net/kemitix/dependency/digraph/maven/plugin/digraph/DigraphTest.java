@@ -1,6 +1,9 @@
 package net.kemitix.dependency.digraph.maven.plugin.digraph;
 
 import lombok.val;
+import net.kemitix.dependency.digraph.maven.plugin.DotFileFormat;
+import net.kemitix.dependency.digraph.maven.plugin.PackageData;
+import net.kemitix.node.Node;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -8,10 +11,6 @@ import org.mockito.MockitoAnnotations;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
-
-import net.kemitix.dependency.digraph.maven.plugin.DotFileFormat;
-import net.kemitix.dependency.digraph.maven.plugin.PackageData;
-import net.kemitix.node.Node;
 
 /**
  * Tests for {@link DigraphTest}.
@@ -66,8 +65,7 @@ public class DigraphTest {
         digraph.add(nodeProperties);
 
         // subgraph alpha
-        val subgraphAlpha = new Subgraph(alphaNode, "a", "alpha",
-                dotFileFormat);
+        val subgraphAlpha = new Subgraph(alphaNode, "a", "alpha", dotFileFormat);
         val nodeElement = new NodeElement(testNode, "t", "test", dotFileFormat);
         subgraphAlpha.add(nodeElement);
         digraph.add(subgraphAlpha);
@@ -77,8 +75,7 @@ public class DigraphTest {
         subgraphAlpha.add(nodeBeta);
 
         // Node gamma
-        val nodeGamma = new NodeElement(gammaNode, "gamma", "gamma",
-                dotFileFormat);
+        val nodeGamma = new NodeElement(gammaNode, "gamma", "gamma", dotFileFormat);
         digraph.add(nodeGamma);
 
         // gamma -> beta
@@ -88,11 +85,11 @@ public class DigraphTest {
         //then
         val digraphElements = digraph.getElements();
         assertThat(digraphElements).hasSize(5)
-                                   .contains(nodeProperties, subgraphAlpha,
-                                           nodeGamma, gammaUsesBeta)
+                                   .contains(nodeProperties, subgraphAlpha, nodeGamma, gammaUsesBeta)
                                    .doesNotContain(nodeBeta);
 
         val subgraphElements = subgraphAlpha.getElements();
-        assertThat(subgraphElements).hasSize(2).contains(nodeElement, nodeBeta);
+        assertThat(subgraphElements).hasSize(2)
+                                    .contains(nodeElement, nodeBeta);
     }
 }

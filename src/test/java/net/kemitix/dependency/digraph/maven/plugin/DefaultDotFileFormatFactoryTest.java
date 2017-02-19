@@ -1,14 +1,15 @@
 package net.kemitix.dependency.digraph.maven.plugin;
 
+import net.kemitix.node.Node;
+import net.kemitix.node.Nodes;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import static org.assertj.core.api.Assertions.assertThat;
-
-import net.kemitix.node.Node;
-import net.kemitix.node.Nodes;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
 
 /**
  * Tests for {@link DefaultDotFileFormatFactory}.
@@ -24,11 +25,20 @@ public class DefaultDotFileFormatFactoryTest {
 
     private Node<PackageData> base;
 
+    @Mock
+    private GraphFilter graphFilter;
+
+    @Mock
+    private TreeFilter treeFilter;
+
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
-        factory = new DefaultDotFileFormatFactory(nodePathGenerator);
+        factory = new DefaultDotFileFormatFactory(nodePathGenerator, graphFilter, treeFilter);
         base = Nodes.unnamedRoot(null);
+        /// default behaviour without any filters is to include
+        given(graphFilter.filterNodes(any())).willReturn(true);
+        given(treeFilter.filterTree(base)).willReturn(base);
     }
 
     @Test

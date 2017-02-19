@@ -24,9 +24,8 @@ SOFTWARE.
 
 package net.kemitix.dependency.digraph.maven.plugin;
 
-import org.apache.maven.plugin.logging.Log;
-
 import net.kemitix.node.Node;
+import org.apache.maven.plugin.logging.Log;
 
 /**
  * Interface for storing package and class dependency data.
@@ -39,8 +38,7 @@ interface DependencyData {
      * Records a dependency between the user class and the imported class.
      *
      * @param user     the package that is using the import
-     * @param imported the package that contains the class that is being
-     *                 imported
+     * @param imported the package that contains the class that is being imported
      */
     void addDependency(String user, String imported);
 
@@ -58,4 +56,8 @@ interface DependencyData {
      */
     void debugLog(Log log);
 
+    /**
+     * Update names of all nodes.
+     */
+    void updateNames();
 }

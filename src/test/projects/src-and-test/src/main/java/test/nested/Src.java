@@ -3,7 +3,8 @@ package test.nested;
 import test.other.Imported;
 
 import static test.other.Static.method;
-import static test.other.StaticAll.*;
+import static test.other.StaticAll.alpha;
+import static test.other.StaticAll.beta;
 
 public class Src {
 

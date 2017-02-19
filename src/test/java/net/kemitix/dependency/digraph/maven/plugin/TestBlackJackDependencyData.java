@@ -22,49 +22,36 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-package net.kemitix.dependency.digraph.maven.plugin.digraph;
+package net.kemitix.dependency.digraph.maven.plugin;
 
-import lombok.Getter;
-import net.kemitix.dependency.digraph.maven.plugin.DotFileFormat;
-
-import javax.annotation.concurrent.Immutable;
+import lombok.val;
 
 /**
- * Represents an edge (line) on the graph.
+ * Test structure using the BlackJack sample structure.
  *
  * @author Paul Campbell (pcampbell@kemitix.net)
  */
-@Getter
-@Immutable
-public class EdgeElement extends AbstractGraphElement {
+class TestBlackJackDependencyData {
 
-    /**
-     * Where the arrow is pointing from.
-     */
-    private final EdgeEndpoint tail;
+    private static final String CLI = "net.kemitix.blackjack.cli";
 
-    /**
-     * Where the arrow is pointing to.
-     */
-    private final EdgeEndpoint head;
+    private static final String GAME = "net.kemitix.blackjack.game";
 
-    /**
-     * Constructor.
-     *
-     * @param tail          the tail (origin of the edge)
-     * @param head          the head (destination of the edge)
-     * @param dotFileFormat the output format
-     */
-    public EdgeElement(
-            final EdgeEndpoint tail, final EdgeEndpoint head, final DotFileFormat dotFileFormat
-                      ) {
-        super(dotFileFormat);
-        this.tail = tail;
-        this.head = head;
-    }
+    private static final String CONSOLE = "net.kemitix.blackjack.cli.console";
 
-    @Override
-    public final String render() {
-        return getDotFileFormat().render(this);
+    private static final String MODEL = "net.kemitix.blackjack.model";
+
+    static DependencyData getDependencyData() {
+        val dependencyData = NodeTreeDependencyData.newInstance("net.kemitix.blackjack");
+
+        dependencyData.addDependency(CLI, GAME);
+        dependencyData.addDependency(CLI, CONSOLE);
+        dependencyData.addDependency(CLI, MODEL);
+        dependencyData.addDependency(GAME, CONSOLE);
+        dependencyData.addDependency(GAME, MODEL);
+
+        dependencyData.updateNames();
+
+        return dependencyData;
     }
 }

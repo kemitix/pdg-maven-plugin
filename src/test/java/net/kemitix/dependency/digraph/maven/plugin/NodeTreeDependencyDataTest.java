@@ -1,5 +1,6 @@
 package net.kemitix.dependency.digraph.maven.plugin;
 
+import net.kemitix.node.Node;
 import org.apache.maven.plugin.logging.Log;
 import org.junit.Before;
 import org.junit.Test;
@@ -8,8 +9,6 @@ import org.mockito.MockitoAnnotations;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.then;
-
-import net.kemitix.node.Node;
 
 /**
  * Tests for {@link NodeTreeDependencyData}.
@@ -34,7 +33,8 @@ public class NodeTreeDependencyDataTest {
         //when
         Node<PackageData> baseNode = data.getBaseNode();
         //then
-        assertThat(baseNode.getData().get().getName()).isEqualTo("kemitix");
+        assertThat(baseNode.getData()
+                           .getName()).isEqualTo("kemitix");
     }
 
     @Test
@@ -44,10 +44,8 @@ public class NodeTreeDependencyDataTest {
         //when
         data.addDependency("net.kemitix.alpha", "net.kemitix.beta");
         //then
-        assertThat(baseNode.findChild(
-                PackageData.newInstance("alpha"))).isNotEmpty();
-        assertThat(baseNode.findChild(
-                PackageData.newInstance("beta"))).isNotEmpty();
+        assertThat(baseNode.findChild(PackageData.newInstance("alpha"))).isNotEmpty();
+        assertThat(baseNode.findChild(PackageData.newInstance("beta"))).isNotEmpty();
     }
 
     /**
@@ -60,8 +58,11 @@ public class NodeTreeDependencyDataTest {
         //when
         data.debugLog(log);
         //then
-        then(log).should().info("kemitix");
-        then(log).should().info("  alpha");
-        then(log).should().info("  beta");
+        then(log).should()
+                 .info("kemitix");
+        then(log).should()
+                 .info("  alpha");
+        then(log).should()
+                 .info("  beta");
     }
 }

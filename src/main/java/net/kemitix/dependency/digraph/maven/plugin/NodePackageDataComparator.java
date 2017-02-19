@@ -25,13 +25,11 @@ SOFTWARE.
 package net.kemitix.dependency.digraph.maven.plugin;
 
 import lombok.NoArgsConstructor;
-
-import java.io.Serializable;
-import java.util.Comparator;
+import net.kemitix.node.Node;
 
 import javax.annotation.concurrent.Immutable;
-
-import net.kemitix.node.Node;
+import java.io.Serializable;
+import java.util.Comparator;
 
 /**
  * Comparator for sorting {@link PackageData} {@link Node}s.
@@ -41,14 +39,13 @@ import net.kemitix.node.Node;
 @NoArgsConstructor
 @Immutable
 @SuppressWarnings("serial")
-class NodePackageDataComparator
-        implements Comparator<Node<PackageData>>, Serializable {
+class NodePackageDataComparator implements Comparator<Node<PackageData>>, Serializable {
 
     @Override
-    public int compare(
-            final Node<PackageData> o1, final Node<PackageData> o2) {
-        return NodeHelper.getRequiredData(o1)
-                         .getName()
-                         .compareTo(NodeHelper.getRequiredData(o2).getName());
+    public int compare(final Node<PackageData> o1, final Node<PackageData> o2) {
+        return o1.getData()
+                 .getName()
+                 .compareTo(o2.getData()
+                              .getName());
     }
 }

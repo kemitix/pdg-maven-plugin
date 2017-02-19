@@ -1,12 +1,11 @@
 package net.kemitix.dependency.digraph.maven.plugin;
 
 import lombok.val;
+import net.kemitix.node.Nodes;
 import org.junit.Before;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
-
-import net.kemitix.node.Nodes;
 
 /**
  * Tests for {@link DefaultNodePathGenerator}.

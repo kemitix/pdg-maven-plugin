@@ -1,6 +1,7 @@
 package net.kemitix.dependency.digraph.maven.plugin.digraph;
 
 import lombok.val;
+import net.kemitix.dependency.digraph.maven.plugin.DotFileFormat;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -8,8 +9,6 @@ import org.mockito.MockitoAnnotations;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
-
-import net.kemitix.dependency.digraph.maven.plugin.DotFileFormat;
 
 /**
  * Tests for {@link PropertyElement}.
@@ -29,8 +28,7 @@ public class PropertyElementTest {
     @Test
     public void shouldRender() {
         //given
-        val propertyElement = new PropertyElement("name", "value",
-                dotFileFormat);
+        val propertyElement = new PropertyElement("name", "value", dotFileFormat);
         val expected = "rendered property element";
         given(dotFileFormat.render(propertyElement)).willReturn(expected);
         //then
