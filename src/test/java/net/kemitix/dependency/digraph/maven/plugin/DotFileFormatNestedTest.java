@@ -246,14 +246,20 @@ public class DotFileFormatNestedTest {
                   .as("exclude usage by prohibited node")
                   .doesNotContain("\"three\"->\"four\"}");
             softly.assertThat(report)
-                  .as("valid nodes")
-                  .contains("\"one\"")
-                  .contains("\"two\"")
+                  .as("valid nodes: one")
+                  .contains("\"one\"");
+            softly.assertThat(report)
+                  .as("valid nodes: two")
+                  .contains("\"two\"");
+            softly.assertThat(report)
+                  .as("valid nodes: three")
                   .contains("\"four\"");
             softly.assertThat(report)
-                  .as("include valid usages")
-                  .contains("\"one\"->\"two\"")
+                  .as("include valid usages: one -> four")
                   .contains("\"one\"->\"four\"");
+            softly.assertThat(report)
+                  .as("include valid usages: one -> two")
+                  .contains("\"one\"->\"two\"}");
             softly.assertThat(report);
         });
     }
