@@ -30,7 +30,10 @@ import net.kemitix.node.Nodes;
 
 import javax.inject.Inject;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.function.Function;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -43,14 +46,18 @@ class DefaultTreeFilter implements TreeFilter {
 
     private final GraphFilter graphFilter;
 
+    private final NodePathGenerator nodePathGenerator;
+
     /**
      * Constructor.
      *
-     * @param graphFilter The Graph Filter.
+     * @param graphFilter       The Graph Filter.
+     * @param nodePathGenerator The Node Path Generator
      */
     @Inject
-    DefaultTreeFilter(final GraphFilter graphFilter) {
+    DefaultTreeFilter(final GraphFilter graphFilter, final NodePathGenerator nodePathGenerator) {
         this.graphFilter = graphFilter;
+        this.nodePathGenerator = nodePathGenerator;
     }
 
     @Override
@@ -63,7 +70,35 @@ class DefaultTreeFilter implements TreeFilter {
                                .flatMap(node -> Stream.concat(Stream.of(node), node.parentStream()))
                                .distinct()
                                .collect(Collectors.toList());
-        return duplicateNode(root, validNodes);
+        val duplicateTree = duplicateNode(root, validNodes);
+        fixUpUses(duplicateTree, root);
+        return duplicateTree;
+    }
+
+    private void fixUpUses(final Node<PackageData> target, final Node<PackageData> root) {
+        val targetMap = target.stream()
+                              .collect(nodeMapCollector(target));
+        target.stream()
+              .map(Node::getData)
+              .forEach(data -> data.setUses(data.getUses()
+                                                .stream()
+                                                .map(use -> packageName(root, use))
+                                                .filter(targetMap::containsKey)
+                                                .map(targetMap::get)
+                                                .collect(Collectors.toSet())));
+        target.stream()
+              .forEach(node -> node.setName(node.getData()
+                                                .getName()));
+    }
+
+    private String packageName(final Node<PackageData> root, final Node<PackageData> use) {
+        return nodePathGenerator.getPath(use, root, ".");
+    }
+
+    private Collector<Node<PackageData>, ?, Map<String, Node<PackageData>>> nodeMapCollector(
+            final Node<PackageData> legacy
+                                                                                            ) {
+        return Collectors.toMap(node -> packageName(legacy, node), Function.identity());
     }
 
     // get list of nodes to be included because they use an included node
