@@ -232,10 +232,14 @@ public class DotFileFormatNestedTest {
         val report = dotFileFormat.renderReport()
                                   .split(System.lineSeparator());
         //then
-        assertThat(report).doesNotContain("three")
+        assertThat(report).doesNotContain("\"three\"")
+                          .doesNotContain("\"one\"->\"three\"")
+                          .doesNotContain("\"three\"->\"four\"}")
                           .contains("\"one\"")
                           .contains("\"two\"")
-                          .contains("\"four\"");
+                          .contains("\"four\"")
+                          .contains("\"one\"->\"two\"")
+                          .contains("\"one\"->\"four\"");
     }
 
     @Test
@@ -254,8 +258,7 @@ public class DotFileFormatNestedTest {
         //then
         assertThat(report).doesNotContain("\"one\"->\"four\"")
                           .doesNotContain("\"one\"->\"two\"")
-                          .doesNotContain("two")
-                          .doesNotContain("four")
+                          .doesNotContain("\"two\"")
                           .contains("\"one\"")
                           .contains("\"three\"")
                           .contains("\"four\"")
