@@ -56,4 +56,8 @@ interface DependencyData {
      */
     void debugLog(Log log);
 
+    /**
+     * Update names of all nodes.
+     */
+    void updateNames();
 }

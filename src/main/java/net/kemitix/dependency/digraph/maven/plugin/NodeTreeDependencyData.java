@@ -84,6 +84,13 @@ final class NodeTreeDependencyData implements DependencyData {
         debugLogNode(log, baseNode, 0);
     }
 
+    @Override
+    public void updateNames() {
+        baseNode.stream()
+                .forEach(node -> node.setName(node.getData()
+                                                  .getName()));
+    }
+
     private List<PackageData> createPackageLineList(final String userPackage) {
         List<PackageData> line = new ArrayList<>();
         Arrays.asList(userPackage.split("\\."))

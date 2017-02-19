@@ -93,6 +93,7 @@ class DefaultDigraphService implements DigraphService {
                     .stream()
                     .map(fileLoader::asInputStream)
                     .forEach(in -> fileAnalyser.analyse(dependencyData, in));
+        dependencyData.updateNames();
         if (debug) {
             dependencyData.debugLog(mojo.getLog());
         }
