@@ -50,6 +50,8 @@ class TestBlackJackDependencyData {
         dependencyData.addDependency(GAME, CONSOLE);
         dependencyData.addDependency(GAME, MODEL);
 
+        dependencyData.updateNames();
+
         return dependencyData;
     }
 }
