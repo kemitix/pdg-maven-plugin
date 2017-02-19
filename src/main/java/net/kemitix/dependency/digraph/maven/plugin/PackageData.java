@@ -94,6 +94,16 @@ public final class PackageData {
     }
 
     /**
+     * Replace the set of packages used by this node.
+     *
+     * @param uses The new package used set
+     */
+    void setUses(final Set<Node<PackageData>> uses) {
+        this.uses.clear();
+        this.uses.addAll(uses);
+    }
+
+    /**
      * Notes that this package is a user of another package.
      *
      * @param packageDataNode the package that is used by this package
