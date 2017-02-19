@@ -28,11 +28,10 @@ import lombok.val;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.project.MavenProject;
 
-import java.io.IOException;
-import java.util.List;
-
 import javax.annotation.concurrent.Immutable;
 import javax.inject.Inject;
+import java.io.IOException;
+import java.util.List;
 
 /**
  * Default implementation of the Digraph Service.
@@ -71,12 +70,10 @@ class DefaultDigraphService implements DigraphService {
      */
     @Inject
     DefaultDigraphService(
-            final SourceDirectoryProvider directoryProvider,
-            final SourceFileProvider fileProvider, final FileLoader fileLoader,
-            final SourceFileAnalyser fileAnalyser,
-            final ReportGenerator reportGenerator,
-            final ReportWriter reportWriter,
-            final DotFileFormatFactory dotFileFormatFactory) {
+            final SourceDirectoryProvider directoryProvider, final SourceFileProvider fileProvider,
+            final FileLoader fileLoader, final SourceFileAnalyser fileAnalyser, final ReportGenerator reportGenerator,
+            final ReportWriter reportWriter, final DotFileFormatFactory dotFileFormatFactory
+                         ) {
         this.directoryProvider = directoryProvider;
         this.fileProvider = fileProvider;
         this.fileLoader = fileLoader;
@@ -88,12 +85,11 @@ class DefaultDigraphService implements DigraphService {
 
     @Override
     public void execute(
-            final AbstractMojo mojo, final List<MavenProject> projects,
-            final boolean includeTests, final String basePackage,
-            final String format, final boolean debug) {
+            final AbstractMojo mojo, final List<MavenProject> projects, final boolean includeTests,
+            final String basePackage, final String format, final boolean debug
+                       ) {
         val dependencyData = DigraphFactory.newDependencyData(basePackage);
-        fileProvider.process(
-                directoryProvider.getDirectories(projects, includeTests))
+        fileProvider.process(directoryProvider.getDirectories(projects, includeTests))
                     .stream()
                     .map(fileLoader::asInputStream)
                     .forEach(in -> fileAnalyser.analyse(dependencyData, in));
@@ -101,11 +97,13 @@ class DefaultDigraphService implements DigraphService {
             dependencyData.debugLog(mojo.getLog());
         }
         try {
-            reportWriter.write(reportGenerator.generate(
-                    dotFileFormatFactory.create(format,
-                            dependencyData.getBaseNode())), REPORT_FILE);
+            reportWriter.write(
+                    reportGenerator.generate(dotFileFormatFactory.create(format, dependencyData.getBaseNode())),
+                    REPORT_FILE
+                              );
         } catch (IOException ex) {
-            mojo.getLog().error(ex.getMessage());
+            mojo.getLog()
+                .error(ex.getMessage());
         }
     }
 }

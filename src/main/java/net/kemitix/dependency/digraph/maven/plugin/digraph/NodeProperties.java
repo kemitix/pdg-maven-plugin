@@ -25,13 +25,11 @@ SOFTWARE.
 package net.kemitix.dependency.digraph.maven.plugin.digraph;
 
 import lombok.Getter;
-
-import java.util.HashSet;
-import java.util.Set;
+import net.kemitix.dependency.digraph.maven.plugin.DotFileFormat;
 
 import javax.annotation.concurrent.Immutable;
-
-import net.kemitix.dependency.digraph.maven.plugin.DotFileFormat;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Properties for the nodes that follow.

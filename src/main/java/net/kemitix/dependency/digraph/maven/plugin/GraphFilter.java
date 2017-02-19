@@ -24,52 +24,54 @@ SOFTWARE.
 
 package net.kemitix.dependency.digraph.maven.plugin;
 
-import javax.annotation.concurrent.Immutable;
-
 import net.kemitix.node.Node;
-import net.kemitix.node.Nodes;
 
 /**
- * Helpers for Node.
+ * Filter for Graph.
  *
  * @author Paul Campbell (pcampbell@kemitix.net)
  */
-@Immutable
-public final class NodeHelper {
+interface GraphFilter {
 
-    private NodeHelper() {
+    /**
+     * Create a new GraphFilter.
+     *
+     * @param exclude           The exclusions
+     * @param include           The inclusions
+     * @param nodePathGenerator The Node Path Generator
+     *
+     * @return The filter
+     */
+    static GraphFilter of(
+            final String exclude, final String include, final NodePathGenerator nodePathGenerator
+                         ) {
+        return new DefaultGraphFilter(exclude, include, nodePathGenerator);
     }
 
     /**
-     * Fetch the {@link PackageData} from the node or throw an Exception if it
-     * has none.
+     * Filter the nodes.
      *
-     * @param node The Node to extract the PackageData from
+     * @param packageDataNode The PackageData Node
      *
-     * @return the PackageData within the Node
-     *
-     * @throws IllegalStateException if the node has no data content
+     * @return true if the node should be excluded from the diagram, otherwise true to include it
      */
-    static PackageData getRequiredData(
-            final Node<PackageData> node) throws IllegalStateException {
-        return node.getData()
-                   .orElseThrow(() -> new IllegalStateException(
-                           "Node has no package data"));
-    }
+    boolean filterNodes(Node<PackageData> packageDataNode);
 
     /**
-     * Creates a copy of the package data node and returns it.
+     * Checks if the node is excluded.
      *
-     * @param source the node to copy
+     * @param packageDataNode the PackageData Node
      *
-     * @return a copy of the package data node
+     * @return true if the node matches the exclude criteria
      */
-    public static Node<PackageData> copyOf(final Node<PackageData> source) {
-        PackageData data = source.getData().orElse(null);
-        Node<PackageData> parent = source.getParent().orElse(null);
-        if (parent != null) {
-            return Nodes.namedChild(data, source.getName(), parent);
-        }
-        return Nodes.namedRoot(data, source.getName());
-    }
+    boolean isExcluded(Node<PackageData> packageDataNode);
+
+    /**
+     * Checks if the node is included.
+     *
+     * @param packageDataNode the PackageData Node
+     *
+     * @return true if the node matches the include criteria
+     */
+    boolean isIncluded(Node<PackageData> packageDataNode);
 }

@@ -39,8 +39,7 @@ public class DigraphProjectStub extends MavenProjectStub {
         MavenXpp3Reader pomReader = new MavenXpp3Reader();
         Model model;
         try {
-            model = pomReader.read(ReaderFactory.newXmlReader(
-                    new File(getBasedir(), "pom.xml")));
+            model = pomReader.read(ReaderFactory.newXmlReader(new File(getBasedir(), "pom.xml")));
             setModel(model);
         } catch (IOException | XmlPullParserException e) {
             throw new RuntimeException(e);

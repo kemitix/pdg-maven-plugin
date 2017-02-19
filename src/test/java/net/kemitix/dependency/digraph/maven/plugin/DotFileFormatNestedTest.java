@@ -1,12 +1,17 @@
 package net.kemitix.dependency.digraph.maven.plugin;
 
+import lombok.val;
+import net.kemitix.node.Node;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import java.util.Arrays;
 
-import net.kemitix.node.Node;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
 
 /**
  * Tests for {@link DotFileFormatNested}.
@@ -21,6 +26,9 @@ public class DotFileFormatNestedTest {
 
     private NodePathGenerator nodePathGenerator;
 
+    @Mock
+    private GraphFilter graphFilter;
+
     /**
      * Prepare each test.
      */
@@ -29,8 +37,9 @@ public class DotFileFormatNestedTest {
         MockitoAnnotations.initMocks(this);
         dependencyData = DigraphFactory.newDependencyData("test");
         nodePathGenerator = new DefaultNodePathGenerator();
-        dotFileFormat = new DotFileFormatNested(dependencyData.getBaseNode(),
-                nodePathGenerator);
+        dotFileFormat = new DotFileFormatNested(dependencyData.getBaseNode(), nodePathGenerator, graphFilter);
+        /// default behaviour without any filters is to include
+        given(graphFilter.filterNodes(any())).willReturn(true);
     }
 
     /**
@@ -44,7 +53,8 @@ public class DotFileFormatNestedTest {
         Node<PackageData> baseNode = dependencyData.getBaseNode();
         //then
         assertThat(baseNode).isNotNull();
-        assertThat(baseNode.getData().get().getName()).isEqualTo("test");
+        assertThat(baseNode.getData()
+                           .getName()).isEqualTo("test");
     }
 
     /**
@@ -54,16 +64,16 @@ public class DotFileFormatNestedTest {
     public void shouldGenerateReport() {
         //given
         dependencyData.addDependency("test.nested", "test.other");
-        final String expected = "digraph{\n" + "compound=\"true\"\n"
-                + "node[shape=\"box\"]\n" + "subgraph \"cluster_test\"{\n"
-                + "label=\"test\"\n"
-                + "\"_test\"[label=\"\",style=\"invis\",width=0]\n"
-                + "\"nested\"\n" + "\"other\"\n" + "}\n"
-                + "\"nested\"->\"other\"" + "}\n";
+        val expected =
+                Arrays.asList("digraph{", "compound=\"true\"", "node[shape=\"box\"]", "subgraph \"cluster_test\"{",
+                              "label=\"test\"", "\"_test\"[label=\"\",style=\"invis\",width=0]", "\"nested\"",
+                              "\"other\"", "}", "\"nested\"->\"other\"}"
+                             );
         //when
-        String report = dotFileFormat.renderReport();
+        val report = dotFileFormat.renderReport()
+                                  .split(System.lineSeparator());
         //then
-        assertThat(report).isEqualTo(expected);
+        assertThat(report).containsExactlyElementsOf(expected);
     }
 
     /**
@@ -74,15 +84,15 @@ public class DotFileFormatNestedTest {
     public void shouldOnlyIncludeUsingPackage() {
         //given
         dependencyData.addDependency("test.nested", "tested.other");
-        final String expected = "digraph{\n" + "compound=\"true\"\n"
-                + "node[shape=\"box\"]\n" + "subgraph \"cluster_test\"{\n"
-                + "label=\"test\"\n"
-                + "\"_test\"[label=\"\",style=\"invis\",width=0]\n"
-                + "\"nested\"\n" + "}}\n";
+        val expected =
+                Arrays.asList("digraph{", "compound=\"true\"", "node[shape=\"box\"]", "subgraph \"cluster_test\"{",
+                              "label=\"test\"", "\"_test\"[label=\"\",style=\"invis\",width=0]", "\"nested\"", "}}"
+                             );
         //when
-        String report = dotFileFormat.renderReport();
+        val report = dotFileFormat.renderReport()
+                                  .split(System.lineSeparator());
         //then
-        assertThat(report).isEqualTo(expected);
+        assertThat(report).containsExactlyElementsOf(expected);
     }
 
     /**
@@ -93,15 +103,15 @@ public class DotFileFormatNestedTest {
     public void shouldOnlyIncludeUsedPackage() {
         //given
         dependencyData.addDependency("tested.nested", "test.other");
-        final String expected = "digraph{\n" + "compound=\"true\"\n"
-                + "node[shape=\"box\"]\n" + "subgraph \"cluster_test\"{\n"
-                + "label=\"test\"\n"
-                + "\"_test\"[label=\"\",style=\"invis\",width=0]\n"
-                + "\"other\"\n" + "}}\n";
+        val expected =
+                Arrays.asList("digraph{", "compound=\"true\"", "node[shape=\"box\"]", "subgraph \"cluster_test\"{",
+                              "label=\"test\"", "\"_test\"[label=\"\",style=\"invis\",width=0]", "\"other\"", "}}"
+                             );
         //when
-        String report = dotFileFormat.renderReport();
+        val report = dotFileFormat.renderReport()
+                                  .split(System.lineSeparator());
         //then
-        assertThat(report).isEqualTo(expected);
+        assertThat(report).containsExactlyElementsOf(expected);
     }
 
     /**
@@ -114,21 +124,20 @@ public class DotFileFormatNestedTest {
         dependencyData.addDependency("test.nested", "test.other");
         dependencyData.addDependency("test.nested", "test.other.more");
         dependencyData.addDependency("test.other", "test.yetmore");
-        final String expected = "digraph{\n" + "compound=\"true\"\n"
-                + "node[shape=\"box\"]\n" + "subgraph \"cluster_test\"{\n"
-                + "label=\"test\"\n"
-                + "\"_test\"[label=\"\",style=\"invis\",width=0]\n"
-                + "\"nested\"\n" + "subgraph \"clusterother\"{\n"
-                + "label=\"other\"\n"
-                + "\"other\"[label=\"\",style=\"invis\",width=0]\n"
-                + "\"other.more\"[label=\"more\"]\n" + "}\n" + "\"yetmore\"\n"
-                + "}\n" + "\"nested\"->\"other.more\"\n"
-                + "\"nested\"->\"other\"[lhead=\"clusterother\"]\n"
-                + "\"other\"->\"yetmore\"[ltail=\"clusterother\"]" + "}\n";
+        val expected =
+                Arrays.asList("digraph{", "compound=\"true\"", "node[shape=\"box\"]", "subgraph \"cluster_test\"{",
+                              "label=\"test\"", "\"_test\"[label=\"\",style=\"invis\",width=0]", "\"nested\"",
+                              "subgraph \"clusterother\"{", "label=\"other\"",
+                              "\"other\"[label=\"\",style=\"invis\",width=0]", "\"other.more\"[label=\"more\"]", "}",
+                              "\"yetmore\"", "}", "\"nested\"->\"other.more\"",
+                              "\"nested\"->\"other\"[lhead=\"clusterother\"]",
+                              "\"other\"->\"yetmore\"[ltail=\"clusterother\"]}"
+                             );
         //when
-        String report = dotFileFormat.renderReport();
+        val report = dotFileFormat.renderReport()
+                                  .split(System.lineSeparator());
         //then
-        assertThat(report).isEqualTo(expected);
+        assertThat(report).containsExactlyElementsOf(expected);
     }
 
     /**
@@ -139,20 +148,20 @@ public class DotFileFormatNestedTest {
     public void shouldNestGrandChildParentDummyNode() {
         //given
         dependencyData.addDependency("test.one", "test.child.inter.leaf");
-        final String expected = "digraph{\n" + "compound=\"true\"\n"
-                + "node[shape=\"box\"]\n" + "subgraph \"cluster_test\"{\n"
-                + "label=\"test\"\n"
-                + "\"_test\"[label=\"\",style=\"invis\",width=0]\n"
-                + "subgraph \"clusterchild\"{\n" + "label=\"child\"\n"
-                + "\"child\"[label=\"\",style=\"invis\",width=0]\n"
-                + "subgraph \"clusterchild_inter\"{\n" + "label=\"inter\"\n"
-                + "\"child_inter\"[label=\"\",style=\"invis\",width=0]\n"
-                + "\"child.inter.leaf\"[label=\"leaf\"]\n" + "}\n" + "}\n"
-                + "\"one\"\n" + "}\n" + "\"one\"->\"child.inter.leaf\"" + "}\n";
+        val expected =
+                Arrays.asList("digraph{", "compound=\"true\"", "node[shape=\"box\"]", "subgraph \"cluster_test\"{",
+                              "label=\"test\"", "\"_test\"[label=\"\",style=\"invis\",width=0]",
+                              "subgraph \"clusterchild\"{", "label=\"child\"",
+                              "\"child\"[label=\"\",style=\"invis\",width=0]", "subgraph \"clusterchild_inter\"{",
+                              "label=\"inter\"", "\"child_inter\"[label=\"\",style=\"invis\",width=0]",
+                              "\"child.inter.leaf\"[label=\"leaf\"]", "}", "}", "\"one\"", "}",
+                              "\"one\"->\"child.inter.leaf\"" + "}"
+                             );
         //when
-        String report = dotFileFormat.renderReport();
+        val report = dotFileFormat.renderReport()
+                                  .split(System.lineSeparator());
         //then
-        assertThat(report).isEqualTo(expected);
+        assertThat(report).containsExactlyElementsOf(expected);
     }
 
     /**
@@ -162,12 +171,11 @@ public class DotFileFormatNestedTest {
     public void shouldNotIncludeLHeadWhenTailIsChildOfHead() {
         //given
         dependencyData.addDependency("test.one.two", "test.one");
-        dotFileFormat = new DotFileFormatNested(dependencyData.getBaseNode(),
-                nodePathGenerator);
+        dotFileFormat = new DotFileFormatNested(dependencyData.getBaseNode(), nodePathGenerator, graphFilter);
         //when
-        String report = dotFileFormat.renderReport();
+        val report = dotFileFormat.renderReport();
         //then
-        assertThat(report).contains("\n\"one.two\"->\"one\"")
+        assertThat(report).contains("\"one.two\"->\"one\"")
                           .doesNotContain("lhead=\"clusterone\"");
     }
 
@@ -179,12 +187,56 @@ public class DotFileFormatNestedTest {
     public void shouldNotIncludeLTailWhenHeadIsChildOfTailf() {
         //given
         dependencyData.addDependency("test.one", "test.one.two");
-        dotFileFormat = new DotFileFormatNested(dependencyData.getBaseNode(),
-                nodePathGenerator);
+        dotFileFormat = new DotFileFormatNested(dependencyData.getBaseNode(), nodePathGenerator, graphFilter);
         //when
-        String report = dotFileFormat.renderReport();
+        val report = dotFileFormat.renderReport();
         //then
-        assertThat(report).contains("\n\"one\"->\"one.two\"")
+        assertThat(report).contains("\"one\"->\"one.two\"")
                           .doesNotContain("ltail=\"clusterone\"");
+    }
+
+    @Test
+    public void shouldExcludePackage() {
+        //given
+        dependencyData.addDependency("test.one", "test.two");
+        dependencyData.addDependency("test.one", "test.three");
+        dependencyData.addDependency("test.three", "test.four");
+        dependencyData.addDependency("test.one", "test.four");
+        dotFileFormat = new DotFileFormatNested(dependencyData.getBaseNode(), nodePathGenerator,
+                                                GraphFilter.of("three", "", nodePathGenerator)
+        );
+        //when
+        val report = dotFileFormat.renderReport()
+                                  .split(System.lineSeparator());
+        //then
+        assertThat(report).doesNotContain("three")
+                          .contains("\"one\"")
+                          .contains("\"two\"")
+                          .contains("\"four\"");
+    }
+
+    @Test
+    public void shouldIncludePackage() {
+        //given
+        dependencyData.addDependency("test.one", "test.two");
+        dependencyData.addDependency("test.one", "test.three");
+        dependencyData.addDependency("test.three", "test.four");
+        dependencyData.addDependency("test.one", "test.four");
+        dotFileFormat = new DotFileFormatNested(dependencyData.getBaseNode(), nodePathGenerator,
+                                                GraphFilter.of("", "three", nodePathGenerator)
+        );
+        //when
+        val report = dotFileFormat.renderReport()
+                                  .split(System.lineSeparator());
+        //then
+        assertThat(report).doesNotContain("\"one\"->\"four\"")
+                          .doesNotContain("\"one\"->\"two\"")
+                          .doesNotContain("two")
+                          .doesNotContain("four")
+                          .contains("\"one\"")
+                          .contains("\"three\"")
+                          .contains("\"four\"")
+                          .contains("\"one\"->\"three\"")
+                          .contains("\"three\"->\"four\"}");
     }
 }

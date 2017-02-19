@@ -1,12 +1,17 @@
 package net.kemitix.dependency.digraph.maven.plugin;
 
+import lombok.val;
+import net.kemitix.node.Node;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import java.util.Arrays;
 
-import net.kemitix.node.Node;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
 
 /**
  * Tests for {@link DotFileFormatSimple}.
@@ -22,6 +27,9 @@ public class DotFileFormatSimpleTest {
 
     private DependencyData dependencyData;
 
+    @Mock
+    private GraphFilter graphFilter;
+
     /**
      * Prepare each test.
      */
@@ -29,8 +37,10 @@ public class DotFileFormatSimpleTest {
     public void setUp() {
         MockitoAnnotations.initMocks(this);
         dependencyData = DigraphFactory.newDependencyData("test");
-        dotFileFormat = new DotFileFormatSimple(dependencyData.getBaseNode(),
-                new DefaultNodePathGenerator());
+        dotFileFormat =
+                new DotFileFormatSimple(dependencyData.getBaseNode(), new DefaultNodePathGenerator(), graphFilter);
+        /// default behaviour without any filters is to include
+        given(graphFilter.filterNodes(any())).willReturn(true);
     }
 
     /**
@@ -44,7 +54,8 @@ public class DotFileFormatSimpleTest {
         Node<PackageData> baseNode = dependencyData.getBaseNode();
         //then
         assertThat(baseNode).isNotNull();
-        assertThat(baseNode.getData().get().getName()).isEqualTo("test");
+        assertThat(baseNode.getData()
+                           .getName()).isEqualTo("test");
     }
 
     /**
@@ -54,13 +65,14 @@ public class DotFileFormatSimpleTest {
     public void shouldGenerateReport() {
         //given
         dependencyData.addDependency("test.nested", "test.other");
-        final String expected = "digraph{\n" + "compound=\"true\"\n"
-                + "node[shape=\"box\"]\n" + "\"nested\"\n" + "\"other\"\n"
-                + "\"nested\" -> \"other\"" + "}\n";
+        val expected = Arrays.asList("digraph{", "compound=\"true\"", "node[shape=\"box\"]", "\"nested\"", "\"other\"",
+                                     "\"nested\" -> \"other\"}"
+                                    );
         //when
-        String report = dotFileFormat.renderReport();
+        val report = dotFileFormat.renderReport()
+                                  .split(System.lineSeparator());
         //then
-        assertThat(report).isEqualTo(expected);
+        assertThat(report).containsExactlyElementsOf(expected);
     }
 
     /**
@@ -71,12 +83,12 @@ public class DotFileFormatSimpleTest {
     public void shouldOnlyIncludeUsingPackage() {
         //given
         dependencyData.addDependency("test.nested", "tested.other");
-        final String expected = "digraph{\n" + "compound=\"true\"\n"
-                + "node[shape=\"box\"]\n" + "\"nested\"" + "}\n";
+        val expected = Arrays.asList("digraph{", "compound=\"true\"", "node[shape=\"box\"]", "\"nested\"}");
         //when
-        String report = dotFileFormat.renderReport();
+        val report = dotFileFormat.renderReport()
+                                  .split(System.lineSeparator());
         //then
-        assertThat(report).isEqualTo(expected);
+        assertThat(report).containsExactlyElementsOf(expected);
     }
 
     /**
@@ -87,12 +99,12 @@ public class DotFileFormatSimpleTest {
     public void shouldOnlyIncludeUsedPackage() {
         //given
         dependencyData.addDependency("tested.nested", "test.other");
-        final String expected = "digraph{\n" + "compound=\"true\"\n"
-                + "node[shape=\"box\"]\n" + "\"other\"" + "}\n";
+        val expected = Arrays.asList("digraph{", "compound=\"true\"", "node[shape=\"box\"]", "\"other\"}");
         //when
-        String report = dotFileFormat.renderReport();
+        val report = dotFileFormat.renderReport()
+                                  .split(System.lineSeparator());
         //then
-        assertThat(report).isEqualTo(expected);
+        assertThat(report).containsExactlyElementsOf(expected);
     }
 
     /**
@@ -104,14 +116,14 @@ public class DotFileFormatSimpleTest {
         dependencyData.addDependency("test.nested", "test.other");
         dependencyData.addDependency("test.nested", "test.other.more");
         dependencyData.addDependency("test.other", "test.yetmore");
-        final String expected = "digraph{\n" + "compound=\"true\"\n"
-                + "node[shape=\"box\"]\n" + "\"nested\"\n" + "\"other\"\n"
-                + "\"other.more\"\n" + "\"yetmore\"\n"
-                + "\"nested\" -> \"other.more\"\n" + "\"nested\" -> \"other\"\n"
-                + "\"other\" -> \"yetmore\"" + "}\n";
+        val expected = Arrays.asList("digraph{", "compound=\"true\"", "node[shape=\"box\"]", "\"nested\"", "\"other\"",
+                                     "\"other.more\"", "\"yetmore\"", "\"nested\" -> \"other.more\"",
+                                     "\"nested\" -> \"other\"", "\"other\" -> \"yetmore\"}"
+                                    );
         //when
-        String report = dotFileFormat.renderReport();
+        val report = dotFileFormat.renderReport()
+                                  .split(System.lineSeparator());
         //then
-        assertThat(report).isEqualTo(expected);
+        assertThat(report).containsExactlyElementsOf(expected);
     }
 }

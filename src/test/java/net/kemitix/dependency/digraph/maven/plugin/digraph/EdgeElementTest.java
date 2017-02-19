@@ -1,6 +1,7 @@
 package net.kemitix.dependency.digraph.maven.plugin.digraph;
 
 import lombok.val;
+import net.kemitix.dependency.digraph.maven.plugin.DotFileFormat;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -8,8 +9,6 @@ import org.mockito.MockitoAnnotations;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
-
-import net.kemitix.dependency.digraph.maven.plugin.DotFileFormat;
 
 /**
  * Tests for {@link EdgeElement}.
@@ -38,8 +37,7 @@ public class EdgeElementTest {
     @Test
     public void shouldRender() {
         //given
-        val edgeElement = new EdgeElement(edgeEndpoint, edgeEndpoint,
-                dotFileFormat);
+        val edgeElement = new EdgeElement(edgeEndpoint, edgeEndpoint, dotFileFormat);
         val expected = "rendered edge element";
         given(dotFileFormat.render(edgeElement)).willReturn(expected);
         //then

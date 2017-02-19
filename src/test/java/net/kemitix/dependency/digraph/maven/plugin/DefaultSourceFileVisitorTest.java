@@ -6,10 +6,10 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import java.nio.file.Paths;
 import java.nio.file.attribute.BasicFileAttributes;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Tests for {@link DefaultSourceFileVisitor}.

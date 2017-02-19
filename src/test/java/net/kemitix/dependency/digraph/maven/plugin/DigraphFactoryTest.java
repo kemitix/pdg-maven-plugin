@@ -3,8 +3,7 @@ package net.kemitix.dependency.digraph.maven.plugin;
 import lombok.val;
 import org.junit.Test;
 
-import static net.trajano.commons.testing.UtilityClassTestUtil
-        .assertUtilityClassWellDefined;
+import static net.trajano.commons.testing.UtilityClassTestUtil.assertUtilityClassWellDefined;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**

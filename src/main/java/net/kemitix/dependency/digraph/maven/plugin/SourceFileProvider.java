@@ -39,7 +39,7 @@ interface SourceFileProvider {
      *
      * @param directories the directories to process
      *
-     *                    @return a list of files
+     * @return a list of files
      */
     List<File> process(List<String> directories);
 

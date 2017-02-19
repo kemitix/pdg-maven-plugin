@@ -27,10 +27,9 @@ package net.kemitix.dependency.digraph.maven.plugin.digraph;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import net.kemitix.dependency.digraph.maven.plugin.DotFileFormat;
 
 import javax.annotation.concurrent.Immutable;
-
-import net.kemitix.dependency.digraph.maven.plugin.DotFileFormat;
 
 /**
  * Common base for any element to be added to a graph.

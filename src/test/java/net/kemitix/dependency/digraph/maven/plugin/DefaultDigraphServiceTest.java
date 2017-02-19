@@ -7,15 +7,15 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.BDDMockito.doThrow;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.BDDMockito.then;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.doThrow;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.then;
 
 /**
  * Tests for {@link DigraphService}.
@@ -67,14 +67,13 @@ public class DefaultDigraphServiceTest {
 
     private String format;
 
-    private boolean debug;
-
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-        digraphService = new DefaultDigraphService(directoryProvider,
-                fileProvider, fileLoader, fileAnalyser, reportGenerator,
-                reportWriter, dotFileFormatFactory);
+        digraphService =
+                new DefaultDigraphService(directoryProvider, fileProvider, fileLoader, fileAnalyser, reportGenerator,
+                                          reportWriter, dotFileFormatFactory
+                );
         given(digraphMojo.getLog()).willReturn(log);
         basePackage = "net.kemitix";
         mavenProjects = new ArrayList<>();
@@ -85,19 +84,17 @@ public class DefaultDigraphServiceTest {
     @Test
     public void execute() {
         //when
-        digraphService.execute(digraphMojo, mavenProjects, includeTests,
-                basePackage, format, debug);
+        digraphService.execute(digraphMojo, mavenProjects, includeTests, basePackage, format, false);
     }
 
     @Test
     public void executeWithDebug() {
         //given
-        debug = true;
         //when
-        digraphService.execute(digraphMojo, mavenProjects, includeTests,
-                basePackage, format, debug);
+        digraphService.execute(digraphMojo, mavenProjects, includeTests, basePackage, format, true);
         //then
-        then(digraphMojo).should().getLog();
+        then(digraphMojo).should()
+                         .getLog();
     }
 
     @Test
@@ -107,9 +104,9 @@ public class DefaultDigraphServiceTest {
         doThrow(new IOException(message)).when(reportWriter)
                                          .write(any(), any());
         //when
-        digraphService.execute(digraphMojo, mavenProjects, includeTests,
-                basePackage, format, debug);
+        digraphService.execute(digraphMojo, mavenProjects, includeTests, basePackage, format, false);
         //then
-        then(log).should().error(message);
+        then(log).should()
+                 .error(message);
     }
 }
