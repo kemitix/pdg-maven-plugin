@@ -24,13 +24,12 @@ SOFTWARE.
 
 package net.kemitix.dependency.digraph.maven.plugin;
 
+import javax.annotation.concurrent.Immutable;
+import javax.inject.Inject;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
-
-import javax.annotation.concurrent.Immutable;
-import javax.inject.Inject;
 
 /**
  * Implementation of {@link FileLoader}.
@@ -57,7 +56,8 @@ class DefaultFileLoader implements FileLoader {
         try {
             return new FileInputStream(file);
         } catch (FileNotFoundException ex) {
-            mojo.getLog().error(ex);
+            mojo.getLog()
+                .error(ex);
         }
         return null;
     }

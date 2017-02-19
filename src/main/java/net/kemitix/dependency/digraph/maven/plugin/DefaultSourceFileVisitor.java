@@ -26,6 +26,7 @@ package net.kemitix.dependency.digraph.maven.plugin;
 
 import lombok.Getter;
 
+import javax.annotation.concurrent.Immutable;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.FileVisitResult;
@@ -35,16 +36,13 @@ import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.annotation.concurrent.Immutable;
-
 /**
  * Implementation of the source file visitor.
  *
  * @author Paul Campbell (pcampbell@kemitix.net)
  */
 @Immutable
-class DefaultSourceFileVisitor extends SimpleFileVisitor<Path>
-        implements SourceFileVisitor {
+class DefaultSourceFileVisitor extends SimpleFileVisitor<Path> implements SourceFileVisitor {
 
     /**
      * The list of Java files discovered.
@@ -54,9 +52,10 @@ class DefaultSourceFileVisitor extends SimpleFileVisitor<Path>
 
     @Override
     public FileVisitResult visitFile(
-            final Path file, final BasicFileAttributes attrs)
-            throws IOException {
-        if (file.toString().endsWith(".java")) {
+            final Path file, final BasicFileAttributes attrs
+                                    ) throws IOException {
+        if (file.toString()
+                .endsWith(".java")) {
             javaFiles.add(file.toFile());
         }
         return FileVisitResult.CONTINUE;

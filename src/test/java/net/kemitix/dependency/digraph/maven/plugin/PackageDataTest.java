@@ -4,10 +4,10 @@ import lombok.val;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import java.util.HashSet;
 import java.util.Set;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Tests for {@link PackageData}.
@@ -54,7 +54,8 @@ public class PackageDataTest {
         //given
         val data2 = PackageData.newInstance(name);
         //then
-        assertThat(data).isEqualTo(data2).isNotSameAs(data2);
+        assertThat(data).isEqualTo(data2)
+                        .isNotSameAs(data2);
     }
 
     /**

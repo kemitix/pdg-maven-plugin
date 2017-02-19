@@ -17,16 +17,16 @@ public class DigraphMojoTest {
     @Before
     public void setUp() throws Exception {
         mojo = new DigraphMojo();
+        mojo.setProjects(new ArrayList<>());
+        // set defaults
+        mojo.setFormat("nested");
     }
 
     @Test
-    public void execute() {
+    public void shouldRunWithoutErrorWhenBasePackageProvided() {
         //given
-        mojo.setProjects(new ArrayList<>());
         mojo.setBasePackage("net.kemitix");
-        mojo.setFormat("nested");
         //when
         mojo.execute();
     }
-
 }

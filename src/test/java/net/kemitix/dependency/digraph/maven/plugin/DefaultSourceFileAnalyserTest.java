@@ -7,15 +7,15 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.invocation.InvocationOnMock;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.doAnswer;
 import static org.mockito.BDDMockito.doReturn;
 import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.times;
-
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
 
 /**
  * Tests for {@link DefaultSourceFileAnalyser}.
@@ -42,11 +42,12 @@ public class DefaultSourceFileAnalyserTest {
     public void setUp() {
         MockitoAnnotations.initMocks(this);
         analyser = new DefaultSourceFileAnalyser(mojo);
-        doReturn(log).when(mojo).getLog();
+        doReturn(log).when(mojo)
+                     .getLog();
         doAnswer((InvocationOnMock invocation) -> {
-            System.out.println(invocation.<String>getArgument(0));
             return null;
-        }).when(log).info(any(String.class));
+        }).when(log)
+          .info(any(String.class));
     }
 
     /**
@@ -56,11 +57,9 @@ public class DefaultSourceFileAnalyserTest {
     @SuppressWarnings("magicnumber")
     public void shouldParseSrcFile() {
         //given
-        String srcJava = "package test.nested;\n"
-                + "import test.other.Imported;\n"
-                + "import static test.other.Static.method;\n"
-                + "import static test.other.StaticAll.*;\n"
-                + "public class Src {}";
+        String srcJava =
+                "package test.nested;\n" + "import test.other.Imported;\n" + "import static test.other.Static.method;\n"
+                + "import static test.other.StaticAll.*;\n" + "public class Src {}";
         InputStream stream = new ByteArrayInputStream(srcJava.getBytes(UTF_8));
         //when
         analyser.analyse(dependencyData, stream);
@@ -89,11 +88,9 @@ public class DefaultSourceFileAnalyserTest {
     @Test
     public void shouldHandleCommentedFileContent() {
         //given
-        String srcJava = "//package test.nested;\n"
-                + "//import test.other.Imported;\n"
-                + "//import static test.other.Static.method;\n"
-                + "//import static test.other.StaticAll.*;\n"
-                + "//public class Src {}";
+        String srcJava = "//package test.nested;\n" + "//import test.other.Imported;\n"
+                         + "//import static test.other.Static.method;\n" + "//import static test.other.StaticAll.*;\n"
+                         + "//public class Src {}";
         InputStream stream = new ByteArrayInputStream(srcJava.getBytes(UTF_8));
         //when
         analyser.analyse(dependencyData, stream);

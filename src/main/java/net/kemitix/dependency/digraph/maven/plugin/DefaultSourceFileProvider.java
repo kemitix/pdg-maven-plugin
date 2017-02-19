@@ -24,14 +24,13 @@ SOFTWARE.
 
 package net.kemitix.dependency.digraph.maven.plugin;
 
+import javax.annotation.concurrent.Immutable;
+import javax.inject.Inject;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
-
-import javax.annotation.concurrent.Immutable;
-import javax.inject.Inject;
 
 /**
  * Provider walks the directory and builds a list of discovered Java files.
@@ -53,7 +52,8 @@ class DefaultSourceFileProvider implements SourceFileProvider {
      */
     @Inject
     DefaultSourceFileProvider(
-            final SourceFileVisitor fileVisitor, final DigraphMojo mojo) {
+            final SourceFileVisitor fileVisitor, final DigraphMojo mojo
+                             ) {
         this.fileVisitor = fileVisitor;
         this.mojo = mojo;
     }
@@ -62,10 +62,12 @@ class DefaultSourceFileProvider implements SourceFileProvider {
     public List<File> process(final List<String> directories) {
         directories.forEach((final String dir) -> {
             try {
-                Path start = new File(dir).getAbsoluteFile().toPath();
+                Path start = new File(dir).getAbsoluteFile()
+                                          .toPath();
                 Files.walkFileTree(start, fileVisitor);
             } catch (IOException ex) {
-                mojo.getLog().error(ex);
+                mojo.getLog()
+                    .error(ex);
             }
         });
         return fileVisitor.getJavaFiles();

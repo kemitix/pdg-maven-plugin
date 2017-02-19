@@ -25,12 +25,11 @@ SOFTWARE.
 package net.kemitix.dependency.digraph.maven.plugin.digraph;
 
 import lombok.Getter;
-
-import javax.annotation.concurrent.Immutable;
-
 import net.kemitix.dependency.digraph.maven.plugin.DotFileFormat;
 import net.kemitix.dependency.digraph.maven.plugin.PackageData;
 import net.kemitix.node.Node;
+
+import javax.annotation.concurrent.Immutable;
 
 /**
  * Represents a node on the graph.
@@ -39,8 +38,7 @@ import net.kemitix.node.Node;
  */
 @Getter
 @Immutable
-public final class NodeElement extends AbstractEdgeEndpoint
-        implements HasId, HasLabel {
+public final class NodeElement extends AbstractEdgeEndpoint implements HasId, HasLabel {
 
     private final String id;
 
@@ -55,8 +53,9 @@ public final class NodeElement extends AbstractEdgeEndpoint
      * @param dotFileFormat   the output format
      */
     public NodeElement(
-            final Node<PackageData> packageDataNode, final String id,
-            final String label, final DotFileFormat dotFileFormat) {
+            final Node<PackageData> packageDataNode, final String id, final String label,
+            final DotFileFormat dotFileFormat
+                      ) {
         super(dotFileFormat, packageDataNode);
         this.id = id;
         this.label = label;

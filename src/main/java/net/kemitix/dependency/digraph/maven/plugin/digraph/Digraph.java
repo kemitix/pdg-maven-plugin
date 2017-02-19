@@ -26,13 +26,11 @@ package net.kemitix.dependency.digraph.maven.plugin.digraph;
 
 import lombok.Getter;
 import lombok.val;
-
-import java.util.ArrayList;
-import java.util.List;
+import net.kemitix.dependency.digraph.maven.plugin.DotFileFormat;
 
 import javax.annotation.concurrent.Immutable;
-
-import net.kemitix.dependency.digraph.maven.plugin.DotFileFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A GraphViz Directed Graph root node.
@@ -95,8 +93,7 @@ public class Digraph extends AbstractGraphElement implements ElementContainer {
             val digraph = new Digraph(dotFileFormat);
             digraph.add(new PropertyElement("compound", "true", dotFileFormat));
             val nodeProperties = new NodeProperties(dotFileFormat);
-            nodeProperties.add(
-                    new PropertyElement("shape", "box", dotFileFormat));
+            nodeProperties.add(new PropertyElement("shape", "box", dotFileFormat));
             digraph.add(nodeProperties);
             return digraph;
         }

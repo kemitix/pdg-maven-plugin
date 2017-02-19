@@ -26,12 +26,11 @@ package net.kemitix.dependency.digraph.maven.plugin;
 
 import lombok.val;
 
+import javax.annotation.concurrent.Immutable;
+import javax.inject.Inject;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.annotation.concurrent.Immutable;
-import javax.inject.Inject;
 
 /**
  * Processor to list directories to console.
@@ -56,7 +55,9 @@ class DirectoryListingProcessor implements SourceFileProvider {
     @Override
     public List<File> process(final List<String> directories) {
         val log = mojo.getLog();
-        directories.stream().map(d -> "* " + d).forEach(log::info);
+        directories.stream()
+                   .map(d -> "* " + d)
+                   .forEach(log::info);
         return new ArrayList<>();
     }
 

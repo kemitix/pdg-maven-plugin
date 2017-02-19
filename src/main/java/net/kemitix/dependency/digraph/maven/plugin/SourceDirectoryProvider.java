@@ -45,6 +45,7 @@ interface SourceDirectoryProvider {
      * @return the list of source directories
      */
     List<String> getDirectories(
-            List<MavenProject> projects, boolean includeTests);
+            List<MavenProject> projects, boolean includeTests
+                               );
 
 }

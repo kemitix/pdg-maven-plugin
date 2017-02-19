@@ -84,8 +84,9 @@ public abstract class AbstractProjectsList implements List<MavenProject> {
     }
 
     @Override
-    public boolean addAll(final int index,
-            final Collection<? extends MavenProject> c) {
+    public boolean addAll(
+            final int index, final Collection<? extends MavenProject> c
+                         ) {
         return list.addAll(index, c);
     }
 

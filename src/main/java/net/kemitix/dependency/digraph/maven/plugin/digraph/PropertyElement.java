@@ -25,10 +25,9 @@ SOFTWARE.
 package net.kemitix.dependency.digraph.maven.plugin.digraph;
 
 import lombok.Getter;
+import net.kemitix.dependency.digraph.maven.plugin.DotFileFormat;
 
 import javax.annotation.concurrent.Immutable;
-
-import net.kemitix.dependency.digraph.maven.plugin.DotFileFormat;
 
 /**
  * A key, value property.
@@ -51,8 +50,8 @@ public class PropertyElement extends AbstractGraphElement {
      * @param dotFileFormat the output format
      */
     public PropertyElement(
-            final String name, final String value,
-            final DotFileFormat dotFileFormat) {
+            final String name, final String value, final DotFileFormat dotFileFormat
+                          ) {
         super(dotFileFormat);
         this.name = name;
         this.value = value;

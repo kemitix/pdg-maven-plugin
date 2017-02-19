@@ -22,49 +22,23 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-package net.kemitix.dependency.digraph.maven.plugin.digraph;
+package net.kemitix.dependency.digraph.maven.plugin;
 
-import lombok.Getter;
-import net.kemitix.dependency.digraph.maven.plugin.DotFileFormat;
-
-import javax.annotation.concurrent.Immutable;
+import net.kemitix.node.Node;
 
 /**
- * Represents an edge (line) on the graph.
+ * Filters a Node Tree using a Graph Filter.
  *
  * @author Paul Campbell (pcampbell@kemitix.net)
  */
-@Getter
-@Immutable
-public class EdgeElement extends AbstractGraphElement {
+interface TreeFilter {
 
     /**
-     * Where the arrow is pointing from.
-     */
-    private final EdgeEndpoint tail;
-
-    /**
-     * Where the arrow is pointing to.
-     */
-    private final EdgeEndpoint head;
-
-    /**
-     * Constructor.
+     * Filter tree, returns a new tree.
      *
-     * @param tail          the tail (origin of the edge)
-     * @param head          the head (destination of the edge)
-     * @param dotFileFormat the output format
+     * @param root The root of the source tree.
+     *
+     * @return the root of the new tree
      */
-    public EdgeElement(
-            final EdgeEndpoint tail, final EdgeEndpoint head, final DotFileFormat dotFileFormat
-                      ) {
-        super(dotFileFormat);
-        this.tail = tail;
-        this.head = head;
-    }
-
-    @Override
-    public final String render() {
-        return getDotFileFormat().render(this);
-    }
+    Node<PackageData> filterTree(Node<PackageData> root);
 }

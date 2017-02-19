@@ -7,11 +7,11 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Tests for {@link DefaultSourceDirectoryProviderTest}.
@@ -19,11 +19,6 @@ import java.util.List;
  * @author pcampbell
  */
 public class DefaultSourceDirectoryProviderTest {
-
-    /**
-     * Class under test.
-     */
-    private DefaultSourceDirectoryProvider provider;
 
     /**
      * Project list.
@@ -39,6 +34,11 @@ public class DefaultSourceDirectoryProviderTest {
      * Temporary Files and Directories.
      */
     private final TemporaryFileManager fileManager = new TemporaryFileManager();
+
+    /**
+     * Class under test.
+     */
+    private DefaultSourceDirectoryProvider provider;
 
     /**
      * Prepare each test.
@@ -67,7 +67,8 @@ public class DefaultSourceDirectoryProviderTest {
     @Test
     public void shouldGetSourceDirectoryAfterSettingIt() throws IOException {
         //given
-        final String directory = fileManager.createTempDirectory().toString();
+        final String directory = fileManager.createTempDirectory()
+                                            .toString();
         //when
         build.setSourceDirectory(directory);
         //then
@@ -86,9 +87,11 @@ public class DefaultSourceDirectoryProviderTest {
     @Test
     public void shouldAddSourcesAndTests() throws IOException {
         //given
-        final String sources = fileManager.createTempDirectory().toString();
+        final String sources = fileManager.createTempDirectory()
+                                          .toString();
         build.setSourceDirectory(sources);
-        final String tests = fileManager.createTempDirectory().toString();
+        final String tests = fileManager.createTempDirectory()
+                                        .toString();
         build.setTestSourceDirectory(tests);
         //when
         List<String> directories = provider.getDirectories(projects, true);
@@ -102,17 +105,18 @@ public class DefaultSourceDirectoryProviderTest {
      * @throws java.io.IOException if error creating directory
      */
     @Test
-    public void shouldAddSourcesAndNoTestsWhenTestsDoNotExist()
-            throws IOException {
+    public void shouldAddSourcesAndNoTestsWhenTestsDoNotExist() throws IOException {
         //given
-        final String sources = fileManager.createTempDirectory().toString();
+        final String sources = fileManager.createTempDirectory()
+                                          .toString();
         build.setSourceDirectory(sources);
         final String tests = "do not exist";
         build.setTestSourceDirectory(tests);
         //when
         List<String> directories = provider.getDirectories(projects, true);
         //then
-        assertThat(directories).containsExactly(sources).doesNotContain(tests);
+        assertThat(directories).containsExactly(sources)
+                               .doesNotContain(tests);
     }
 
     /**
@@ -123,7 +127,8 @@ public class DefaultSourceDirectoryProviderTest {
     @Test
     public void shouldAddSourcesAndNoTests() throws IOException {
         //given
-        final String sources = fileManager.createTempDirectory().toString();
+        final String sources = fileManager.createTempDirectory()
+                                          .toString();
         build.setSourceDirectory(sources);
         //when
         List<String> directories = provider.getDirectories(projects, true);

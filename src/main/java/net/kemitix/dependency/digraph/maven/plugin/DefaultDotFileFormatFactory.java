@@ -24,10 +24,11 @@ SOFTWARE.
 
 package net.kemitix.dependency.digraph.maven.plugin;
 
+import lombok.val;
+import net.kemitix.node.Node;
+
 import javax.annotation.concurrent.Immutable;
 import javax.inject.Inject;
-
-import net.kemitix.node.Node;
 
 /**
  * Default implementation of the {@link DotFileFormatFactory}.
@@ -39,28 +40,38 @@ class DefaultDotFileFormatFactory implements DotFileFormatFactory {
 
     private final NodePathGenerator nodePathGenerator;
 
+    private final GraphFilter graphFilter;
+
+    private final TreeFilter treeFilter;
+
     /**
      * Constructor.
      *
      * @param nodePathGenerator The Node Path Generator
+     * @param graphFilter       The Graph Filter
+     * @param treeFilter        The Tree Filter
      */
     @Inject
-    DefaultDotFileFormatFactory(final NodePathGenerator nodePathGenerator) {
+    DefaultDotFileFormatFactory(
+            final NodePathGenerator nodePathGenerator, final GraphFilter graphFilter, final TreeFilter treeFilter
+                               ) {
         this.nodePathGenerator = nodePathGenerator;
+        this.graphFilter = graphFilter;
+        this.treeFilter = treeFilter;
     }
 
     @Override
-    public DotFileFormat create(
-            final String format, final Node<PackageData> base) {
+    public DotFileFormat create(final String format, final Node<PackageData> base) {
+        val tree = treeFilter.filterTree(base);
         DotFileFormat reportFormat;
         switch (format) {
-        case "simple":
-            reportFormat = new DotFileFormatSimple(base, nodePathGenerator);
-            break;
-        case "nested":
-        default:
-            reportFormat = new DotFileFormatNested(base, nodePathGenerator);
-            break;
+            case "simple":
+                reportFormat = new DotFileFormatSimple(tree, nodePathGenerator, graphFilter);
+                break;
+            case "nested":
+            default:
+                reportFormat = new DotFileFormatNested(tree, nodePathGenerator, graphFilter);
+                break;
         }
         return reportFormat;
     }

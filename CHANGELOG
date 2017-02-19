@@ -1,6 +1,13 @@
 CHANGELOG
 =========
 
+0.8.0
+-----
+
+* Add filter include/exclude support
+* Include maven wrapper
+* Upgrade mockito to 2.6.3
+
 0.7.0
 ------
 

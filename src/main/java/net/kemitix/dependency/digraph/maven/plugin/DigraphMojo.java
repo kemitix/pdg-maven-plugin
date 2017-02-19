@@ -24,11 +24,9 @@ SOFTWARE.
 
 package net.kemitix.dependency.digraph.maven.plugin;
 
-import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
-import com.google.inject.Injector;
-import lombok.NonNull;
 import lombok.Setter;
+import lombok.val;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
@@ -44,10 +42,6 @@ import java.util.List;
 @Mojo(name = "digraph", aggregator = true)
 public class DigraphMojo extends AbstractMojo {
 
-    private final Injector injector;
-
-    private final DigraphService digraphService;
-
     @Setter
     @Parameter(defaultValue = "${reactorProjects}", readonly = true)
     private List<MavenProject> projects;
@@ -55,7 +49,6 @@ public class DigraphMojo extends AbstractMojo {
     @Parameter(name = "includeTests", defaultValue = "false")
     private boolean includeTests;
 
-    @NonNull
     @Setter
     @Parameter(name = "basePackage", required = true)
     private String basePackage;
@@ -67,24 +60,20 @@ public class DigraphMojo extends AbstractMojo {
     @Parameter(name = "format", defaultValue = "nested")
     private String format;
 
-    /**
-     * Default constructor.
-     */
-    public DigraphMojo() {
-        injector = Guice.createInjector(new DigraphModule(),
-                new AbstractModule() {
-                    @Override
-                    protected void configure() {
-                        bind(DigraphMojo.class).toInstance(DigraphMojo.this);
-                    }
-                });
-        digraphService = injector.getInstance(DigraphService.class);
-    }
+    @Setter
+    @Parameter(name = "exclude")
+    private String exclude;
+
+    @Setter
+    @Parameter(name = "include")
+    private String include;
 
     @Override
     public final void execute() {
-        digraphService.execute(this, projects, includeTests, basePackage,
-                format, debug);
+        val graphFilter = GraphFilter.of(exclude, include, new DefaultNodePathGenerator());
+        val digraphModule = new DigraphModule(this, graphFilter);
+        Guice.createInjector(digraphModule)
+             .getInstance(DigraphService.class)
+             .execute(this, projects, includeTests, basePackage, format, debug);
     }
-
 }

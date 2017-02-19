@@ -24,15 +24,14 @@ SOFTWARE.
 
 package net.kemitix.dependency.digraph.maven.plugin;
 
-import java.util.stream.Collectors;
-
-import javax.annotation.concurrent.Immutable;
-
 import net.kemitix.dependency.digraph.maven.plugin.digraph.EdgeElement;
 import net.kemitix.dependency.digraph.maven.plugin.digraph.GraphElement;
 import net.kemitix.dependency.digraph.maven.plugin.digraph.NodeElement;
 import net.kemitix.dependency.digraph.maven.plugin.digraph.Subgraph;
 import net.kemitix.node.Node;
+
+import javax.annotation.concurrent.Immutable;
+import java.util.stream.Collectors;
 
 /**
  * Generates a dot file dependency report as a simple digraph.
@@ -42,18 +41,19 @@ import net.kemitix.node.Node;
 @Immutable
 class DotFileFormatSimple extends AbstractDotFileFormat {
 
-    public static final String NEWLINE = "\n";
+    public static final String NEWLINE = System.lineSeparator();
 
     /**
      * Constructor.
      *
-     * @param base The root node
-     * @param nodePathGenerator     The Node Path Generator
+     * @param base              The root node
+     * @param nodePathGenerator The Node Path Generator
+     * @param graphFilter       The Graph Filter
      */
     DotFileFormatSimple(
-            final Node<PackageData> base,
-            final NodePathGenerator nodePathGenerator) {
-        super(base, nodePathGenerator);
+            final Node<PackageData> base, final NodePathGenerator nodePathGenerator, final GraphFilter graphFilter
+                       ) {
+        super(base, nodePathGenerator, graphFilter);
     }
 
     @Override
@@ -76,8 +76,9 @@ class DotFileFormatSimple extends AbstractDotFileFormat {
 
     @Override
     public String render(final EdgeElement edgeElement) {
-        return quoted(edgeElement.getTail().getId()) + " -> " + quoted(
-                edgeElement.getHead().getId());
+        return quoted(edgeElement.getTail()
+                                 .getId()) + " -> " + quoted(edgeElement.getHead()
+                                                                        .getId());
     }
 
 }

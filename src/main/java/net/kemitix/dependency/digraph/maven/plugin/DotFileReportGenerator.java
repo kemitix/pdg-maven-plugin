@@ -49,9 +49,6 @@ class DotFileReportGenerator implements ReportGenerator {
 
     @Override
     public String generate(final DotFileFormat dotFileFormat) {
-        final StringBuilder report = new StringBuilder();
-        report.append(dotFileFormat.renderReport());
-        return report.toString();
+        return dotFileFormat.renderReport();
     }
-
 }

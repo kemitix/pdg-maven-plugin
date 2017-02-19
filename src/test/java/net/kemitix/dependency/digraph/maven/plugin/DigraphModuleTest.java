@@ -3,10 +3,14 @@ package net.kemitix.dependency.digraph.maven.plugin;
 import com.google.inject.Guice;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
 import javax.inject.Inject;
 
 import static org.junit.Assert.assertNotNull;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
 
 /**
  * Tests for {@link DigraphModule}.
@@ -18,12 +22,22 @@ public class DigraphModuleTest {
     @Inject
     private SourceDirectoryProvider sourceDirectoryProvider;
 
+    @Mock
+    private DigraphMojo digraphMojo;
+
+    @Mock
+    private GraphFilter graphFilter;
+
     /**
      * Prepare each test.
      */
     @Before
     public void setUp() {
-        Guice.createInjector(new DigraphModule()).injectMembers(this);
+        MockitoAnnotations.initMocks(this);
+        Guice.createInjector(new DigraphModule(digraphMojo, graphFilter))
+             .injectMembers(this);
+        /// default behaviour without any filters is to include
+        given(graphFilter.filterNodes(any())).willReturn(true);
     }
 
     /**

@@ -47,7 +47,7 @@ interface DigraphService {
      * @param debug        whether debug output should be included
      */
     void execute(
-            AbstractMojo mojo, List<MavenProject> projects,
-            boolean includeTests, String basePackage, String format,
-            boolean debug);
+            AbstractMojo mojo, List<MavenProject> projects, boolean includeTests, String basePackage, String format,
+            boolean debug
+                );
 }
