@@ -7,7 +7,8 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -28,6 +29,8 @@ public class DotFileFormatNestedTest {
 
     @Mock
     private GraphFilter graphFilter;
+
+    private final List<String> expected = new ArrayList<>();
 
     /**
      * Prepare each test.
@@ -64,11 +67,14 @@ public class DotFileFormatNestedTest {
     public void shouldGenerateReport() {
         //given
         dependencyData.addDependency("test.nested", "test.other");
-        val expected =
-                Arrays.asList("digraph{", "compound=\"true\"", "node[shape=\"box\"]", "subgraph \"cluster_test\"{",
-                              "label=\"test\"", "\"_test\"[label=\"\",style=\"invis\",width=0]", "\"nested\"",
-                              "\"other\"", "}", "\"nested\"->\"other\"}"
-                             );
+        expectedHeader();
+        line("subgraph \"cluster_test\"{");
+        line("label=\"test\"");
+        line("\"_test\"[label=\"\",style=\"invis\",width=0]");
+        line("\"nested\"");
+        line("\"other\"");
+        line("}");
+        line("\"nested\"->\"other\"}");
         //when
         val report = dotFileFormat.renderReport()
                                   .split(System.lineSeparator());
@@ -84,10 +90,12 @@ public class DotFileFormatNestedTest {
     public void shouldOnlyIncludeUsingPackage() {
         //given
         dependencyData.addDependency("test.nested", "tested.other");
-        val expected =
-                Arrays.asList("digraph{", "compound=\"true\"", "node[shape=\"box\"]", "subgraph \"cluster_test\"{",
-                              "label=\"test\"", "\"_test\"[label=\"\",style=\"invis\",width=0]", "\"nested\"", "}}"
-                             );
+        expectedHeader();
+        line("subgraph \"cluster_test\"{");
+        line("label=\"test\"");
+        line("\"_test\"[label=\"\",style=\"invis\",width=0]");
+        line("\"nested\"");
+        line("}}");
         //when
         val report = dotFileFormat.renderReport()
                                   .split(System.lineSeparator());
@@ -103,10 +111,12 @@ public class DotFileFormatNestedTest {
     public void shouldOnlyIncludeUsedPackage() {
         //given
         dependencyData.addDependency("tested.nested", "test.other");
-        val expected =
-                Arrays.asList("digraph{", "compound=\"true\"", "node[shape=\"box\"]", "subgraph \"cluster_test\"{",
-                              "label=\"test\"", "\"_test\"[label=\"\",style=\"invis\",width=0]", "\"other\"", "}}"
-                             );
+        expectedHeader();
+        line("subgraph \"cluster_test\"{");
+        line("label=\"test\"");
+        line("\"_test\"[label=\"\",style=\"invis\",width=0]");
+        line("\"other\"");
+        line("}}");
         //when
         val report = dotFileFormat.renderReport()
                                   .split(System.lineSeparator());
@@ -124,15 +134,21 @@ public class DotFileFormatNestedTest {
         dependencyData.addDependency("test.nested", "test.other");
         dependencyData.addDependency("test.nested", "test.other.more");
         dependencyData.addDependency("test.other", "test.yetmore");
-        val expected =
-                Arrays.asList("digraph{", "compound=\"true\"", "node[shape=\"box\"]", "subgraph \"cluster_test\"{",
-                              "label=\"test\"", "\"_test\"[label=\"\",style=\"invis\",width=0]", "\"nested\"",
-                              "subgraph \"clusterother\"{", "label=\"other\"",
-                              "\"other\"[label=\"\",style=\"invis\",width=0]", "\"other.more\"[label=\"more\"]", "}",
-                              "\"yetmore\"", "}", "\"nested\"->\"other.more\"",
-                              "\"nested\"->\"other\"[lhead=\"clusterother\"]",
-                              "\"other\"->\"yetmore\"[ltail=\"clusterother\"]}"
-                             );
+        expectedHeader();
+        line("subgraph \"cluster_test\"{");
+        line("label=\"test\"");
+        line("\"_test\"[label=\"\",style=\"invis\",width=0]");
+        line("\"nested\"");
+        line("subgraph \"clusterother\"{");
+        line("label=\"other\"");
+        line("\"other\"[label=\"\",style=\"invis\",width=0]");
+        line("\"other.more\"[label=\"more\"]");
+        line("}");
+        line("\"yetmore\"");
+        line("}");
+        line("\"nested\"->\"other.more\"");
+        line("\"nested\"->\"other\"[lhead=\"clusterother\"]");
+        line("\"other\"->\"yetmore\"[ltail=\"clusterother\"]}");
         //when
         val report = dotFileFormat.renderReport()
                                   .split(System.lineSeparator());
@@ -148,15 +164,22 @@ public class DotFileFormatNestedTest {
     public void shouldNestGrandChildParentDummyNode() {
         //given
         dependencyData.addDependency("test.one", "test.child.inter.leaf");
-        val expected =
-                Arrays.asList("digraph{", "compound=\"true\"", "node[shape=\"box\"]", "subgraph \"cluster_test\"{",
-                              "label=\"test\"", "\"_test\"[label=\"\",style=\"invis\",width=0]",
-                              "subgraph \"clusterchild\"{", "label=\"child\"",
-                              "\"child\"[label=\"\",style=\"invis\",width=0]", "subgraph \"clusterchild_inter\"{",
-                              "label=\"inter\"", "\"child_inter\"[label=\"\",style=\"invis\",width=0]",
-                              "\"child.inter.leaf\"[label=\"leaf\"]", "}", "}", "\"one\"", "}",
-                              "\"one\"->\"child.inter.leaf\"" + "}"
-                             );
+        expectedHeader();
+        line("subgraph \"cluster_test\"{");
+        line("label=\"test\"");
+        line("\"_test\"[label=\"\",style=\"invis\",width=0]");
+        line("subgraph \"clusterchild\"{");
+        line("label=\"child\"");
+        line("\"child\"[label=\"\",style=\"invis\",width=0]");
+        line("subgraph \"clusterchild_inter\"{");
+        line("label=\"inter\"");
+        line("\"child_inter\"[label=\"\",style=\"invis\",width=0]");
+        line("\"child.inter.leaf\"[label=\"leaf\"]");
+        line("}");
+        line("}");
+        line("\"one\"");
+        line("}");
+        line("\"one\"->\"child.inter.leaf\"" + "}");
         //when
         val report = dotFileFormat.renderReport()
                                   .split(System.lineSeparator());
@@ -238,5 +261,16 @@ public class DotFileFormatNestedTest {
                           .contains("\"four\"")
                           .contains("\"one\"->\"three\"")
                           .contains("\"three\"->\"four\"}");
+    }
+
+
+    private void expectedHeader() {
+        line("digraph{");
+        line("compound=\"true\"");
+        line("node[shape=\"box\"]");
+    }
+
+    private void line(final String line) {
+        expected.add(line);
     }
 }
