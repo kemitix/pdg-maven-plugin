@@ -10,7 +10,10 @@ import java.util.Deque;
  * Manager for the creation and cleanup of temporary directories.
  *
  * @author pcampbell
+ *
+ * @deprecated see {@link org.junit.rules.TemporaryFolder}
  */
+@Deprecated
 public class TemporaryFileManager {
 
     private final Deque<File> createdFiles = new ArrayDeque<>();
