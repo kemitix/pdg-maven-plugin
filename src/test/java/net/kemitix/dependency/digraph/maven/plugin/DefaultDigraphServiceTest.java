@@ -1,5 +1,6 @@
 package net.kemitix.dependency.digraph.maven.plugin;
 
+import org.apache.maven.model.Build;
 import org.apache.maven.plugin.logging.Log;
 import org.apache.maven.project.MavenProject;
 import org.junit.Before;
@@ -67,6 +68,12 @@ public class DefaultDigraphServiceTest {
 
     private String format;
 
+    @Mock
+    private MavenProject project;
+
+    @Mock
+    private Build build;
+
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
@@ -79,19 +86,27 @@ public class DefaultDigraphServiceTest {
         mavenProjects = new ArrayList<>();
         format = "simple";
         includeTests = false;
+        given(digraphMojo.getBasePackage()).willReturn(basePackage);
+        given(digraphMojo.getProjects()).willReturn(mavenProjects);
+        given(digraphMojo.isIncludeTests()).willReturn(includeTests);
+        given(digraphMojo.isDebug()).willReturn(false);
+        given(digraphMojo.getProject()).willReturn(project);
+        given(project.getBuild()).willReturn(build);
+        given(build.getDirectory()).willReturn("target");
     }
 
     @Test
     public void execute() {
         //when
-        digraphService.execute(digraphMojo, mavenProjects, includeTests, basePackage, format, false);
+        digraphService.execute(digraphMojo);
     }
 
     @Test
     public void executeWithDebug() {
         //given
+        given(digraphMojo.isDebug()).willReturn(true);
         //when
-        digraphService.execute(digraphMojo, mavenProjects, includeTests, basePackage, format, true);
+        digraphService.execute(digraphMojo);
         //then
         then(digraphMojo).should()
                          .getLog();
@@ -104,7 +119,7 @@ public class DefaultDigraphServiceTest {
         doThrow(new IOException(message)).when(reportWriter)
                                          .write(any(), any());
         //when
-        digraphService.execute(digraphMojo, mavenProjects, includeTests, basePackage, format, false);
+        digraphService.execute(digraphMojo);
         //then
         then(log).should()
                  .error(message);

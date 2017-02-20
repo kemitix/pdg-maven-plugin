@@ -25,13 +25,10 @@ SOFTWARE.
 package net.kemitix.dependency.digraph.maven.plugin;
 
 import lombok.val;
-import org.apache.maven.plugin.AbstractMojo;
-import org.apache.maven.project.MavenProject;
 
 import javax.annotation.concurrent.Immutable;
 import javax.inject.Inject;
 import java.io.IOException;
-import java.util.List;
 
 /**
  * Default implementation of the Digraph Service.
@@ -84,24 +81,19 @@ class DefaultDigraphService implements DigraphService {
     }
 
     @Override
-    public void execute(
-            final AbstractMojo mojo, final List<MavenProject> projects, final boolean includeTests,
-            final String basePackage, final String format, final boolean debug
-                       ) {
-        val dependencyData = DigraphFactory.newDependencyData(basePackage);
-        fileProvider.process(directoryProvider.getDirectories(projects, includeTests))
+    public void execute(final DigraphMojo mojo) {
+        val dependencyData = DigraphFactory.newDependencyData(mojo.getBasePackage());
+        fileProvider.process(directoryProvider.getDirectories(mojo.getProjects(), mojo.isIncludeTests()))
                     .stream()
                     .map(fileLoader::asInputStream)
                     .forEach(in -> fileAnalyser.analyse(dependencyData, in));
         dependencyData.updateNames();
-        if (debug) {
+        if (mojo.isDebug()) {
             dependencyData.debugLog(mojo.getLog());
         }
         try {
-            reportWriter.write(
-                    reportGenerator.generate(dotFileFormatFactory.create(format, dependencyData.getBaseNode())),
-                    REPORT_FILE
-                              );
+            reportWriter.write(reportGenerator.generate(
+                    dotFileFormatFactory.create(mojo.getFormat(), dependencyData.getBaseNode())), REPORT_FILE);
         } catch (IOException ex) {
             mojo.getLog()
                 .error(ex.getMessage());
