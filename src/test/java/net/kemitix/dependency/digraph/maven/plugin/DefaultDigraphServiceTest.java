@@ -1,10 +1,13 @@
 package net.kemitix.dependency.digraph.maven.plugin;
 
+import lombok.val;
 import org.apache.maven.model.Build;
 import org.apache.maven.plugin.logging.Log;
 import org.apache.maven.project.MavenProject;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
@@ -13,6 +16,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.doThrow;
 import static org.mockito.BDDMockito.given;
@@ -74,6 +78,9 @@ public class DefaultDigraphServiceTest {
     @Mock
     private Build build;
 
+    @Rule
+    public TemporaryFolder folder = new TemporaryFolder();
+
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
@@ -123,5 +130,19 @@ public class DefaultDigraphServiceTest {
         //then
         then(log).should()
                  .error(message);
+    }
+
+    @Test
+    public void createTargetDirectory() throws Exception {
+        //given
+        val target = folder.newFolder();
+        target.delete();
+        assertThat(target).doesNotExist();
+        given(build.getDirectory()).willReturn(target.getAbsolutePath());
+        //when
+        digraphService.execute(digraphMojo);
+        //then
+        assertThat(target).exists()
+                          .isDirectory();
     }
 }

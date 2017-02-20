@@ -28,6 +28,7 @@ import lombok.val;
 
 import javax.annotation.concurrent.Immutable;
 import javax.inject.Inject;
+import java.io.File;
 import java.io.IOException;
 
 /**
@@ -38,7 +39,7 @@ import java.io.IOException;
 @Immutable
 class DefaultDigraphService implements DigraphService {
 
-    private static final String REPORT_FILE = "target/digraph.dot";
+    private static final String REPORT_FILE = "digraph.dot";
 
     private final SourceDirectoryProvider directoryProvider;
 
@@ -92,8 +93,15 @@ class DefaultDigraphService implements DigraphService {
             dependencyData.debugLog(mojo.getLog());
         }
         try {
-            reportWriter.write(reportGenerator.generate(
-                    dotFileFormatFactory.create(mojo.getFormat(), dependencyData.getBaseNode())), REPORT_FILE);
+            val outputDirectory = new File(mojo.getProject()
+                                               .getBuild()
+                                               .getDirectory());
+            outputDirectory.mkdirs();
+            reportWriter.write(
+                    reportGenerator.generate(
+                            dotFileFormatFactory.create(mojo.getFormat(), dependencyData.getBaseNode())),
+                    new File(outputDirectory, REPORT_FILE).getAbsolutePath()
+                              );
         } catch (IOException ex) {
             mojo.getLog()
                 .error(ex.getMessage());
