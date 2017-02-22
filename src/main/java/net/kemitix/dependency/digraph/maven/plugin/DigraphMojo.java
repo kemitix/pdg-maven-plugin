@@ -25,6 +25,7 @@ SOFTWARE.
 package net.kemitix.dependency.digraph.maven.plugin;
 
 import com.google.inject.Guice;
+import lombok.Getter;
 import lombok.Setter;
 import lombok.val;
 import org.apache.maven.plugin.AbstractMojo;
@@ -32,6 +33,7 @@ import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
 
+import java.io.File;
 import java.util.List;
 
 /**
@@ -43,20 +45,35 @@ import java.util.List;
 public class DigraphMojo extends AbstractMojo {
 
     @Setter
+    @Getter
+    @Parameter(defaultValue = "${project}", readonly = true)
+    private MavenProject project;
+
+    @Setter
+    @Getter
     @Parameter(defaultValue = "${reactorProjects}", readonly = true)
     private List<MavenProject> projects;
 
+    @Setter
+    @Getter
+    @Parameter(defaultValue = "${project.outputDirectory}")
+    private File outputDirectory;
+
+    @Getter
     @Parameter(name = "includeTests", defaultValue = "false")
     private boolean includeTests;
 
     @Setter
+    @Getter
     @Parameter(name = "basePackage", required = true)
     private String basePackage;
 
+    @Getter
     @Parameter(name = "debug", defaultValue = "true")
     private boolean debug;
 
     @Setter
+    @Getter
     @Parameter(name = "format", defaultValue = "nested")
     private String format;
 
@@ -74,6 +91,6 @@ public class DigraphMojo extends AbstractMojo {
         val digraphModule = new DigraphModule(this, graphFilter);
         Guice.createInjector(digraphModule)
              .getInstance(DigraphService.class)
-             .execute(this, projects, includeTests, basePackage, format, debug);
+             .execute(this);
     }
 }
