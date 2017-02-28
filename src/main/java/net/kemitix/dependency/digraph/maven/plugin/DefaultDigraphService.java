@@ -25,13 +25,11 @@ SOFTWARE.
 package net.kemitix.dependency.digraph.maven.plugin;
 
 import lombok.val;
-import org.apache.maven.plugin.AbstractMojo;
-import org.apache.maven.project.MavenProject;
 
 import javax.annotation.concurrent.Immutable;
 import javax.inject.Inject;
+import java.io.File;
 import java.io.IOException;
-import java.util.List;
 
 /**
  * Default implementation of the Digraph Service.
@@ -41,7 +39,7 @@ import java.util.List;
 @Immutable
 class DefaultDigraphService implements DigraphService {
 
-    private static final String REPORT_FILE = "target/digraph.dot";
+    private static final String REPORT_FILE = "digraph.dot";
 
     private final SourceDirectoryProvider directoryProvider;
 
@@ -84,23 +82,25 @@ class DefaultDigraphService implements DigraphService {
     }
 
     @Override
-    public void execute(
-            final AbstractMojo mojo, final List<MavenProject> projects, final boolean includeTests,
-            final String basePackage, final String format, final boolean debug
-                       ) {
-        val dependencyData = DigraphFactory.newDependencyData(basePackage);
-        fileProvider.process(directoryProvider.getDirectories(projects, includeTests))
+    public void execute(final DigraphMojo mojo) {
+        val dependencyData = DigraphFactory.newDependencyData(mojo.getBasePackage());
+        fileProvider.process(directoryProvider.getDirectories(mojo.getProjects(), mojo.isIncludeTests()))
                     .stream()
                     .map(fileLoader::asInputStream)
                     .forEach(in -> fileAnalyser.analyse(dependencyData, in));
         dependencyData.updateNames();
-        if (debug) {
+        if (mojo.isDebug()) {
             dependencyData.debugLog(mojo.getLog());
         }
         try {
+            val outputDirectory = new File(mojo.getProject()
+                                               .getBuild()
+                                               .getDirectory());
+            outputDirectory.mkdirs();
             reportWriter.write(
-                    reportGenerator.generate(dotFileFormatFactory.create(format, dependencyData.getBaseNode())),
-                    REPORT_FILE
+                    reportGenerator.generate(
+                            dotFileFormatFactory.create(mojo.getFormat(), dependencyData.getBaseNode())),
+                    new File(outputDirectory, REPORT_FILE).getAbsolutePath()
                               );
         } catch (IOException ex) {
             mojo.getLog()
