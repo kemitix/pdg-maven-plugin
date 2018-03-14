@@ -71,6 +71,7 @@ class DefaultSourceFileAnalyser implements SourceFileAnalyser {
         }
     }
 
+    @SuppressWarnings("npathcomplexity")
     private void analyseUnit(
             final PackageDeclaration aPackage, final CompilationUnit cu, final DependencyData dependencyData
                             ) {

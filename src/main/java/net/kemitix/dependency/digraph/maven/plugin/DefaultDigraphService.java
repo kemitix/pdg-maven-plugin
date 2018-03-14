@@ -79,6 +79,7 @@ class DefaultDigraphService implements DigraphService {
     }
 
     @Override
+    @SuppressWarnings("npathcomplexity")
     public void execute(final DigraphMojo mojo) {
         val dependencyData = DigraphFactory.newDependencyData(mojo.getBasePackage());
         fileProvider.process(directoryProvider.getDirectories(mojo.getProjects(), mojo.isIncludeTests()))

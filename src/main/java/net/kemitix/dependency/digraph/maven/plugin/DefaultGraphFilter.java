@@ -57,6 +57,7 @@ class DefaultGraphFilter implements GraphFilter {
     }
 
     @Override
+    @SuppressWarnings("npathcomplexity")
     public boolean filterNodes(final Node<PackageData> packageDataNode) {
         boolean result = true;
         val packageName = getPackageName(packageDataNode);
