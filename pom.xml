@@ -10,7 +10,8 @@
     <parent>
         <groupId>net.kemitix</groupId>
         <artifactId>kemitix-parent</artifactId>
-        <version>2.4.0</version>
+        <version>5.1.0</version>
+        <relativePath/>
     </parent>
 
     <url>https://github.com/kemitix/digraph-dependency-maven-plugin</url>
@@ -28,6 +29,10 @@
     </scm>
 
     <properties>
+        <java.version>1.8</java.version>
+        <tiles-maven-plugin.version>2.10</tiles-maven-plugin.version>
+        <kemitix-tiles.version>0.8.1</kemitix-tiles.version>
+        <kemitix-checkstyle.version>4.0.1</kemitix-checkstyle.version>
         <maven.version>3.3.9</maven.version>
         <maven-plugin-plugin.version>3.5</maven-plugin-plugin.version>
         <maven-plugin-annotations.version>3.5</maven-plugin-annotations.version>
@@ -41,9 +46,21 @@
         <assertj.version>3.6.1</assertj.version>
         <trajano-commons-testing.version>2.1.0</trajano-commons-testing.version>
         <jsr.version>3.0.1</jsr.version>
+        <lombok.version>1.16.20</lombok.version>
+
+        <digraph-dependency.basePackage>net.kemitix.dependency.digraph.maven.plugin</digraph-dependency.basePackage>
+        <jacoco-class-line-covered-ratio>0</jacoco-class-line-covered-ratio>
+        <jacoco-class-instruction-covered-ratio>0</jacoco-class-instruction-covered-ratio>
+        <!--<jacoco-class-missed-count-maximum></jacoco-class-missed-count-maximum>-->
     </properties>
 
     <dependencies>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombok.version}</version>
+            <optional>true</optional>
+        </dependency>
         <dependency>
             <groupId>org.apache.maven</groupId>
             <artifactId>maven-plugin-api</artifactId>
@@ -144,9 +161,17 @@
                 </executions>
             </plugin>
             <plugin>
-                <groupId>org.eluder.coveralls</groupId>
-                <artifactId>coveralls-maven-plugin</artifactId>
-                <version>${coveralls-maven-plugin.version}</version>
+                <groupId>io.repaint.maven</groupId>
+                <artifactId>tiles-maven-plugin</artifactId>
+                <version>${tiles-maven-plugin.version}</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <tiles>
+                        <tile>net.kemitix.tiles:all:${kemitix-tiles.version}</tile>
+                        <!--<tile>net.kemitix.tiles:pmd-strict:${kemitix-tiles.version}</tile>-->
+                        <tile>net.kemitix.checkstyle:tile:${kemitix-checkstyle.version}</tile>
+                    </tiles>
+                </configuration>
             </plugin>
         </plugins>
     </build>
