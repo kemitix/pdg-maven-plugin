@@ -10,8 +10,8 @@
     <parent>
         <groupId>net.kemitix</groupId>
         <artifactId>kemitix-parent</artifactId>
-	    <version>5.1.0</version>
-	    <relativePath/>
+        <version>5.1.0</version>
+        <relativePath/>
     </parent>
 
     <url>https://github.com/kemitix/digraph-dependency-maven-plugin</url>
@@ -47,6 +47,11 @@
         <trajano-commons-testing.version>2.1.0</trajano-commons-testing.version>
         <jsr.version>3.0.1</jsr.version>
         <lombok.version>1.16.20</lombok.version>
+
+        <digraph-dependency.basePackage>net.kemitix.dependency.digraph.maven.plugin</digraph-dependency.basePackage>
+        <jacoco-class-line-covered-ratio>0</jacoco-class-line-covered-ratio>
+        <jacoco-class-instruction-covered-ratio>0</jacoco-class-instruction-covered-ratio>
+        <!--<jacoco-class-missed-count-maximum></jacoco-class-missed-count-maximum>-->
     </properties>
 
     <dependencies>
