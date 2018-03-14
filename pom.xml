@@ -10,7 +10,8 @@
     <parent>
         <groupId>net.kemitix</groupId>
         <artifactId>kemitix-parent</artifactId>
-        <version>2.4.0</version>
+	    <version>5.1.0</version>
+	    <relativePath/>
     </parent>
 
     <url>https://github.com/kemitix/digraph-dependency-maven-plugin</url>
