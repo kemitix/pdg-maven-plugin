@@ -2,11 +2,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>digraph-dependency-maven-plugin</artifactId>
-    <version>DEV-SNAPSHOT</version>
-    <packaging>maven-plugin</packaging>
-    <name>Digraph Dependency Maven Plugin</name>
-    <description>Generates a DOT Digraph of dependencies between packages within a project</description>
+
     <parent>
         <groupId>net.kemitix</groupId>
         <artifactId>kemitix-parent</artifactId>
@@ -14,14 +10,20 @@
         <relativePath/>
     </parent>
 
-    <url>https://github.com/kemitix/digraph-dependency-maven-plugin</url>
+    <artifactId>pdg-maven-plugin</artifactId>
+    <version>DEV-SNAPSHOT</version>
 
-    <issueManagement>
-        <url>https://github.com/kemitix/digraph-dependency-maven-plugin/issues</url>
-    </issueManagement>
+    <packaging>maven-plugin</packaging>
+
+    <name>Package Dependency Graph Maven Plugin</name>
+    <description>Generates a DOT Digraph of dependencies between packages within a project</description>
 
     <inceptionYear>2016</inceptionYear>
 
+    <url>https://github.com/kemitix/digraph-dependency-maven-plugin</url>
+    <issueManagement>
+        <url>https://github.com/kemitix/digraph-dependency-maven-plugin/issues</url>
+    </issueManagement>
     <scm>
         <connection>scm:git:git@github.com:kemitix/digraph-dependency-maven-plugin.git</connection>
         <developerConnection>scm:git:git@github.com:kemitix/digraph-dependency-maven-plugin.git</developerConnection>
