@@ -49,7 +49,7 @@
         <jsr.version>3.0.2</jsr.version>
         <lombok.version>1.18.2</lombok.version>
 
-        <digraph-dependency.basePackage>net.kemitix.dependency.digraph.maven.plugin</digraph-dependency.basePackage>
+        <digraph-dependency.basePackage>net.kemitix.pdg.maven</digraph-dependency.basePackage>
         <jacoco-class-line-covered-ratio>80%</jacoco-class-line-covered-ratio>
         <jacoco-class-instruction-covered-ratio>81%</jacoco-class-instruction-covered-ratio>
     </properties>

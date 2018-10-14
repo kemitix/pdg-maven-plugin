@@ -12,7 +12,7 @@
                 <artifactId>digraph-dependency-maven-plugin</artifactId>
                 <configuration>
                     <includeTests>true</includeTests>
-                    <projects implementation="net.kemitix.dependency.digraph.maven.plugin.stubs.DigraphSrcAndTestProjectList"/>
+                    <projects implementation="DigraphSrcAndTestProjectList"/>
                     <basePackage>test</basePackage>
                 </configuration>
             </plugin>
