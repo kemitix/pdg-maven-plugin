@@ -1,9 +1,5 @@
-[![Build Status](https://travis-ci.org/kemitix/digraph-dependency-maven-plugin.svg?branch=develop)](https://travis-ci.org/kemitix/digraph-dependency-maven-plugin)
-[![Coverage Status](https://coveralls.io/repos/github/kemitix/digraph-dependency-maven-plugin/badge.svg?branch=develop)](https://coveralls.io/github/kemitix/digraph-dependency-maven-plugin?branch=develop)
+# Package Dependency Graph Maven Plugin 
 
-# digraph-dependency-maven-plugin
-
-[![Join the chat at https://gitter.im/kemitix/digraph-dependency-maven-plugin](https://badges.gitter.im/kemitix/digraph-dependency-maven-plugin.svg)](https://gitter.im/kemitix/digraph-dependency-maven-plugin?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 Digraph generator for package dependencies within a project
 
 Build Plugin to create a [DOT](https://en.wikipedia.org/wiki/DOT_(graph_description_language))
@@ -14,13 +10,15 @@ It works by scanning the source code and processing import statements.
 Java parsing is handled using the [JavaParser](https://github.com/javaparser/javaparser)
 project.
 
+`pdg-maven-plugin` - previously known as `digraph-dependency-maven-plugin`
+
 ## Usage
 
 Add the following build plugin to your pom.xml:
 
             <plugin>
                 <groupId>net.kemitix</groupId>
-                <artifactId>digraph-dependency-maven-plugin</artifactId>
+                <artifactId>pdg-maven-plugin</artifactId>
                 <version>${digraph.version}</version>
                 <configuration>
                     <basePackage>com.example</basePackage>
