@@ -43,9 +43,7 @@ class DefaultSourceDirectoryProvider implements SourceDirectoryProvider {
             final List<MavenProject> projects, final boolean includeTests
                                       ) {
         final List<String> directories = new ArrayList<>();
-        projects.forEach((final MavenProject project) -> {
-            addProject(directories, project, includeTests);
-        });
+        projects.forEach(project -> addProject(directories, project, includeTests));
         return directories;
     }
 
