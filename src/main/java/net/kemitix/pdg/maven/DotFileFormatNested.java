@@ -29,7 +29,6 @@ import net.kemitix.node.Node;
 import javax.annotation.concurrent.Immutable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Generates a dot file dependency report as nested clusters.
@@ -55,31 +54,43 @@ class DotFileFormatNested extends AbstractDotFileFormat {
     }
 
     private void addAnyLHead(
-            final Node<PackageData> headNode, final Node<PackageData> tailNode, final List<String> attributes
+            final Node<PackageData> headNode,
+            final Node<PackageData> tailNode,
+            final List<String> attributes
                             ) {
         // if head node has children, then add lhead attribute
-        if (headNode.getChildren()
-                    .size() > 0 && !tailNode.isDescendantOf(headNode)) {
+        if (hasChildren(headNode) && isNotDescendant(headNode, tailNode)) {
             attributes.add(String.format("lhead=\"cluster%s\"", getClusterId(headNode)));
         }
     }
 
     private void addAnyLTail(
-            final Node<PackageData> tailNode, final Node<PackageData> headNode, final List<String> attributes
+            final Node<PackageData> tailNode,
+            final Node<PackageData> headNode,
+            final List<String> attributes
                             ) {
         // if tail node has children, then add ltail attribute
-        if (tailNode.getChildren()
-                    .size() > 0 && !headNode.isDescendantOf(tailNode)) {
+        if (hasChildren(tailNode) && isNotDescendant(tailNode, headNode)) {
             attributes.add(String.format("ltail=\"cluster%s\"", getClusterId(tailNode)));
         }
+    }
+
+    private boolean isNotDescendant(
+            final Node<PackageData> childNode,
+            final Node<PackageData> parentNode
+    ) {
+        return !parentNode.isDescendantOf(childNode);
+    }
+
+    private boolean hasChildren(final Node<PackageData> packageDataNode) {
+        return !packageDataNode.getChildren().isEmpty();
     }
 
     private String buildAttributeTag(final List<String> attributes) {
         String attributeTag = "";
         if (attributes.size() > 0) {
             attributeTag = String.format(
-                    "[%s]", attributes.stream()
-                                      .collect(Collectors.joining(",")));
+                    "[%s]", String.join(",", attributes));
         }
         return attributeTag;
     }
