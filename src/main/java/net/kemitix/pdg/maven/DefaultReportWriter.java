@@ -38,14 +38,8 @@ class DefaultReportWriter implements ReportWriter {
 
     @Override
     public void write(final String report, final String file) throws IOException {
-        Writer writer = null;
-        try {
-            writer = new OutputStreamWriter(new FileOutputStream(file), StandardCharsets.UTF_8);
+        try (Writer writer = new OutputStreamWriter(new FileOutputStream(file), StandardCharsets.UTF_8)) {
             writer.append(report);
-        } finally {
-            if (writer != null) {
-                writer.close();
-            }
         }
     }
 
