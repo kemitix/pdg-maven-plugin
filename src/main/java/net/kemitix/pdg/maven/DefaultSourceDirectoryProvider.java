@@ -40,16 +40,19 @@ class DefaultSourceDirectoryProvider implements SourceDirectoryProvider {
 
     @Override
     public List<String> getDirectories(
-            final List<MavenProject> projects, final boolean includeTests
-                                      ) {
+            final List<MavenProject> projects,
+            final boolean includeTests
+    ) {
         final List<String> directories = new ArrayList<>();
         projects.forEach(project -> addProject(directories, project, includeTests));
         return directories;
     }
 
     private void addProject(
-            final List<String> directories, final MavenProject project, final boolean includeTests
-                           ) {
+            final List<String> directories,
+            final MavenProject project,
+            final boolean includeTests
+    ) {
         final Build build = project.getBuild();
         addDirectoryIfExists(directories, build.getSourceDirectory());
         if (includeTests) {
@@ -58,11 +61,16 @@ class DefaultSourceDirectoryProvider implements SourceDirectoryProvider {
     }
 
     private void addDirectoryIfExists(
-            final List<String> directories, final String directory
-                                     ) {
-        if (directory != null && Files.isDirectory(Paths.get(directory))) {
+            final List<String> directories,
+            final String directory
+    ) {
+        if (directory != null && isDirectory(directory)) {
             directories.add(directory);
         }
+    }
+
+    private boolean isDirectory(final String directory) {
+        return Paths.get(directory).toFile().isDirectory();
     }
 
 }
