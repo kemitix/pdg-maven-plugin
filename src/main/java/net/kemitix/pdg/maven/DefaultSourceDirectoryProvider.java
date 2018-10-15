@@ -25,7 +25,6 @@ import org.apache.maven.model.Build;
 import org.apache.maven.project.MavenProject;
 
 import javax.annotation.concurrent.Immutable;
-import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;

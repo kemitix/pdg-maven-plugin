@@ -29,7 +29,6 @@ import net.kemitix.node.Node;
 import javax.annotation.concurrent.Immutable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Generates a dot file dependency report as nested clusters.
