@@ -3,9 +3,10 @@ package net.kemitix.pdg.maven;
 import org.apache.maven.model.Build;
 import org.apache.maven.model.Model;
 import org.apache.maven.project.MavenProject;
-import org.junit.After;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -13,50 +14,20 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-/**
- * Tests for {@link DefaultSourceDirectoryProviderTest}.
- *
- * @author pcampbell
- */
 public class DefaultSourceDirectoryProviderTest {
 
-    /**
-     * Project list.
-     */
     private final List<MavenProject> projects = new ArrayList<>();
-
-    /**
-     * Build.
-     */
     private final Build build = new Build();
+    private DefaultSourceDirectoryProvider provider = new DefaultSourceDirectoryProvider();
 
-    /**
-     * Temporary Files and Directories.
-     */
-    private final TemporaryFileManager fileManager = new TemporaryFileManager();
+    @Rule
+    public TemporaryFolder folder = new TemporaryFolder();
 
-    /**
-     * Class under test.
-     */
-    private DefaultSourceDirectoryProvider provider;
-
-    /**
-     * Prepare each test.
-     */
     @Before
     public void setUp() {
-        provider = new DefaultSourceDirectoryProvider();
         final Model model = new Model();
         model.setBuild(build);
         projects.add(new MavenProject(model));
-    }
-
-    /**
-     * Clean up after each test.
-     */
-    @After
-    public void tearDown() {
-        fileManager.cleanUp();
     }
 
     /**
@@ -67,8 +38,7 @@ public class DefaultSourceDirectoryProviderTest {
     @Test
     public void shouldGetSourceDirectoryAfterSettingIt() throws IOException {
         //given
-        final String directory = fileManager.createTempDirectory()
-                                            .toString();
+        final String directory = folder.newFolder().toString();
         //when
         build.setSourceDirectory(directory);
         //then
@@ -87,11 +57,9 @@ public class DefaultSourceDirectoryProviderTest {
     @Test
     public void shouldAddSourcesAndTests() throws IOException {
         //given
-        final String sources = fileManager.createTempDirectory()
-                                          .toString();
+        final String sources = folder.newFolder().toString();
         build.setSourceDirectory(sources);
-        final String tests = fileManager.createTempDirectory()
-                                        .toString();
+        final String tests = folder.newFolder().toString();
         build.setTestSourceDirectory(tests);
         //when
         List<String> directories = provider.getDirectories(projects, true);
@@ -107,8 +75,7 @@ public class DefaultSourceDirectoryProviderTest {
     @Test
     public void shouldAddSourcesAndNoTestsWhenTestsDoNotExist() throws IOException {
         //given
-        final String sources = fileManager.createTempDirectory()
-                                          .toString();
+        final String sources = folder.newFolder().toString();
         build.setSourceDirectory(sources);
         final String tests = "do not exist";
         build.setTestSourceDirectory(tests);
@@ -127,8 +94,7 @@ public class DefaultSourceDirectoryProviderTest {
     @Test
     public void shouldAddSourcesAndNoTests() throws IOException {
         //given
-        final String sources = fileManager.createTempDirectory()
-                                          .toString();
+        final String sources = folder.newFolder().toString();
         build.setSourceDirectory(sources);
         //when
         List<String> directories = provider.getDirectories(projects, true);
