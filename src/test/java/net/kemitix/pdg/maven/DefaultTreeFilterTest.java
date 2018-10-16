@@ -2,25 +2,19 @@ package net.kemitix.pdg.maven;
 
 import lombok.val;
 import net.kemitix.node.Node;
-import org.assertj.core.api.Assertions;
 import org.assertj.core.api.SoftAssertions;
-import org.junit.Before;
+import org.assertj.core.api.WithAssertions;
 import org.junit.Test;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Tests for {@link DefaultTreeFilter}
  */
-public class DefaultTreeFilterTest {
+public class DefaultTreeFilterTest implements WithAssertions {
 
-    private NodePathGenerator nodePathGenerator;
+    private NodePathGenerator nodePathGenerator = new DefaultNodePathGenerator();
 
     /**
      * Assert that the node has all the dependencies that it needs.
@@ -28,13 +22,13 @@ public class DefaultTreeFilterTest {
      * @param node         The node with a list of those it uses
      * @param dependencies The dependencies that node should be using
      */
-    private static void assertDependency(final Node<PackageData> node, final List<Node<PackageData>> dependencies) {
-        val uses = node.getData()
-                       .getUses()
-                       .stream()
-                       .map(Node::getData)
-                       .map(PackageData::getName)
-                       .collect(Collectors.toList());
+    private void assertDependency(final Node<PackageData> node, final List<Node<PackageData>> dependencies) {
+        final List<String> uses = node.getData()
+                .getUses()
+                .stream()
+                .map(Node::getData)
+                .map(PackageData::getName)
+                .collect(Collectors.toList());
         // uses: list of names of packages used by node
         dependencies.stream()
                     .map(Node::getName)
@@ -42,16 +36,11 @@ public class DefaultTreeFilterTest {
                                                                .contains(dependencyName));
     }
 
-    @Before
-    public void setUp() {
-        nodePathGenerator = new DefaultNodePathGenerator();
-    }
-
     @Test
-    public void shouldGenerateDefaultTree() throws Exception {
+    public void shouldGenerateDefaultTree() {
         //given
-        val dependencyData = TestBlackJackDependencyData.getDependencyData();
-        val baseNode = dependencyData.getBaseNode();
+        final DependencyData dependencyData = TestBlackJackDependencyData.getDependencyData();
+        final Node<PackageData> baseNode = dependencyData.getBaseNode();
         //then
         assertThat(baseNode).as("has base node")
                             .isNotNull();
@@ -59,20 +48,20 @@ public class DefaultTreeFilterTest {
                                        .isNotEmpty()
                                        .map(PackageData::getName)
                                        .contains("blackjack");
-        val children = baseNode.getChildren();
-        Assertions.assertThat(children).as("blackjack contains cli, game and model")
+        final Set<Node<PackageData>> children = baseNode.getChildren();
+        assertThat(children).as("blackjack contains cli, game and model")
                             .extracting(Node::getName)
                             .containsExactlyInAnyOrder("cli", "game", "model");
         val childMap = new HashMap<String, Node<PackageData>>(4);
         children.forEach(c -> c.findData()
                                .ifPresent(d -> childMap.put(d.getName(), c)));
-        val cli = childMap.get("cli");
-        val game = childMap.get("game");
-        val model = childMap.get("model");
+        final Node<PackageData> cli = childMap.get("cli");
+        final Node<PackageData> game = childMap.get("game");
+        final Node<PackageData> model = childMap.get("model");
         cli.getChildren()
            .forEach(c -> c.findData()
                           .ifPresent(d -> childMap.put(d.getName(), c)));
-        val console = childMap.get("console");
+        final Node<PackageData> console = childMap.get("console");
 
         assertThat(childMap).containsKeys("cli", "game", "model", "console");
 
@@ -83,13 +72,13 @@ public class DefaultTreeFilterTest {
     }
 
     @Test
-    public void shouldExcludeGame() throws Exception {
+    public void shouldExcludeGame() {
         //given
-        val dependencyData = TestBlackJackDependencyData.getDependencyData();
-        val baseNode = dependencyData.getBaseNode();
+        final DependencyData dependencyData = TestBlackJackDependencyData.getDependencyData();
+        final Node<PackageData> baseNode = dependencyData.getBaseNode();
         //when
-        val treeFilter = new DefaultTreeFilter(GraphFilter.of("game", "", nodePathGenerator), nodePathGenerator);
-        val filtered = treeFilter.filterTree(baseNode);
+        final TreeFilter treeFilter = new DefaultTreeFilter(GraphFilter.of("game", "", nodePathGenerator), nodePathGenerator);
+        final Node<PackageData> filtered = treeFilter.filterTree(baseNode);
         //then
         assertThat(filtered).as("has base node")
                             .isNotNull();
@@ -97,21 +86,20 @@ public class DefaultTreeFilterTest {
                                        .isNotEmpty()
                                        .map(PackageData::getName)
                                        .contains("blackjack");
-        val children = filtered.getChildren();
+        final Set<Node<PackageData>> children = filtered.getChildren();
         assertThat(children).as("blackjack contains cli and model (no game)")
                             .extracting(Node::getName)
                             .containsExactlyInAnyOrder("cli", "model");
         val childMap = new HashMap<String, Node<PackageData>>(3);
-        children.forEach(c -> c.findData()
-                               .ifPresent(d -> childMap.put(d.getName(), c)));
-        val cli = childMap.get("cli");
+        children.forEach(c -> c.findData().ifPresent(d -> childMap.put(d.getName(), c)));
+        final Node<PackageData> cli = childMap.get("cli");
         assertThat(cli.getChildren()).as("cli has child")
                                      .hasSize(1);
-        val model = childMap.get("model");
+        final Node<PackageData> model = childMap.get("model");
         cli.getChildren()
            .forEach(c -> c.findData()
                           .ifPresent(d -> childMap.put(d.getName(), c)));
-        val console = childMap.get("console");
+        final Node<PackageData> console = childMap.get("console");
 
         assertThat(childMap).as("has nodes cli and model")
                             .containsKeys("cli", "model")
@@ -125,13 +113,13 @@ public class DefaultTreeFilterTest {
     }
 
     @Test
-    public void shouldExcludeModel() throws Exception {
+    public void shouldExcludeModel() {
         //given
-        val dependencyData = TestBlackJackDependencyData.getDependencyData();
-        val baseNode = dependencyData.getBaseNode();
+        final DependencyData dependencyData = TestBlackJackDependencyData.getDependencyData();
+        final Node<PackageData> baseNode = dependencyData.getBaseNode();
         //when
-        val treeFilter = new DefaultTreeFilter(GraphFilter.of("model", "", nodePathGenerator), nodePathGenerator);
-        val filtered = treeFilter.filterTree(baseNode);
+        final TreeFilter treeFilter = new DefaultTreeFilter(GraphFilter.of("model", "", nodePathGenerator), nodePathGenerator);
+        final Node<PackageData> filtered = treeFilter.filterTree(baseNode);
         //then
         assertThat(filtered).as("has base node")
                             .isNotNull();
@@ -139,20 +127,20 @@ public class DefaultTreeFilterTest {
                                        .isNotEmpty()
                                        .map(PackageData::getName)
                                        .contains("blackjack");
-        val children = filtered.getChildren();
+        final Set<Node<PackageData>> children = filtered.getChildren();
         assertThat(children).as("blackjack contains cli and game")
                             .extracting(Node::getName)
                             .containsExactlyInAnyOrder("cli", "game");
         val childMap = new HashMap<String, Node<PackageData>>(3);
         children.forEach(c -> c.findData()
                                .ifPresent(d -> childMap.put(d.getName(), c)));
-        val cli = childMap.get("cli");
-        val game = childMap.get("game");
+        final Node<PackageData> cli = childMap.get("cli");
+        final Node<PackageData> game = childMap.get("game");
         assertThat(childMap).doesNotContainKey("model");
         cli.getChildren()
            .forEach(c -> c.findData()
                           .ifPresent(d -> childMap.put(d.getName(), c)));
-        val console = childMap.get("console");
+        final Node<PackageData> console = childMap.get("console");
 
         assertThat(childMap).containsKeys("cli", "game", "console");
 
@@ -163,13 +151,13 @@ public class DefaultTreeFilterTest {
     }
 
     @Test
-    public void shouldExcludeConsole() throws Exception {
+    public void shouldExcludeConsole() {
         //given
-        val dependencyData = TestBlackJackDependencyData.getDependencyData();
-        val baseNode = dependencyData.getBaseNode();
+        final DependencyData dependencyData = TestBlackJackDependencyData.getDependencyData();
+        final Node<PackageData> baseNode = dependencyData.getBaseNode();
         //when
-        val treeFilter = new DefaultTreeFilter(GraphFilter.of("console", "", nodePathGenerator), nodePathGenerator);
-        val filtered = treeFilter.filterTree(baseNode);
+        final TreeFilter treeFilter = new DefaultTreeFilter(GraphFilter.of("console", "", nodePathGenerator), nodePathGenerator);
+        final Node<PackageData> filtered = treeFilter.filterTree(baseNode);
         //then
         assertThat(filtered).as("has base node")
                             .isNotNull();
@@ -177,16 +165,16 @@ public class DefaultTreeFilterTest {
                                        .isNotEmpty()
                                        .map(PackageData::getName)
                                        .contains("blackjack");
-        val children = filtered.getChildren();
+        final Set<Node<PackageData>> children = filtered.getChildren();
         assertThat(children).as("blackjack contains cli, game and model")
                             .extracting(Node::getName)
                             .containsExactlyInAnyOrder("cli", "game", "model");
         val childMap = new HashMap<String, Node<PackageData>>(4);
         children.forEach(c -> c.findData()
                                .ifPresent(d -> childMap.put(d.getName(), c)));
-        val cli = childMap.get("cli");
-        val game = childMap.get("game");
-        val model = childMap.get("model");
+        final Node<PackageData> cli = childMap.get("cli");
+        final Node<PackageData> game = childMap.get("game");
+        final Node<PackageData> model = childMap.get("model");
         cli.getChildren()
            .forEach(c -> c.findData()
                           .ifPresent(d -> childMap.put(d.getName(), c)));
@@ -201,13 +189,13 @@ public class DefaultTreeFilterTest {
     }
 
     @Test
-    public void shouldExcludeCli() throws Exception {
+    public void shouldExcludeCli() {
         //given
-        val dependencyData = TestBlackJackDependencyData.getDependencyData();
-        val baseNode = dependencyData.getBaseNode();
+        final DependencyData dependencyData = TestBlackJackDependencyData.getDependencyData();
+        final Node<PackageData> baseNode = dependencyData.getBaseNode();
         //when
-        val treeFilter = new DefaultTreeFilter(GraphFilter.of("cli", "", nodePathGenerator), nodePathGenerator);
-        val filtered = treeFilter.filterTree(baseNode);
+        final TreeFilter treeFilter = new DefaultTreeFilter(GraphFilter.of("cli", "", nodePathGenerator), nodePathGenerator);
+        final Node<PackageData> filtered = treeFilter.filterTree(baseNode);
         //then
         assertThat(filtered).as("has base node")
                             .isNotNull();
@@ -215,7 +203,7 @@ public class DefaultTreeFilterTest {
                                        .isNotEmpty()
                                        .map(PackageData::getName)
                                        .contains("blackjack");
-        val children = filtered.getChildren();
+        final Set<Node<PackageData>> children = filtered.getChildren();
         assertThat(children).as("blackjack contains game and model")
                             .extracting(Node::getName)
                             .containsExactlyInAnyOrder("game", "model");
@@ -223,8 +211,8 @@ public class DefaultTreeFilterTest {
         children.forEach(c -> c.findData()
                                .ifPresent(d -> childMap.put(d.getName(), c)));
 
-        val game = childMap.get("game");
-        val model = childMap.get("model");
+        final Node<PackageData> game = childMap.get("game");
+        final Node<PackageData> model = childMap.get("model");
         assertThat(childMap).doesNotContainKey("cli");
         assertThat(childMap).doesNotContainKey("console");
 
@@ -236,13 +224,13 @@ public class DefaultTreeFilterTest {
 
     // shouldIncludeGame -- includes everything as game touches everything else
     @Test
-    public void shouldIncludeGame() throws Exception {
+    public void shouldIncludeGame() {
         //given
-        val dependencyData = TestBlackJackDependencyData.getDependencyData();
-        val baseNode = dependencyData.getBaseNode();
+        final DependencyData dependencyData = TestBlackJackDependencyData.getDependencyData();
+        final Node<PackageData> baseNode = dependencyData.getBaseNode();
         //when
-        val treeFilter = new DefaultTreeFilter(GraphFilter.of("", "game", nodePathGenerator), nodePathGenerator);
-        val filtered = treeFilter.filterTree(baseNode);
+        final TreeFilter treeFilter = new DefaultTreeFilter(GraphFilter.of("", "game", nodePathGenerator), nodePathGenerator);
+        final Node<PackageData> filtered = treeFilter.filterTree(baseNode);
         //then
         assertThat(filtered).as("has base node")
                             .isNotNull();
@@ -250,20 +238,20 @@ public class DefaultTreeFilterTest {
                                        .isNotEmpty()
                                        .map(PackageData::getName)
                                        .contains("blackjack");
-        val children = filtered.getChildren();
+        final Set<Node<PackageData>> children = filtered.getChildren();
         assertThat(children).as("blackjack contains cli, game and model")
                             .extracting(Node::getName)
                             .containsExactlyInAnyOrder("cli", "game", "model");
         val childMap = new HashMap<String, Node<PackageData>>(4);
         children.forEach(c -> c.findData()
                                .ifPresent(d -> childMap.put(d.getName(), c)));
-        val cli = childMap.get("cli");
-        val game = childMap.get("game");
-        val model = childMap.get("model");
+        final Node<PackageData> cli = childMap.get("cli");
+        final Node<PackageData> game = childMap.get("game");
+        final Node<PackageData> model = childMap.get("model");
         cli.getChildren()
            .forEach(c -> c.findData()
                           .ifPresent(d -> childMap.put(d.getName(), c)));
-        val console = childMap.get("console");
+        final Node<PackageData> console = childMap.get("console");
 
         assertThat(childMap).containsKeys("cli", "game", "model", "console");
 
@@ -275,13 +263,13 @@ public class DefaultTreeFilterTest {
 
     // shouldIncludeCli -- includes everything as cli touches everything else
     @Test
-    public void shouldIncludeCli() throws Exception {
+    public void shouldIncludeCli() {
         //given
-        val dependencyData = TestBlackJackDependencyData.getDependencyData();
-        val baseNode = dependencyData.getBaseNode();
+        final DependencyData dependencyData = TestBlackJackDependencyData.getDependencyData();
+        final Node<PackageData> baseNode = dependencyData.getBaseNode();
         //when
-        val treeFilter = new DefaultTreeFilter(GraphFilter.of("", "cli", nodePathGenerator), nodePathGenerator);
-        val filtered = treeFilter.filterTree(baseNode);
+        final TreeFilter treeFilter = new DefaultTreeFilter(GraphFilter.of("", "cli", nodePathGenerator), nodePathGenerator);
+        final Node<PackageData> filtered = treeFilter.filterTree(baseNode);
         //then
         assertThat(filtered).as("has base node")
                             .isNotNull();
@@ -289,7 +277,7 @@ public class DefaultTreeFilterTest {
                                        .isNotEmpty()
                                        .map(PackageData::getName)
                                        .contains("blackjack");
-        val children = filtered.getChildren();
+        final Set<Node<PackageData>> children = filtered.getChildren();
         assertThat(children).as("blackjack contains cli, game and model")
                             .extracting(node -> node.findData()
                                                     .map(PackageData::getName)
@@ -298,13 +286,13 @@ public class DefaultTreeFilterTest {
         val childMap = new HashMap<String, Node<PackageData>>(4);
         children.forEach(c -> c.findData()
                                .ifPresent(d -> childMap.put(d.getName(), c)));
-        val cli = childMap.get("cli");
-        val game = childMap.get("game");
-        val model = childMap.get("model");
+        final Node<PackageData> cli = childMap.get("cli");
+        final Node<PackageData> game = childMap.get("game");
+        final Node<PackageData> model = childMap.get("model");
         cli.getChildren()
            .forEach(c -> c.findData()
                           .ifPresent(d -> childMap.put(d.getName(), c)));
-        val console = childMap.get("console");
+        final Node<PackageData> console = childMap.get("console");
 
         assertThat(childMap).containsKeys("cli", "game", "model", "console");
 
@@ -316,13 +304,13 @@ public class DefaultTreeFilterTest {
 
     // shouldIncludeModel -- excludes console
     @Test
-    public void shouldIncludeModel() throws Exception {
+    public void shouldIncludeModel() {
         //given
-        val dependencyData = TestBlackJackDependencyData.getDependencyData();
-        val baseNode = dependencyData.getBaseNode();
+        final DependencyData dependencyData = TestBlackJackDependencyData.getDependencyData();
+        final Node<PackageData> baseNode = dependencyData.getBaseNode();
         //when
-        val treeFilter = new DefaultTreeFilter(GraphFilter.of("", "model", nodePathGenerator), nodePathGenerator);
-        val filtered = treeFilter.filterTree(baseNode);
+        final TreeFilter treeFilter = new DefaultTreeFilter(GraphFilter.of("", "model", nodePathGenerator), nodePathGenerator);
+        final Node<PackageData> filtered = treeFilter.filterTree(baseNode);
         //then
         assertThat(filtered).as("has base node")
                             .isNotNull();
@@ -330,7 +318,7 @@ public class DefaultTreeFilterTest {
                                        .isNotEmpty()
                                        .map(PackageData::getName)
                                        .contains("blackjack");
-        val children = filtered.getChildren();
+        final Set<Node<PackageData>> children = filtered.getChildren();
         assertThat(children).as("blackjack contains cli, game and model")
                             .extracting(node -> node.findData()
                                                     .map(PackageData::getName)
@@ -339,9 +327,9 @@ public class DefaultTreeFilterTest {
         val childMap = new HashMap<String, Node<PackageData>>(4);
         children.forEach(c -> c.findData()
                                .ifPresent(d -> childMap.put(d.getName(), c)));
-        val cli = childMap.get("cli");
-        val game = childMap.get("game");
-        val model = childMap.get("model");
+        final Node<PackageData> cli = childMap.get("cli");
+        final Node<PackageData> game = childMap.get("game");
+        final Node<PackageData> model = childMap.get("model");
         cli.getChildren()
            .forEach(c -> c.findData()
                           .ifPresent(d -> childMap.put(d.getName(), c)));
@@ -357,13 +345,13 @@ public class DefaultTreeFilterTest {
 
     // shouldIncludeConsole -- excludes model
     @Test
-    public void shouldIncludeConsole() throws Exception {
+    public void shouldIncludeConsole() {
         //given
-        val dependencyData = TestBlackJackDependencyData.getDependencyData();
-        val baseNode = dependencyData.getBaseNode();
+        final DependencyData dependencyData = TestBlackJackDependencyData.getDependencyData();
+        final Node<PackageData> baseNode = dependencyData.getBaseNode();
         //when
-        val treeFilter = new DefaultTreeFilter(GraphFilter.of("", "console", nodePathGenerator), nodePathGenerator);
-        val filtered = treeFilter.filterTree(baseNode);
+        final TreeFilter treeFilter = new DefaultTreeFilter(GraphFilter.of("", "console", nodePathGenerator), nodePathGenerator);
+        final Node<PackageData> filtered = treeFilter.filterTree(baseNode);
         //then
         assertThat(filtered).as("has base node")
                             .isNotNull();
@@ -371,7 +359,7 @@ public class DefaultTreeFilterTest {
                                        .isNotEmpty()
                                        .map(PackageData::getName)
                                        .contains("blackjack");
-        val children = filtered.getChildren();
+        final Set<Node<PackageData>> children = filtered.getChildren();
         assertThat(children).as("blackjack contains cli and game")
                             .extracting(node -> node.findData()
                                                     .map(PackageData::getName)
@@ -380,13 +368,13 @@ public class DefaultTreeFilterTest {
         val childMap = new HashMap<String, Node<PackageData>>(3);
         children.forEach(c -> c.findData()
                                .ifPresent(d -> childMap.put(d.getName(), c)));
-        val cli = childMap.get("cli");
-        val game = childMap.get("game");
+        final Node<PackageData> cli = childMap.get("cli");
+        final Node<PackageData> game = childMap.get("game");
         assertThat(childMap).doesNotContainKey("model");
         cli.getChildren()
            .forEach(c -> c.findData()
                           .ifPresent(d -> childMap.put(d.getName(), c)));
-        val console = childMap.get("console");
+        final Node<PackageData> console = childMap.get("console");
 
         assertThat(childMap).containsKeys("cli", "game", "console");
 
@@ -400,13 +388,13 @@ public class DefaultTreeFilterTest {
      * shouldExcludeCliIncludeModel -- exclude cli, console, but include game and model
      */
     @Test
-    public void shouldExcludeCliIncludeModel() throws Exception {
+    public void shouldExcludeCliIncludeModel() {
         //given
-        val dependencyData = TestBlackJackDependencyData.getDependencyData();
-        val baseNode = dependencyData.getBaseNode();
+        final DependencyData dependencyData = TestBlackJackDependencyData.getDependencyData();
+        final Node<PackageData> baseNode = dependencyData.getBaseNode();
         //when
-        val treeFilter = new DefaultTreeFilter(GraphFilter.of("cli", "model", nodePathGenerator), nodePathGenerator);
-        val filtered = treeFilter.filterTree(baseNode);
+        final TreeFilter treeFilter = new DefaultTreeFilter(GraphFilter.of("cli", "model", nodePathGenerator), nodePathGenerator);
+        final Node<PackageData> filtered = treeFilter.filterTree(baseNode);
         //then
         assertThat(filtered).as("has base node")
                             .isNotNull();
@@ -414,7 +402,7 @@ public class DefaultTreeFilterTest {
                                        .isNotEmpty()
                                        .map(PackageData::getName)
                                        .contains("blackjack");
-        val children = filtered.getChildren();
+        final Set<Node<PackageData>> children = filtered.getChildren();
         assertThat(children).as("blackjack contains game and model")
                             .extracting(node -> node.findData()
                                                     .map(PackageData::getName)
@@ -424,8 +412,8 @@ public class DefaultTreeFilterTest {
         children.forEach(c -> c.findData()
                                .ifPresent(d -> childMap.put(d.getName(), c)));
         assertThat(childMap).doesNotContainKey("cli");
-        val game = childMap.get("game");
-        val model = childMap.get("model");
+        final Node<PackageData> game = childMap.get("game");
+        final Node<PackageData> model = childMap.get("model");
 
         assertThat(childMap).containsKeys("game", "model");
 
@@ -436,21 +424,21 @@ public class DefaultTreeFilterTest {
     @Test
     public void usesInFilteredTreeShouldShareNewRoot() {
         //given
-        val dependencyData = TestBlackJackDependencyData.getDependencyData();
-        val baseNode = dependencyData.getBaseNode();
+        final DependencyData dependencyData = TestBlackJackDependencyData.getDependencyData();
+        final Node<PackageData> baseNode = dependencyData.getBaseNode();
         baseNode.stream()
                 .forEach(node -> node.setName(node.getData()
                                                   .getName()));
         //when
         /// include all nodes
-        val treeFilter = new DefaultTreeFilter(GraphFilter.of("", "", nodePathGenerator), nodePathGenerator);
-        val filtered = treeFilter.filterTree(baseNode);
+        final TreeFilter treeFilter = new DefaultTreeFilter(GraphFilter.of("", "", nodePathGenerator), nodePathGenerator);
+        final Node<PackageData> filtered = treeFilter.filterTree(baseNode);
         //then
-        SoftAssertions.assertSoftly(softly -> filtered.stream()
-                                                      .map(Node::getData)
-                                                      .flatMap(data -> data.getUses()
-                                                                           .stream())
-                                                      .forEach(use -> softly.assertThat(use.isDescendantOf(filtered))
-                                                                            .isTrue()));
+        SoftAssertions.assertSoftly(softly ->
+                filtered.stream()
+                        .map(Node::getData)
+                        .flatMap(data -> data.getUses().stream())
+                        .forEach(use ->
+                                softly.assertThat(use.isDescendantOf(filtered)).isTrue()));
     }
 }
