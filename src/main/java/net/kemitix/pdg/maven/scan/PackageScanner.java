@@ -19,30 +19,24 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package net.kemitix.pdg.maven;
+package net.kemitix.pdg.maven.scan;
 
-import javax.annotation.concurrent.Immutable;
+import net.kemitix.pdg.maven.DependencyData;
+import net.kemitix.pdg.maven.DigraphConfiguration;
 
 /**
- * Factory class for Digraph objects.
+ * Scans packages, gathering details of uses between each.
  *
  * @author Paul Campbell (pcampbell@kemitix.net)
  */
-@Immutable
-final class DigraphFactory {
-
-    private DigraphFactory() {
-    }
+public interface PackageScanner {
 
     /**
-     * Creates a new instance of DependencyData.
+     * Scan the packages.
      *
-     * @param basePackage The root node for the dependency data
-     *
-     * @return the DependencyData
+     * @param configuration the mojo configuration
+     * @return the collected dependency data
      */
-    static DependencyData newDependencyData(final String basePackage) {
-        return NodeTreeDependencyData.newInstance(basePackage);
-    }
+    public abstract DependencyData scan(DigraphConfiguration configuration);
 
 }

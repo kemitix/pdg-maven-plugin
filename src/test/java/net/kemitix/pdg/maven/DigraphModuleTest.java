@@ -3,14 +3,13 @@ package net.kemitix.pdg.maven;
 import com.google.inject.Guice;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 
 import javax.inject.Inject;
 
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
 
 /**
  * Tests for {@link DigraphModule}.
@@ -20,20 +19,16 @@ import static org.mockito.BDDMockito.given;
 public class DigraphModuleTest {
 
     @Inject
-    private SourceDirectoryProvider sourceDirectoryProvider;
+    private DotFileFormatFactory dotFileFormatFactory;
 
-    @Mock
-    private DigraphMojo digraphMojo;
-
-    @Mock
-    private GraphFilter graphFilter;
+    private final DigraphMojo digraphMojo = mock(DigraphMojo.class);
+    private final GraphFilter graphFilter = mock(GraphFilter.class);
 
     /**
      * Prepare each test.
      */
     @Before
     public void setUp() {
-        MockitoAnnotations.initMocks(this);
         Guice.createInjector(new DigraphModule(digraphMojo, graphFilter))
              .injectMembers(this);
         /// default behaviour without any filters is to include
@@ -41,12 +36,11 @@ public class DigraphModuleTest {
     }
 
     /**
-     * Test that a {@link SourceDirectoryProvider} implementation is found an
-     * injected.
+     * Test that an implementation is found and injected.
      */
     @Test
-    public void shouldHaveInjectedSourceDirectoryProvider() {
-        assertNotNull(sourceDirectoryProvider);
+    public void shouldHaveInjectedfield() {
+        assertNotNull(dotFileFormatFactory);
     }
 
 }

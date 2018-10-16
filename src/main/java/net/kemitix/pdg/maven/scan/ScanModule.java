@@ -19,44 +19,25 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package net.kemitix.pdg.maven;
+package net.kemitix.pdg.maven.scan;
 
-import javax.annotation.concurrent.Immutable;
-import javax.inject.Inject;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
+import com.google.inject.AbstractModule;
 
 /**
- * Implementation of {@link FileLoader}.
+ * Google Guice configuration for scan package.
  *
  * @author Paul Campbell (pcampbell@kemitix.net)
  */
-@Immutable
-class DefaultFileLoader implements FileLoader {
-
-    private final DigraphConfiguration configuration;
-
-    /**
-     * Constructor.
-     *
-     * @param configuration The Maven Mojo
-     */
-    @Inject
-    DefaultFileLoader(final DigraphConfiguration configuration) {
-        this.configuration = configuration;
-    }
+public class ScanModule extends AbstractModule {
 
     @Override
-    public InputStream asInputStream(final File file) {
-        try {
-            return new FileInputStream(file);
-        } catch (FileNotFoundException ex) {
-            configuration.getLog()
-                .error(ex);
-        }
-        return null;
+    protected final void configure() {
+        bind(PackageScanner.class).to(JavaParserPackageScanner.class);
+        bind(SourceDirectoryProvider.class).to(DefaultSourceDirectoryProvider.class);
+        bind(SourceFileProvider.class).to(DefaultSourceFileProvider.class);
+        bind(FileLoader.class).to(DefaultFileLoader.class);
+        bind(SourceFileAnalyser.class).to(JavaParserSourceFileAnalyser.class);
+        bind(SourceFileVisitor.class).to(DefaultSourceFileVisitor.class);
     }
 
 }

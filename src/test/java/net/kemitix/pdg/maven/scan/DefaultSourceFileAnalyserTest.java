@@ -1,5 +1,7 @@
-package net.kemitix.pdg.maven;
+package net.kemitix.pdg.maven.scan;
 
+import net.kemitix.pdg.maven.DependencyData;
+import net.kemitix.pdg.maven.DigraphMojo;
 import org.apache.maven.plugin.logging.Log;
 import org.junit.Before;
 import org.junit.Test;
@@ -15,29 +17,39 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.doAnswer;
 import static org.mockito.BDDMockito.doReturn;
 import static org.mockito.BDDMockito.then;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 
 /**
- * Tests for {@link JavaParserSourceFileAnalyser}.
+ * Tests for {@link DefaultSourceFileAnalyser}.
  *
  * @author pcampbell
  */
-public class JavaParserSourceFileAnalyserTest {
+public class DefaultSourceFileAnalyserTest {
 
-    private final DependencyData dependencyData = mock(DependencyData.class);
-    private final DigraphConfiguration digraphConfiguration = mock(DigraphConfiguration.class);
-    private final Log log = mock(Log.class);
+    private DefaultSourceFileAnalyser analyser;
 
-    private final JavaParserSourceFileAnalyser analyser = new JavaParserSourceFileAnalyser(digraphConfiguration);
+    @Mock
+    private DependencyData dependencyData;
+
+    @Mock
+    private DigraphMojo mojo;
+
+    @Mock
+    private Log log;
 
     /**
      * Prepare each test.
      */
     @Before
     public void setUp() {
-        doReturn(log).when(digraphConfiguration).getLog();
-        doAnswer(invocation -> null).when(log).info(any(String.class));
+        MockitoAnnotations.initMocks(this);
+        analyser = new DefaultSourceFileAnalyser(mojo);
+        doReturn(log).when(mojo)
+                     .getLog();
+        doAnswer((InvocationOnMock invocation) -> {
+            return null;
+        }).when(log)
+          .info(any(String.class));
     }
 
     /**

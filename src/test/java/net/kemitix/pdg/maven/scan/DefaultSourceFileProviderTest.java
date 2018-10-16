@@ -1,5 +1,7 @@
-package net.kemitix.pdg.maven;
+package net.kemitix.pdg.maven.scan;
 
+import net.kemitix.pdg.maven.DigraphConfiguration;
+import net.kemitix.pdg.maven.DigraphMojo;
 import org.apache.maven.plugin.logging.Log;
 import org.junit.Before;
 import org.junit.Test;

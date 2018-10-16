@@ -2,6 +2,7 @@ package net.kemitix.pdg.maven;
 
 import lombok.val;
 import net.kemitix.node.Node;
+import net.kemitix.pdg.maven.scan.DigraphFactory;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.Before;
 import org.junit.Test;
@@ -14,6 +15,7 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
 
 /**
  * Tests for {@link DotFileFormatNested}.
@@ -28,9 +30,7 @@ public class DotFileFormatNestedTest {
 
     private NodePathGenerator nodePathGenerator;
 
-    @Mock
-    private GraphFilter graphFilter;
-
+    private final GraphFilter graphFilter = mock(GraphFilter.class);
     private final List<String> expected = new ArrayList<>();
 
     /**

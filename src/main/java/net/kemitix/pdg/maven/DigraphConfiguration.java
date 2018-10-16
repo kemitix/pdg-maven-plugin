@@ -32,7 +32,7 @@ import java.util.List;
  *
  * @author Paul Campbell (pcampbell@kemitix.net)
  */
-interface DigraphConfiguration {
+public interface DigraphConfiguration {
 
     /**
      * The Maven Project.

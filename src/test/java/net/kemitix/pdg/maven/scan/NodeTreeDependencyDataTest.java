@@ -1,6 +1,8 @@
-package net.kemitix.pdg.maven;
+package net.kemitix.pdg.maven.scan;
 
 import net.kemitix.node.Node;
+import net.kemitix.pdg.maven.DependencyData;
+import net.kemitix.pdg.maven.PackageData;
 import org.apache.maven.plugin.logging.Log;
 import org.junit.Before;
 import org.junit.Test;

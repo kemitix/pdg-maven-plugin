@@ -19,30 +19,43 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package net.kemitix.pdg.maven;
+package net.kemitix.pdg.maven.scan;
 
-import org.apache.maven.project.MavenProject;
+import lombok.Getter;
 
+import javax.annotation.concurrent.Immutable;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.FileVisitResult;
+import java.nio.file.Path;
+import java.nio.file.SimpleFileVisitor;
+import java.nio.file.attribute.BasicFileAttributes;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Provider for the list of source directories.
+ * Implementation of the source file visitor.
  *
  * @author Paul Campbell (pcampbell@kemitix.net)
  */
-interface SourceDirectoryProvider {
+@Immutable
+class DefaultSourceFileVisitor extends SimpleFileVisitor<Path> implements SourceFileVisitor {
 
     /**
-     * Returns all the source directories for the project, including any
-     * modules.
-     *
-     * @param projects     the list of maven projects
-     * @param includeTests whether to include test sources
-     *
-     * @return the list of source directories
+     * The list of Java files discovered.
      */
-    public abstract List<String> getDirectories(
-            List<MavenProject> projects, boolean includeTests
-                               );
+    @Getter
+    private final List<File> javaFiles = new ArrayList<>();
+
+    @Override
+    public FileVisitResult visitFile(
+            final Path file, final BasicFileAttributes attrs
+                                    ) throws IOException {
+        if (file.toString()
+                .endsWith(".java")) {
+            javaFiles.add(file.toFile());
+        }
+        return FileVisitResult.CONTINUE;
+    }
 
 }

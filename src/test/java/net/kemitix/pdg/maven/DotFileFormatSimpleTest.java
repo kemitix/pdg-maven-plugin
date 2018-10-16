@@ -2,6 +2,7 @@ package net.kemitix.pdg.maven;
 
 import lombok.val;
 import net.kemitix.node.Node;
+import net.kemitix.pdg.maven.scan.DigraphFactory;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;

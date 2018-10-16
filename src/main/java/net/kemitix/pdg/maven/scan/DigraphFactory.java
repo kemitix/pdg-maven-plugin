@@ -19,43 +19,32 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package net.kemitix.pdg.maven;
+package net.kemitix.pdg.maven.scan;
 
-import lombok.RequiredArgsConstructor;
+import net.kemitix.pdg.maven.DependencyData;
 
 import javax.annotation.concurrent.Immutable;
-import javax.inject.Inject;
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.List;
 
 /**
- * Provider walks the directory and builds a list of discovered Java files.
+ * Factory class for Digraph objects.
  *
  * @author Paul Campbell (pcampbell@kemitix.net)
  */
 @Immutable
-@RequiredArgsConstructor(onConstructor = @__({@Inject}))
-class DefaultSourceFileProvider implements SourceFileProvider {
+public final class DigraphFactory {
 
-    private final SourceFileVisitor fileVisitor;
-    private final DigraphConfiguration digraphConfiguration;
+    private DigraphFactory() {
+    }
 
-    @Override
-    public List<File> process(final List<String> directories) {
-        directories.forEach((final String dir) -> {
-            try {
-                Path start = new File(dir).getAbsoluteFile()
-                                          .toPath();
-                Files.walkFileTree(start, fileVisitor);
-            } catch (IOException ex) {
-                digraphConfiguration.getLog()
-                    .error(ex);
-            }
-        });
-        return fileVisitor.getJavaFiles();
+    /**
+     * Creates a new instance of DependencyData.
+     *
+     * @param basePackage The root node for the dependency data
+     *
+     * @return the DependencyData
+     */
+    public static DependencyData newDependencyData(final String basePackage) {
+        return NodeTreeDependencyData.newInstance(basePackage);
     }
 
 }

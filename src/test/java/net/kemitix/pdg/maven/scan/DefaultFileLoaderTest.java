@@ -1,10 +1,9 @@
-package net.kemitix.pdg.maven;
+package net.kemitix.pdg.maven.scan;
 
+import net.kemitix.pdg.maven.DigraphConfiguration;
 import org.apache.maven.plugin.logging.Log;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 
 import java.io.BufferedReader;
 import java.io.File;

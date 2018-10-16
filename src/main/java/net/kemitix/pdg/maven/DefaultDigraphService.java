@@ -22,12 +22,12 @@
 package net.kemitix.pdg.maven;
 
 import lombok.val;
+import net.kemitix.pdg.maven.scan.PackageScanner;
 
 import javax.annotation.concurrent.Immutable;
 import javax.inject.Inject;
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 
 /**
  * Default implementation of the Digraph Service.
@@ -39,40 +39,27 @@ class DefaultDigraphService implements DigraphService {
 
     private static final String REPORT_FILE = "digraph.dot";
 
-    private final SourceDirectoryProvider directoryProvider;
-
-    private final SourceFileProvider fileProvider;
-
-    private final FileLoader fileLoader;
-
-    private final SourceFileAnalyser fileAnalyser;
-
+    private final PackageScanner packageScanner;
     private final ReportGenerator reportGenerator;
-
     private final ReportWriter reportWriter;
-
     private final DotFileFormatFactory dotFileFormatFactory;
 
     /**
      * Constructor.
      *
-     * @param directoryProvider    The Directory Provider
-     * @param fileProvider         The File Provider
-     * @param fileLoader           The File Loader
-     * @param fileAnalyser         The File Analyser
+     * @param packageScanner       The Package Scanner
      * @param reportGenerator      The Report Generator
      * @param reportWriter         The Report Writer
      * @param dotFileFormatFactory The Dot File Format Factory
      */
     @Inject
     DefaultDigraphService(
-            final SourceDirectoryProvider directoryProvider, final SourceFileProvider fileProvider,
-            final FileLoader fileLoader, final SourceFileAnalyser fileAnalyser, final ReportGenerator reportGenerator,
-            final ReportWriter reportWriter, final DotFileFormatFactory dotFileFormatFactory) {
-        this.directoryProvider = directoryProvider;
-        this.fileProvider = fileProvider;
-        this.fileLoader = fileLoader;
-        this.fileAnalyser = fileAnalyser;
+            final PackageScanner packageScanner,
+            final ReportGenerator reportGenerator,
+            final ReportWriter reportWriter,
+            final DotFileFormatFactory dotFileFormatFactory
+                         ) {
+        this.packageScanner = packageScanner;
         this.reportGenerator = reportGenerator;
         this.reportWriter = reportWriter;
         this.dotFileFormatFactory = dotFileFormatFactory;
@@ -81,14 +68,8 @@ class DefaultDigraphService implements DigraphService {
     @Override
     @SuppressWarnings("npathcomplexity")
     public void execute(final DigraphConfiguration configuration) {
-        val dependencyData = DigraphFactory.newDependencyData(configuration.getBasePackage());
-        final List<String> directories =
-                directoryProvider.getDirectories(configuration.getProjects(), configuration.isIncludeTests());
-        fileProvider.process(directories)
-                    .stream()
-                    .map(fileLoader::asInputStream)
-                    .forEach(in -> fileAnalyser.analyse(dependencyData, in));
-        dependencyData.updateNames();
+        final DependencyData dependencyData = packageScanner.scan(configuration);
+
         if (configuration.isDebug()) {
             dependencyData.debugLog(configuration.getLog());
         }

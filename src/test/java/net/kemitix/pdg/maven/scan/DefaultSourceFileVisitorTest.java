@@ -1,4 +1,4 @@
-package net.kemitix.pdg.maven;
+package net.kemitix.pdg.maven.scan;
 
 import lombok.val;
 import org.junit.Before;

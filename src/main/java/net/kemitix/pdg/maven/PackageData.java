@@ -53,7 +53,7 @@ public final class PackageData {
      *
      * @return new instance of PackageData
      */
-    static PackageData newInstance(final String name) {
+    public static PackageData newInstance(final String name) {
         return new PackageData(name);
     }
 
@@ -105,7 +105,7 @@ public final class PackageData {
      *
      * @param packageDataNode the package that is used by this package
      */
-    void uses(final Node<PackageData> packageDataNode) {
+    public void uses(final Node<PackageData> packageDataNode) {
         uses.add(packageDataNode);
     }
 

@@ -19,25 +19,25 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package net.kemitix.pdg.maven;
+package net.kemitix.pdg.maven.scan;
 
 import java.io.File;
-import java.nio.file.FileVisitor;
-import java.nio.file.Path;
-import java.util.List;
+import java.io.InputStream;
 
 /**
- * File visitor to discover Java source files.
+ * Interface for loading a file.
  *
  * @author Paul Campbell (pcampbell@kemitix.net)
  */
-interface SourceFileVisitor extends FileVisitor<Path> {
+interface FileLoader {
 
     /**
-     * Returns the list of Java source files found.
+     * * Opens the file as in InputStream.
      *
-     * @return the list of Java source files
+     * @param file the file to open
+     *
+     * @return the file input stream or null if file not found
      */
-    public abstract List<File> getJavaFiles();
+    public abstract InputStream asInputStream(File file);
 
 }

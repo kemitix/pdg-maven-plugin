@@ -19,38 +19,25 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package net.kemitix.pdg.maven;
+package net.kemitix.pdg.maven.scan;
 
-import com.google.inject.AbstractModule;
-import lombok.RequiredArgsConstructor;
-import net.kemitix.pdg.maven.scan.*;
-
-import javax.annotation.concurrent.Immutable;
+import java.io.File;
+import java.nio.file.FileVisitor;
+import java.nio.file.Path;
+import java.util.List;
 
 /**
- * Google Guice Configuration.
+ * File visitor to discover Java source files.
  *
  * @author Paul Campbell (pcampbell@kemitix.net)
  */
-@Immutable
-@RequiredArgsConstructor
-class DigraphModule extends AbstractModule {
+interface SourceFileVisitor extends FileVisitor<Path> {
 
-    private final DigraphConfiguration digraphConfiguration;
-    private final GraphFilter graphFilter;
-
-    @Override
-    @SuppressWarnings("javancss")
-    protected void configure() {
-        bind(DigraphConfiguration.class).toInstance(digraphConfiguration);
-        bind(GraphFilter.class).toInstance(graphFilter);
-        bind(DigraphService.class).to(DefaultDigraphService.class);
-        this.install(new ScanModule());
-        bind(DotFileFormatFactory.class).to(DefaultDotFileFormatFactory.class);
-        bind(ReportGenerator.class).to(DotFileReportGenerator.class);
-        bind(ReportWriter.class).to(DefaultReportWriter.class);
-        bind(NodePathGenerator.class).to(DefaultNodePathGenerator.class);
-        bind(TreeFilter.class).to(DefaultTreeFilter.class);
-    }
+    /**
+     * Returns the list of Java source files found.
+     *
+     * @return the list of Java source files
+     */
+    public abstract List<File> getJavaFiles();
 
 }

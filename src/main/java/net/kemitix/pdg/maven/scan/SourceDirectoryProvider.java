@@ -19,43 +19,30 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package net.kemitix.pdg.maven;
+package net.kemitix.pdg.maven.scan;
 
-import lombok.val;
+import org.apache.maven.project.MavenProject;
 
-import javax.annotation.concurrent.Immutable;
-import javax.inject.Inject;
-import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Processor to list directories to console.
+ * Provider for the list of source directories.
  *
  * @author Paul Campbell (pcampbell@kemitix.net)
  */
-@Immutable
-class DirectoryListingProcessor implements SourceFileProvider {
-
-    private final DigraphMojo mojo;
+interface SourceDirectoryProvider {
 
     /**
-     * Constructor.
+     * Returns all the source directories for the project, including any
+     * modules.
      *
-     * @param mojo The Maven Mojo
+     * @param projects     the list of maven projects
+     * @param includeTests whether to include test sources
+     *
+     * @return the list of source directories
      */
-    @Inject
-    DirectoryListingProcessor(final DigraphMojo mojo) {
-        this.mojo = mojo;
-    }
-
-    @Override
-    public List<File> process(final List<String> directories) {
-        val log = mojo.getLog();
-        directories.stream()
-                   .map(d -> "* " + d)
-                   .forEach(log::info);
-        return new ArrayList<>();
-    }
+    public abstract List<String> getDirectories(
+            List<MavenProject> projects, boolean includeTests
+                               );
 
 }

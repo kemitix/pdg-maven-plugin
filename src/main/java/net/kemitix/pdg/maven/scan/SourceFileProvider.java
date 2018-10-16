@@ -19,25 +19,25 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package net.kemitix.pdg.maven;
+package net.kemitix.pdg.maven.scan;
 
 import java.io.File;
-import java.io.InputStream;
+import java.util.List;
 
 /**
- * Interface for loading a file.
+ * Interface for processing a list of directories.
  *
  * @author Paul Campbell (pcampbell@kemitix.net)
  */
-interface FileLoader {
+interface SourceFileProvider {
 
     /**
-     * * Opens the file as in InputStream.
+     * Process the list of directories and return the list of java files.
      *
-     * @param file the file to open
+     * @param directories the directories to process
      *
-     * @return the file input stream or null if file not found
+     * @return a list of files
      */
-    public abstract InputStream asInputStream(File file);
+    public abstract List<File> process(List<String> directories);
 
 }

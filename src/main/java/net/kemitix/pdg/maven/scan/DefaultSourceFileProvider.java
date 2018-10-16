@@ -19,23 +19,44 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package net.kemitix.pdg.maven;
+package net.kemitix.pdg.maven.scan;
 
-import java.io.InputStream;
+import lombok.RequiredArgsConstructor;
+import net.kemitix.pdg.maven.DigraphConfiguration;
+
+import javax.annotation.concurrent.Immutable;
+import javax.inject.Inject;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.List;
 
 /**
- * Interface for a source code file analyser.
+ * Provider walks the directory and builds a list of discovered Java files.
  *
  * @author Paul Campbell (pcampbell@kemitix.net)
  */
-interface SourceFileAnalyser {
+@Immutable
+@RequiredArgsConstructor(onConstructor = @__({@Inject}))
+class DefaultSourceFileProvider implements SourceFileProvider {
 
-    /**
-     * Analyse the file.
-     *
-     * @param dependencyData the dependency data
-     * @param input          the stream of the file to analyse
-     */
-    public abstract void analyse(DependencyData dependencyData, InputStream input);
+    private final SourceFileVisitor fileVisitor;
+    private final DigraphConfiguration digraphConfiguration;
+
+    @Override
+    public List<File> process(final List<String> directories) {
+        directories.forEach((final String dir) -> {
+            try {
+                Path start = new File(dir).getAbsoluteFile()
+                                          .toPath();
+                Files.walkFileTree(start, fileVisitor);
+            } catch (IOException ex) {
+                digraphConfiguration.getLog()
+                    .error(ex);
+            }
+        });
+        return fileVisitor.getJavaFiles();
+    }
 
 }

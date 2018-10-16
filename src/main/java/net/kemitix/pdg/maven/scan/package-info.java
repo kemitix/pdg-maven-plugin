@@ -19,42 +19,4 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package net.kemitix.pdg.maven;
-
-import net.kemitix.node.Node;
-import org.apache.maven.plugin.logging.Log;
-
-/**
- * Interface for storing package and class dependency data.
- *
- * @author Paul Campbell (pcampbell@kemitix.net)
- */
-public interface DependencyData {
-
-    /**
-     * Records a dependency between the user class and the imported class.
-     *
-     * @param user     the package that is using the import
-     * @param imported the package that contains the class that is being imported
-     */
-    public abstract void addDependency(String user, String imported);
-
-    /**
-     * Returns the base node.
-     *
-     * @return the base node
-     */
-    public abstract Node<PackageData> getBaseNode();
-
-    /**
-     * Log the statue of the dependency data.
-     *
-     * @param log the log to send the output
-     */
-    public abstract void debugLog(Log log);
-
-    /**
-     * Update names of all nodes.
-     */
-    public abstract void updateNames();
-}
+package net.kemitix.pdg.maven.scan;

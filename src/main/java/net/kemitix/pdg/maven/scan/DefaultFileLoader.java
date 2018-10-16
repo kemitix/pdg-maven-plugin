@@ -19,38 +19,46 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package net.kemitix.pdg.maven;
+package net.kemitix.pdg.maven.scan;
 
-import com.google.inject.AbstractModule;
-import lombok.RequiredArgsConstructor;
-import net.kemitix.pdg.maven.scan.*;
+import net.kemitix.pdg.maven.DigraphConfiguration;
 
 import javax.annotation.concurrent.Immutable;
+import javax.inject.Inject;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 
 /**
- * Google Guice Configuration.
+ * Implementation of {@link FileLoader}.
  *
  * @author Paul Campbell (pcampbell@kemitix.net)
  */
 @Immutable
-@RequiredArgsConstructor
-class DigraphModule extends AbstractModule {
+class DefaultFileLoader implements FileLoader {
 
-    private final DigraphConfiguration digraphConfiguration;
-    private final GraphFilter graphFilter;
+    private final DigraphConfiguration configuration;
+
+    /**
+     * Constructor.
+     *
+     * @param configuration The Maven Mojo
+     */
+    @Inject
+    DefaultFileLoader(final DigraphConfiguration configuration) {
+        this.configuration = configuration;
+    }
 
     @Override
-    @SuppressWarnings("javancss")
-    protected void configure() {
-        bind(DigraphConfiguration.class).toInstance(digraphConfiguration);
-        bind(GraphFilter.class).toInstance(graphFilter);
-        bind(DigraphService.class).to(DefaultDigraphService.class);
-        this.install(new ScanModule());
-        bind(DotFileFormatFactory.class).to(DefaultDotFileFormatFactory.class);
-        bind(ReportGenerator.class).to(DotFileReportGenerator.class);
-        bind(ReportWriter.class).to(DefaultReportWriter.class);
-        bind(NodePathGenerator.class).to(DefaultNodePathGenerator.class);
-        bind(TreeFilter.class).to(DefaultTreeFilter.class);
+    public InputStream asInputStream(final File file) {
+        try {
+            return new FileInputStream(file);
+        } catch (FileNotFoundException ex) {
+            configuration.getLog()
+                .error(ex);
+        }
+        return null;
     }
 
 }
