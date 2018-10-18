@@ -20,14 +20,14 @@
 
     <inceptionYear>2016</inceptionYear>
 
-    <url>https://github.com/kemitix/digraph-dependency-maven-plugin</url>
+    <url>https://github.com/kemitix/pdg-maven-plugin</url>
     <issueManagement>
-        <url>https://github.com/kemitix/digraph-dependency-maven-plugin/issues</url>
+        <url>https://github.com/kemitix/pdg-maven-plugin/issues</url>
     </issueManagement>
     <scm>
-        <connection>scm:git:git@github.com:kemitix/digraph-dependency-maven-plugin.git</connection>
-        <developerConnection>scm:git:git@github.com:kemitix/digraph-dependency-maven-plugin.git</developerConnection>
-        <url>git@github.com:kemitix/digraph-dependency-maven-plugin.git</url>
+        <connection>scm:git:git@github.com:kemitix/pdg-maven-plugin.git</connection>
+        <developerConnection>scm:git:git@github.com:kemitix/pdg-maven-plugin.git</developerConnection>
+        <url>git@github.com:kemitix/pdg-maven-plugin.git</url>
     </scm>
 
     <properties>
