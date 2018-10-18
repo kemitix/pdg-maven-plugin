@@ -11,7 +11,7 @@
     </parent>
 
     <artifactId>pdg-maven-plugin</artifactId>
-    <version>DEV-SNAPSHOT</version>
+    <version>1.0.0</version>
 
     <packaging>maven-plugin</packaging>
 
