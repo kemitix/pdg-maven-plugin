@@ -31,21 +31,6 @@ import net.kemitix.node.Node;
 interface GraphFilter {
 
     /**
-     * Create a new GraphFilter.
-     *
-     * @param exclude           The exclusions
-     * @param include           The inclusions
-     * @param nodePathGenerator The Node Path Generator
-     *
-     * @return The filter
-     */
-    public static GraphFilter of(
-            final String exclude, final String include, final NodePathGenerator nodePathGenerator
-                         ) {
-        return new DefaultGraphFilter(exclude, include, nodePathGenerator);
-    }
-
-    /**
      * Filter the nodes.
      *
      * @param packageDataNode The PackageData Node

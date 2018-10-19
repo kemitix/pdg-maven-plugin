@@ -77,7 +77,7 @@ public class DefaultTreeFilterTest implements WithAssertions {
         final DependencyData dependencyData = TestBlackJackDependencyData.getDependencyData();
         final Node<PackageData> baseNode = dependencyData.getBaseNode();
         //when
-        final TreeFilter treeFilter = new DefaultTreeFilter(GraphFilter.of("game", "", nodePathGenerator), nodePathGenerator);
+        final TreeFilter treeFilter = new DefaultTreeFilter(new DefaultGraphFilter("game", "", nodePathGenerator), nodePathGenerator);
         final Node<PackageData> filtered = treeFilter.filterTree(baseNode);
         //then
         assertThat(filtered).as("has base node")
@@ -118,7 +118,7 @@ public class DefaultTreeFilterTest implements WithAssertions {
         final DependencyData dependencyData = TestBlackJackDependencyData.getDependencyData();
         final Node<PackageData> baseNode = dependencyData.getBaseNode();
         //when
-        final TreeFilter treeFilter = new DefaultTreeFilter(GraphFilter.of("model", "", nodePathGenerator), nodePathGenerator);
+        final TreeFilter treeFilter = new DefaultTreeFilter(new DefaultGraphFilter("model", "", nodePathGenerator), nodePathGenerator);
         final Node<PackageData> filtered = treeFilter.filterTree(baseNode);
         //then
         assertThat(filtered).as("has base node")
@@ -156,7 +156,7 @@ public class DefaultTreeFilterTest implements WithAssertions {
         final DependencyData dependencyData = TestBlackJackDependencyData.getDependencyData();
         final Node<PackageData> baseNode = dependencyData.getBaseNode();
         //when
-        final TreeFilter treeFilter = new DefaultTreeFilter(GraphFilter.of("console", "", nodePathGenerator), nodePathGenerator);
+        final TreeFilter treeFilter = new DefaultTreeFilter(new DefaultGraphFilter("console", "", nodePathGenerator), nodePathGenerator);
         final Node<PackageData> filtered = treeFilter.filterTree(baseNode);
         //then
         assertThat(filtered).as("has base node")
@@ -194,7 +194,7 @@ public class DefaultTreeFilterTest implements WithAssertions {
         final DependencyData dependencyData = TestBlackJackDependencyData.getDependencyData();
         final Node<PackageData> baseNode = dependencyData.getBaseNode();
         //when
-        final TreeFilter treeFilter = new DefaultTreeFilter(GraphFilter.of("cli", "", nodePathGenerator), nodePathGenerator);
+        final TreeFilter treeFilter = new DefaultTreeFilter(new DefaultGraphFilter("cli", "", nodePathGenerator), nodePathGenerator);
         final Node<PackageData> filtered = treeFilter.filterTree(baseNode);
         //then
         assertThat(filtered).as("has base node")
@@ -229,7 +229,7 @@ public class DefaultTreeFilterTest implements WithAssertions {
         final DependencyData dependencyData = TestBlackJackDependencyData.getDependencyData();
         final Node<PackageData> baseNode = dependencyData.getBaseNode();
         //when
-        final TreeFilter treeFilter = new DefaultTreeFilter(GraphFilter.of("", "game", nodePathGenerator), nodePathGenerator);
+        final TreeFilter treeFilter = new DefaultTreeFilter(new DefaultGraphFilter("", "game", nodePathGenerator), nodePathGenerator);
         final Node<PackageData> filtered = treeFilter.filterTree(baseNode);
         //then
         assertThat(filtered).as("has base node")
@@ -268,7 +268,7 @@ public class DefaultTreeFilterTest implements WithAssertions {
         final DependencyData dependencyData = TestBlackJackDependencyData.getDependencyData();
         final Node<PackageData> baseNode = dependencyData.getBaseNode();
         //when
-        final TreeFilter treeFilter = new DefaultTreeFilter(GraphFilter.of("", "cli", nodePathGenerator), nodePathGenerator);
+        final TreeFilter treeFilter = new DefaultTreeFilter(new DefaultGraphFilter("", "cli", nodePathGenerator), nodePathGenerator);
         final Node<PackageData> filtered = treeFilter.filterTree(baseNode);
         //then
         assertThat(filtered).as("has base node")
@@ -309,7 +309,7 @@ public class DefaultTreeFilterTest implements WithAssertions {
         final DependencyData dependencyData = TestBlackJackDependencyData.getDependencyData();
         final Node<PackageData> baseNode = dependencyData.getBaseNode();
         //when
-        final TreeFilter treeFilter = new DefaultTreeFilter(GraphFilter.of("", "model", nodePathGenerator), nodePathGenerator);
+        final TreeFilter treeFilter = new DefaultTreeFilter(new DefaultGraphFilter("", "model", nodePathGenerator), nodePathGenerator);
         final Node<PackageData> filtered = treeFilter.filterTree(baseNode);
         //then
         assertThat(filtered).as("has base node")
@@ -350,7 +350,7 @@ public class DefaultTreeFilterTest implements WithAssertions {
         final DependencyData dependencyData = TestBlackJackDependencyData.getDependencyData();
         final Node<PackageData> baseNode = dependencyData.getBaseNode();
         //when
-        final TreeFilter treeFilter = new DefaultTreeFilter(GraphFilter.of("", "console", nodePathGenerator), nodePathGenerator);
+        final TreeFilter treeFilter = new DefaultTreeFilter(new DefaultGraphFilter("", "console", nodePathGenerator), nodePathGenerator);
         final Node<PackageData> filtered = treeFilter.filterTree(baseNode);
         //then
         assertThat(filtered).as("has base node")
@@ -393,7 +393,7 @@ public class DefaultTreeFilterTest implements WithAssertions {
         final DependencyData dependencyData = TestBlackJackDependencyData.getDependencyData();
         final Node<PackageData> baseNode = dependencyData.getBaseNode();
         //when
-        final TreeFilter treeFilter = new DefaultTreeFilter(GraphFilter.of("cli", "model", nodePathGenerator), nodePathGenerator);
+        final TreeFilter treeFilter = new DefaultTreeFilter(new DefaultGraphFilter("cli", "model", nodePathGenerator), nodePathGenerator);
         final Node<PackageData> filtered = treeFilter.filterTree(baseNode);
         //then
         assertThat(filtered).as("has base node")
@@ -431,7 +431,7 @@ public class DefaultTreeFilterTest implements WithAssertions {
                                                   .getName()));
         //when
         /// include all nodes
-        final TreeFilter treeFilter = new DefaultTreeFilter(GraphFilter.of("", "", nodePathGenerator), nodePathGenerator);
+        final TreeFilter treeFilter = new DefaultTreeFilter(new DefaultGraphFilter("", "", nodePathGenerator), nodePathGenerator);
         final Node<PackageData> filtered = treeFilter.filterTree(baseNode);
         //then
         SoftAssertions.assertSoftly(softly ->

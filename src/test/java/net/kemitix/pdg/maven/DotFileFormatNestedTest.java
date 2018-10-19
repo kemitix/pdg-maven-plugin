@@ -226,7 +226,7 @@ public class DotFileFormatNestedTest {
         dependencyData.addDependency("test.one", "test.three");
         dependencyData.addDependency("test.three", "test.four");
         dependencyData.addDependency("test.one", "test.four");
-        val graphFilter = GraphFilter.of("three", "", nodePathGenerator);
+        val graphFilter = new DefaultGraphFilter("three", "", nodePathGenerator);
         dotFileFormat = new DotFileFormatNested(
                 new DefaultTreeFilter(graphFilter, nodePathGenerator).filterTree(dependencyData.getBaseNode()),
                 nodePathGenerator, graphFilter
@@ -271,7 +271,7 @@ public class DotFileFormatNestedTest {
         dependencyData.addDependency("test.one", "test.three");
         dependencyData.addDependency("test.three", "test.four");
         dependencyData.addDependency("test.one", "test.four");
-        val graphFilter = GraphFilter.of("", "three", nodePathGenerator);
+        val graphFilter = new DefaultGraphFilter("", "three", nodePathGenerator);
         dotFileFormat = new DotFileFormatNested(
                 new DefaultTreeFilter(graphFilter, nodePathGenerator).filterTree(dependencyData.getBaseNode()),
                 nodePathGenerator, graphFilter

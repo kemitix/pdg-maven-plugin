@@ -84,7 +84,7 @@ public class DigraphMojo extends AbstractMojo {
 
     @Override
     public final void execute() {
-        val graphFilter = GraphFilter.of(exclude, include, new DefaultNodePathGenerator());
+        val graphFilter = new DefaultGraphFilter(exclude, include, new DefaultNodePathGenerator());
         val digraphModule = new DigraphModule(this, graphFilter);
         Guice.createInjector(digraphModule)
              .getInstance(DigraphService.class)

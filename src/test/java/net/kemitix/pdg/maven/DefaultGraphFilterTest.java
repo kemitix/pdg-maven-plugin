@@ -80,7 +80,7 @@ public class DefaultGraphFilterTest {
             //given
             val exclude = testPattern.exclude;
             val include = testPattern.include;
-            val graphFilter = GraphFilter.of(exclude, include, nodePathGenerator);
+            val graphFilter = new DefaultGraphFilter(exclude, include, nodePathGenerator);
             given(nodePathGenerator.getPath(eq(packageNode), any(), any())).willReturn(PACKAGE_NAME);
             //when
             val result = graphFilter.filterNodes(packageNode);
@@ -94,7 +94,7 @@ public class DefaultGraphFilterTest {
     @Test
     public void isExcludedShouldBeFalseWhenNotSet() throws Exception {
         //given
-        val graphFilter = GraphFilter.of(UNSET, UNSET, nodePathGenerator);
+        val graphFilter = new DefaultGraphFilter(UNSET, UNSET, nodePathGenerator);
         val packageDataNode = Nodes.unnamedRoot(PackageData.newInstance(PACKAGE_NAME));
         //when
         val result = graphFilter.isExcluded(packageDataNode);
@@ -105,7 +105,7 @@ public class DefaultGraphFilterTest {
     @Test
     public void isExcludedShouldBeTrueWhenMatch() throws Exception {
         //given
-        val graphFilter = GraphFilter.of(MATCHES, UNSET, nodePathGenerator);
+        val graphFilter = new DefaultGraphFilter(MATCHES, UNSET, nodePathGenerator);
         val packageDataNode = Nodes.unnamedRoot(PackageData.newInstance(PACKAGE_NAME));
         given(nodePathGenerator.getPath(eq(packageDataNode), any(), any())).willReturn(PACKAGE_NAME);
         //when
@@ -117,7 +117,7 @@ public class DefaultGraphFilterTest {
     @Test
     public void isExcludedShouldBeFalseWhenNoMatch() throws Exception {
         //given
-        val graphFilter = GraphFilter.of(NON_MATCH, UNSET, nodePathGenerator);
+        val graphFilter = new DefaultGraphFilter(NON_MATCH, UNSET, nodePathGenerator);
         val packageDataNode = Nodes.unnamedRoot(PackageData.newInstance(PACKAGE_NAME));
         given(nodePathGenerator.getPath(eq(packageDataNode), any(), any())).willReturn(PACKAGE_NAME);
         //when
@@ -129,7 +129,7 @@ public class DefaultGraphFilterTest {
     @Test
     public void isIncludedShouldBeTrueWhenNotSet() throws Exception {
         //given
-        val graphFilter = GraphFilter.of(UNSET, UNSET, nodePathGenerator);
+        val graphFilter = new DefaultGraphFilter(UNSET, UNSET, nodePathGenerator);
         val packageDataNode = Nodes.unnamedRoot(PackageData.newInstance(PACKAGE_NAME));
         //when
         val result = graphFilter.isIncluded(packageDataNode);
@@ -140,7 +140,7 @@ public class DefaultGraphFilterTest {
     @Test
     public void isIncludedShouldBeTrueWhenMatch() throws Exception {
         //given
-        val graphFilter = GraphFilter.of(UNSET, MATCHES, nodePathGenerator);
+        val graphFilter = new DefaultGraphFilter(UNSET, MATCHES, nodePathGenerator);
         val packageDataNode = Nodes.unnamedRoot(PackageData.newInstance(PACKAGE_NAME));
         given(nodePathGenerator.getPath(eq(packageDataNode), any(), any())).willReturn(PACKAGE_NAME);
         //when
@@ -152,7 +152,7 @@ public class DefaultGraphFilterTest {
     @Test
     public void isIncludedShouldBeFalseWhenNoMatch() throws Exception {
         //given
-        val graphFilter = GraphFilter.of(UNSET, NON_MATCH, nodePathGenerator);
+        val graphFilter = new DefaultGraphFilter(UNSET, NON_MATCH, nodePathGenerator);
         val packageDataNode = Nodes.unnamedRoot(PackageData.newInstance(PACKAGE_NAME));
         given(nodePathGenerator.getPath(eq(packageDataNode), any(), any())).willReturn(PACKAGE_NAME);
         //when
