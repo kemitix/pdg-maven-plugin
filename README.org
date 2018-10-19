@@ -40,6 +40,9 @@
     Only dependencies where both the using package and the package being used
     are within the =basePackage= are included in the graph.
 
+    This can be configured from the command line using the property
+    =pdg.basePackage=.
+
 *** includeTests
 
     Whether or not to include the test sources in the graph. Default is =false=.
