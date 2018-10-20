@@ -32,7 +32,7 @@ public class ScanModule extends AbstractModule {
 
     @Override
     protected final void configure() {
-        bind(PackageScanner.class).to(JavaParserPackageScanner.class);
+        bind(PackageScanner.class).to(PackageScannerImpl.class);
         bind(SourceDirectoryProvider.class).to(DefaultSourceDirectoryProvider.class);
         bind(SourceFileProvider.class).to(DefaultSourceFileProvider.class);
         bind(FileLoader.class).to(DefaultFileLoader.class);

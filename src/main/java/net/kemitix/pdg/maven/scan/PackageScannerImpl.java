@@ -29,12 +29,12 @@ import javax.inject.Inject;
 import java.util.List;
 
 /**
- * JavaParser implementation of {@link PackageScanner}.
+ * Implementation of {@link PackageScanner}.
  *
  * @author Paul Campbell (pcampbell@kemitix.net)
  */
 @RequiredArgsConstructor(onConstructor = @__({@Inject}))
-public class JavaParserPackageScanner implements PackageScanner {
+class PackageScannerImpl implements PackageScanner {
 
     private final SourceDirectoryProvider directoryProvider;
     private final SourceFileProvider fileProvider;
