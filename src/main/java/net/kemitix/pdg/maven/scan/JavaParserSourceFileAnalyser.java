@@ -67,8 +67,10 @@ class JavaParserSourceFileAnalyser implements SourceFileAnalyser {
 
     @SuppressWarnings("npathcomplexity")
     private void analyseUnit(
-            final PackageDeclaration aPackage, final CompilationUnit cu, final DependencyData dependencyData
-                            ) {
+            final PackageDeclaration aPackage,
+            final CompilationUnit cu,
+            final DependencyData dependencyData
+    ) {
         String packageName = aPackage.getName()
                                      .toString();
         cu.getImports()
