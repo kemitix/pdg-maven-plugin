@@ -23,7 +23,7 @@ package net.kemitix.pdg.maven;
 
 import com.google.inject.AbstractModule;
 import lombok.RequiredArgsConstructor;
-import net.kemitix.pdg.maven.scan.*;
+import net.kemitix.pdg.maven.scan.ScanModule;
 
 import javax.annotation.concurrent.Immutable;
 

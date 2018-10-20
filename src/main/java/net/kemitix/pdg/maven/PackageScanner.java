@@ -19,10 +19,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package net.kemitix.pdg.maven.scan;
-
-import net.kemitix.pdg.maven.DependencyData;
-import net.kemitix.pdg.maven.DigraphConfiguration;
+package net.kemitix.pdg.maven;
 
 /**
  * Scans packages, gathering details of uses between each.

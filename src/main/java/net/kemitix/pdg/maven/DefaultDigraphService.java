@@ -23,7 +23,6 @@ package net.kemitix.pdg.maven;
 
 import lombok.RequiredArgsConstructor;
 import lombok.val;
-import net.kemitix.pdg.maven.scan.PackageScanner;
 
 import javax.annotation.concurrent.Immutable;
 import javax.inject.Inject;

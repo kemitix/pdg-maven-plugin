@@ -22,6 +22,7 @@
 package net.kemitix.pdg.maven.scan;
 
 import com.google.inject.AbstractModule;
+import net.kemitix.pdg.maven.PackageScanner;
 
 /**
  * Google Guice configuration for scan package.
