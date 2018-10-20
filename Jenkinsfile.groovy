@@ -57,20 +57,7 @@ pipeline {
                 }
             }
         }
-        stage('Build Java 11') {
-            steps {
-                withMaven(maven: 'maven', jdk: 'JDK 11') {
-                    sh "${mvn} clean verify -Djava.version=11"
-                }
-            }
-        }
-        stage('Build Java 12') {
-            steps {
-                withMaven(maven: 'maven', jdk: 'JDK 12') {
-                    sh "${mvn} clean verify -Djava.version=12"
-                }
-            }
-        }
+        // Apache Maven Plugin Tools Version 3.5.2 only supports up to Java 10
     }
 }
 
