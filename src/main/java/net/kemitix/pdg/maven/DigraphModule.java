@@ -50,7 +50,7 @@ class DigraphModule extends AbstractModule {
         bind(SourceFileProvider.class).to(DefaultSourceFileProvider.class);
         bind(SourceFileVisitor.class).to(DefaultSourceFileVisitor.class);
         bind(FileLoader.class).to(DefaultFileLoader.class);
-        bind(SourceFileAnalyser.class).to(DefaultSourceFileAnalyser.class);
+        bind(SourceFileAnalyser.class).to(JavaParserSourceFileAnalyser.class);
         bind(ReportGenerator.class).to(DotFileReportGenerator.class);
         bind(ReportWriter.class).to(DefaultReportWriter.class);
         bind(NodePathGenerator.class).to(DefaultNodePathGenerator.class);

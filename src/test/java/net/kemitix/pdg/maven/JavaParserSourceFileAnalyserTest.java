@@ -18,13 +18,13 @@ import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.times;
 
 /**
- * Tests for {@link DefaultSourceFileAnalyser}.
+ * Tests for {@link JavaParserSourceFileAnalyser}.
  *
  * @author pcampbell
  */
-public class DefaultSourceFileAnalyserTest {
+public class JavaParserSourceFileAnalyserTest {
 
-    private DefaultSourceFileAnalyser analyser;
+    private JavaParserSourceFileAnalyser analyser;
 
     @Mock
     private DependencyData dependencyData;
@@ -41,7 +41,7 @@ public class DefaultSourceFileAnalyserTest {
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-        analyser = new DefaultSourceFileAnalyser(mojo);
+        analyser = new JavaParserSourceFileAnalyser(mojo);
         doReturn(log).when(mojo)
                      .getLog();
         doAnswer((InvocationOnMock invocation) -> {
