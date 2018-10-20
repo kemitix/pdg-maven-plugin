@@ -6,7 +6,6 @@ import net.kemitix.pdg.maven.scan.DigraphFactory;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import java.util.ArrayList;
