@@ -27,6 +27,7 @@ import javax.annotation.concurrent.Immutable;
 import javax.inject.Inject;
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Default implementation of the Digraph Service.
@@ -67,8 +68,7 @@ class DefaultDigraphService implements DigraphService {
     DefaultDigraphService(
             final SourceDirectoryProvider directoryProvider, final SourceFileProvider fileProvider,
             final FileLoader fileLoader, final SourceFileAnalyser fileAnalyser, final ReportGenerator reportGenerator,
-            final ReportWriter reportWriter, final DotFileFormatFactory dotFileFormatFactory
-                         ) {
+            final ReportWriter reportWriter, final DotFileFormatFactory dotFileFormatFactory) {
         this.directoryProvider = directoryProvider;
         this.fileProvider = fileProvider;
         this.fileLoader = fileLoader;
@@ -80,29 +80,31 @@ class DefaultDigraphService implements DigraphService {
 
     @Override
     @SuppressWarnings("npathcomplexity")
-    public void execute(final DigraphMojo mojo) {
-        val dependencyData = DigraphFactory.newDependencyData(mojo.getBasePackage());
-        fileProvider.process(directoryProvider.getDirectories(mojo.getProjects(), mojo.isIncludeTests()))
+    public void execute(final DigraphConfiguration configuration) {
+        val dependencyData = DigraphFactory.newDependencyData(configuration.getBasePackage());
+        final List<String> directories =
+                directoryProvider.getDirectories(configuration.getProjects(), configuration.isIncludeTests());
+        fileProvider.process(directories)
                     .stream()
                     .map(fileLoader::asInputStream)
                     .forEach(in -> fileAnalyser.analyse(dependencyData, in));
         dependencyData.updateNames();
-        if (mojo.isDebug()) {
-            dependencyData.debugLog(mojo.getLog());
+        if (configuration.isDebug()) {
+            dependencyData.debugLog(configuration.getLog());
         }
         try {
-            val outputDirectory = new File(mojo.getProject()
+            val outputDirectory = new File(configuration.getProject()
                                                .getBuild()
                                                .getDirectory());
             outputDirectory.mkdirs();
             reportWriter.write(
                     reportGenerator.generate(
-                            dotFileFormatFactory.create(mojo.getFormat(), dependencyData.getBaseNode())),
+                            dotFileFormatFactory.create(configuration.getFormat(), dependencyData.getBaseNode())),
                     new File(outputDirectory, REPORT_FILE).getAbsolutePath()
                               );
         } catch (IOException ex) {
-            mojo.getLog()
-                .error(ex.getMessage());
+            configuration.getLog()
+                    .error(ex.getMessage());
         }
     }
 }

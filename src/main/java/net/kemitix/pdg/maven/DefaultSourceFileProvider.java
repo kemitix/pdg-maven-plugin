@@ -21,6 +21,8 @@
 
 package net.kemitix.pdg.maven;
 
+import lombok.RequiredArgsConstructor;
+
 import javax.annotation.concurrent.Immutable;
 import javax.inject.Inject;
 import java.io.File;
@@ -35,25 +37,11 @@ import java.util.List;
  * @author Paul Campbell (pcampbell@kemitix.net)
  */
 @Immutable
+@RequiredArgsConstructor(onConstructor = @__({@Inject}))
 class DefaultSourceFileProvider implements SourceFileProvider {
 
     private final SourceFileVisitor fileVisitor;
-
-    private final DigraphMojo mojo;
-
-    /**
-     * Constructor.
-     *
-     * @param fileVisitor The File Visitor
-     * @param mojo        The Maven Mojo
-     */
-    @Inject
-    DefaultSourceFileProvider(
-            final SourceFileVisitor fileVisitor, final DigraphMojo mojo
-                             ) {
-        this.fileVisitor = fileVisitor;
-        this.mojo = mojo;
-    }
+    private final DigraphConfiguration digraphConfiguration;
 
     @Override
     public List<File> process(final List<String> directories) {
@@ -63,7 +51,7 @@ class DefaultSourceFileProvider implements SourceFileProvider {
                                           .toPath();
                 Files.walkFileTree(start, fileVisitor);
             } catch (IOException ex) {
-                mojo.getLog()
+                digraphConfiguration.getLog()
                     .error(ex);
             }
         });

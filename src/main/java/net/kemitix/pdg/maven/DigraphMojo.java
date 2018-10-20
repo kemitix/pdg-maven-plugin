@@ -39,7 +39,7 @@ import java.util.List;
  * @author Paul Campbell (pcampbell@kemitix.net)
  */
 @Mojo(name = "digraph", aggregator = true)
-public class DigraphMojo extends AbstractMojo {
+public class DigraphMojo extends AbstractMojo implements DigraphConfiguration {
 
     @Setter
     @Getter

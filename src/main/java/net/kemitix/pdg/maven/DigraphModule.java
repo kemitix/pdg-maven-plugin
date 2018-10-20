@@ -35,14 +35,13 @@ import javax.annotation.concurrent.Immutable;
 @RequiredArgsConstructor
 class DigraphModule extends AbstractModule {
 
-    private final DigraphMojo digraphMojo;
-
+    private final DigraphConfiguration digraphConfiguration;
     private final GraphFilter graphFilter;
 
     @Override
     @SuppressWarnings("javancss")
     protected void configure() {
-        bind(DigraphMojo.class).toInstance(digraphMojo);
+        bind(DigraphConfiguration.class).toInstance(digraphConfiguration);
         bind(GraphFilter.class).toInstance(graphFilter);
         bind(DigraphService.class).to(DefaultDigraphService.class);
         bind(DotFileFormatFactory.class).to(DefaultDotFileFormatFactory.class);

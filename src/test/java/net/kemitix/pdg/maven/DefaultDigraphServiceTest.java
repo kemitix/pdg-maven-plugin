@@ -15,12 +15,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.doThrow;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
+import static org.mockito.Mockito.mock;
 
 /**
  * Tests for {@link DigraphService}.
@@ -31,8 +33,7 @@ public class DefaultDigraphServiceTest {
 
     private DefaultDigraphService digraphService;
 
-    @Mock
-    private DigraphMojo digraphMojo;
+    private DigraphConfiguration configuration = mock(DigraphConfiguration.class);
 
     @Mock
     private SourceDirectoryProvider directoryProvider;
@@ -88,16 +89,16 @@ public class DefaultDigraphServiceTest {
                 new DefaultDigraphService(directoryProvider, fileProvider, fileLoader, fileAnalyser, reportGenerator,
                                           reportWriter, dotFileFormatFactory
                 );
-        given(digraphMojo.getLog()).willReturn(log);
+        given(configuration.getLog()).willReturn(log);
         basePackage = "net.kemitix";
         mavenProjects = new ArrayList<>();
         format = "simple";
         includeTests = false;
-        given(digraphMojo.getBasePackage()).willReturn(basePackage);
-        given(digraphMojo.getProjects()).willReturn(mavenProjects);
-        given(digraphMojo.isIncludeTests()).willReturn(includeTests);
-        given(digraphMojo.isDebug()).willReturn(false);
-        given(digraphMojo.getProject()).willReturn(project);
+        given(configuration.getBasePackage()).willReturn(basePackage);
+        given(configuration.getProjects()).willReturn(mavenProjects);
+        given(configuration.isIncludeTests()).willReturn(includeTests);
+        given(configuration.isDebug()).willReturn(false);
+        given(configuration.getProject()).willReturn(project);
         given(project.getBuild()).willReturn(build);
         given(build.getDirectory()).willReturn("target");
     }
@@ -105,18 +106,17 @@ public class DefaultDigraphServiceTest {
     @Test
     public void execute() {
         //when
-        digraphService.execute(digraphMojo);
+        digraphService.execute(configuration);
     }
 
     @Test
     public void executeWithDebug() {
         //given
-        given(digraphMojo.isDebug()).willReturn(true);
+        given(configuration.isDebug()).willReturn(true);
         //when
-        digraphService.execute(digraphMojo);
+        digraphService.execute(configuration);
         //then
-        then(digraphMojo).should()
-                         .getLog();
+        then(configuration).should().getLog();
     }
 
     @Test
@@ -126,7 +126,7 @@ public class DefaultDigraphServiceTest {
         doThrow(new IOException(message)).when(reportWriter)
                                          .write(any(), any());
         //when
-        digraphService.execute(digraphMojo);
+        digraphService.execute(configuration);
         //then
         then(log).should()
                  .error(message);
@@ -140,7 +140,7 @@ public class DefaultDigraphServiceTest {
         assertThat(target).doesNotExist();
         given(build.getDirectory()).willReturn(target.getAbsolutePath());
         //when
-        digraphService.execute(digraphMojo);
+        digraphService.execute(configuration);
         //then
         assertThat(target).exists()
                           .isDirectory();

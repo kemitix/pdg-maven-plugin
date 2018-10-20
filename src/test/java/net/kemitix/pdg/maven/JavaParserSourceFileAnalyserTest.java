@@ -15,6 +15,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.doAnswer;
 import static org.mockito.BDDMockito.doReturn;
 import static org.mockito.BDDMockito.then;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 
 /**
@@ -24,30 +25,19 @@ import static org.mockito.Mockito.times;
  */
 public class JavaParserSourceFileAnalyserTest {
 
-    private JavaParserSourceFileAnalyser analyser;
+    private final DependencyData dependencyData = mock(DependencyData.class);
+    private final DigraphConfiguration digraphConfiguration = mock(DigraphConfiguration.class);
+    private final Log log = mock(Log.class);
 
-    @Mock
-    private DependencyData dependencyData;
-
-    @Mock
-    private DigraphMojo mojo;
-
-    @Mock
-    private Log log;
+    private final JavaParserSourceFileAnalyser analyser = new JavaParserSourceFileAnalyser(digraphConfiguration);
 
     /**
      * Prepare each test.
      */
     @Before
     public void setUp() {
-        MockitoAnnotations.initMocks(this);
-        analyser = new JavaParserSourceFileAnalyser(mojo);
-        doReturn(log).when(mojo)
-                     .getLog();
-        doAnswer((InvocationOnMock invocation) -> {
-            return null;
-        }).when(log)
-          .info(any(String.class));
+        doReturn(log).when(digraphConfiguration).getLog();
+        doAnswer(invocation -> null).when(log).info(any(String.class));
     }
 
     /**

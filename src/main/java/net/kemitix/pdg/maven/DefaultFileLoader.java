@@ -36,16 +36,16 @@ import java.io.InputStream;
 @Immutable
 class DefaultFileLoader implements FileLoader {
 
-    private final DigraphMojo mojo;
+    private final DigraphConfiguration configuration;
 
     /**
      * Constructor.
      *
-     * @param mojo The Maven Mojo
+     * @param configuration The Maven Mojo
      */
     @Inject
-    DefaultFileLoader(final DigraphMojo mojo) {
-        this.mojo = mojo;
+    DefaultFileLoader(final DigraphConfiguration configuration) {
+        this.configuration = configuration;
     }
 
     @Override
@@ -53,7 +53,7 @@ class DefaultFileLoader implements FileLoader {
         try {
             return new FileInputStream(file);
         } catch (FileNotFoundException ex) {
-            mojo.getLog()
+            configuration.getLog()
                 .error(ex);
         }
         return null;

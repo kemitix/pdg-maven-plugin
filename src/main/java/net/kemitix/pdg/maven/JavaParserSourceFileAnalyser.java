@@ -46,18 +46,19 @@ class JavaParserSourceFileAnalyser implements SourceFileAnalyser {
     private static final Pattern METHOD_IMPORT = Pattern.compile("^(?<package>.+)\\.(?<class>.+)\\.(?<method>.+)");
     private static final Pattern CLASS_IMPORT = Pattern.compile("^(?<package>.+)\\.(?<class>.+)");
 
-    private final DigraphMojo mojo;
+    private final DigraphConfiguration digraphConfiguration;
 
     @Override
     public void analyse(
-            final DependencyData dependencyData, final InputStream inputStream
-                       ) {
+            final DependencyData dependencyData,
+            final InputStream inputStream
+    ) {
         try {
             CompilationUnit cu = JavaParser.parse(inputStream);
             cu.getPackageDeclaration()
               .ifPresent(pd -> analyseUnit(pd, cu, dependencyData));
         } catch (ParseProblemException ex) {
-            mojo.getLog()
+            digraphConfiguration.getLog()
                 .error("Error parsing file " + inputStream, ex);
         }
     }

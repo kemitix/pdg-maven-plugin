@@ -96,8 +96,10 @@ final class NodeTreeDependencyData implements DependencyData {
     }
 
     private void debugLogNode(
-            final Log log, final Node<PackageData> node, final int depth
-                             ) {
+            final Log log,
+            final Node<PackageData> node,
+            final int depth
+    ) {
         String padding = IntStream.range(0, depth * 2)
                                   .mapToObj(x -> " ")
                                   .collect(Collectors.joining());
