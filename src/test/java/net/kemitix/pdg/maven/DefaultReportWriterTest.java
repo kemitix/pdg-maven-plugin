@@ -1,8 +1,8 @@
 package net.kemitix.pdg.maven;
 
-import org.junit.After;
-import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
 
 import java.io.File;
 import java.io.IOException;
@@ -12,36 +12,12 @@ import java.util.List;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.assertj.core.api.Assertions.assertThat;
 
-/**
- * Tests for {@link DefaultReportWriter}.
- *
- * @author pcampbell
- */
 public class DefaultReportWriterTest {
 
-    /**
-     * Class under test.
-     */
-    private DefaultReportWriter reportWriter;
+    private DefaultReportWriter reportWriter = new DefaultReportWriter();
 
-    private TemporaryFileManager fileManager;
-
-    /**
-     * Prepare each test.
-     */
-    @Before
-    public void setUp() {
-        reportWriter = new DefaultReportWriter();
-        fileManager = new TemporaryFileManager();
-    }
-
-    /**
-     * Clean up after each test.
-     */
-    @After
-    public void tearDown() {
-        fileManager.cleanUp();
-    }
+    @Rule
+    public TemporaryFolder folder = new TemporaryFolder();
 
     /**
      * Test to write report normally.
@@ -52,7 +28,7 @@ public class DefaultReportWriterTest {
     public void shouldWriteReport() throws IOException {
         //given
         final String report = "the report";
-        final File file = fileManager.createTempFile();
+        final File file = folder.newFile();
         //when
         reportWriter.write(report, file.toString());
         //then

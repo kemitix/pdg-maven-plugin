@@ -62,7 +62,7 @@ public class DigraphMojo extends AbstractMojo {
 
     @Setter
     @Getter
-    @Parameter(name = "basePackage", required = true)
+    @Parameter(name = "basePackage", required = true, property = "pdg.basePackage")
     private String basePackage;
 
     @Getter

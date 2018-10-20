@@ -26,6 +26,7 @@ import com.github.javaparser.ParseProblemException;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.ImportDeclaration;
 import com.github.javaparser.ast.PackageDeclaration;
+import lombok.RequiredArgsConstructor;
 
 import javax.annotation.concurrent.Immutable;
 import javax.inject.Inject;
@@ -39,23 +40,13 @@ import java.util.regex.Pattern;
  * @author Paul Campbell (pcampbell@kemitix.net)
  */
 @Immutable
-class DefaultSourceFileAnalyser implements SourceFileAnalyser {
+@RequiredArgsConstructor(onConstructor = @__({@Inject}))
+class JavaParserSourceFileAnalyser implements SourceFileAnalyser {
 
     private static final Pattern METHOD_IMPORT = Pattern.compile("^(?<package>.+)\\.(?<class>.+)\\.(?<method>.+)");
-
     private static final Pattern CLASS_IMPORT = Pattern.compile("^(?<package>.+)\\.(?<class>.+)");
 
     private final DigraphMojo mojo;
-
-    /**
-     * Constructor.
-     *
-     * @param mojo The Maven Mojo
-     */
-    @Inject
-    DefaultSourceFileAnalyser(final DigraphMojo mojo) {
-        this.mojo = mojo;
-    }
 
     @Override
     public void analyse(

@@ -1,0 +1,67 @@
+* Package Dependency Graph Maven Plugin
+
+  Digraph generator for package dependencies within a project
+
+** Intro
+
+   Build Plugin to create a [[https://en.wikipedia.org/wiki/DOT_(graph_description_language)][DOT]] format diagram showing the dependencies between
+   the packages in a project.
+
+   It works by scanning the source code and processing =import= statements.
+
+   Java parsing is handled using the [[https://github.com/javaparser/javaparser][JavaParser]] project.
+
+   =pdg-maven-plugin= was previously known as =digraph-dependency-maven-plugin=
+
+** Usage
+
+   Add the following build plugin to your pom.xml:
+
+   #+BEGIN_SRC xml
+     <plugin>
+       <groupId>net.kemitix</groupId>
+       <artifactId>pdg-maven-plugin</artifactId>
+       <version>${pdg-maven-plugin.version}</version>
+       <configuration>
+         <basePackage>net.kemitix</basePackage>
+         <includeTests>false</includeTests>
+         <debug>true</debug>
+         <format>nested</format>
+         <exclude>string</exclude>
+         <include>string</include>
+       </configuration>
+     </plugin>
+   #+END_SRC
+
+   The =basePackage= is the only required parameter.
+
+*** basePackage
+
+    Only dependencies where both the using package and the package being used
+    are within the =basePackage= are included in the graph.
+
+    This can be configured from the command line using the property
+    =pdg.basePackage=.
+
+*** includeTests
+
+    Whether or not to include the test sources in the graph. Default is =false=.
+
+*** debug
+
+    Whether to include a debug output. Currently that mean printing the list of
+    nested packages that were scanned. Default is =true=.
+
+*** format
+
+    Which style of digraph to create. Default is =nested= which attempts to
+    cluster packages within their parent package. The alternative is =simple=.
+
+*** exclude
+
+    Any package that matches the exclude string will be excluded.
+
+*** include
+
+    Only packages that match the include string will be included. Packages that
+    are used by or use such included packages directly will also be included.
