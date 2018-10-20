@@ -36,7 +36,6 @@ import javax.annotation.concurrent.Immutable;
 public class PropertyElement extends AbstractGraphElement {
 
     private final String name;
-
     private final String value;
 
     /**
@@ -47,8 +46,10 @@ public class PropertyElement extends AbstractGraphElement {
      * @param dotFileFormat the output format
      */
     public PropertyElement(
-            final String name, final String value, final DotFileFormat dotFileFormat
-                          ) {
+            final String name,
+            final String value,
+            final DotFileFormat dotFileFormat
+    ) {
         super(dotFileFormat);
         this.name = name;
         this.value = value;

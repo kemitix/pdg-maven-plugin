@@ -21,6 +21,7 @@
 
 package net.kemitix.pdg.maven.scan;
 
+import lombok.RequiredArgsConstructor;
 import net.kemitix.pdg.maven.DigraphConfiguration;
 
 import javax.annotation.concurrent.Immutable;
@@ -36,19 +37,10 @@ import java.io.InputStream;
  * @author Paul Campbell (pcampbell@kemitix.net)
  */
 @Immutable
+@RequiredArgsConstructor(onConstructor = @__({@Inject}))
 class DefaultFileLoader implements FileLoader {
 
     private final DigraphConfiguration configuration;
-
-    /**
-     * Constructor.
-     *
-     * @param configuration The Maven Mojo
-     */
-    @Inject
-    DefaultFileLoader(final DigraphConfiguration configuration) {
-        this.configuration = configuration;
-    }
 
     @Override
     public InputStream asInputStream(final File file) {

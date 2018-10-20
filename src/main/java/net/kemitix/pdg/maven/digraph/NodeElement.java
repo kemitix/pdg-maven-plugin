@@ -38,7 +38,6 @@ import javax.annotation.concurrent.Immutable;
 public final class NodeElement extends AbstractEdgeEndpoint implements HasId, HasLabel {
 
     private final String id;
-
     private final String label;
 
     /**
@@ -50,9 +49,11 @@ public final class NodeElement extends AbstractEdgeEndpoint implements HasId, Ha
      * @param dotFileFormat   the output format
      */
     public NodeElement(
-            final Node<PackageData> packageDataNode, final String id, final String label,
+            final Node<PackageData> packageDataNode,
+            final String id,
+            final String label,
             final DotFileFormat dotFileFormat
-                      ) {
+    ) {
         super(dotFileFormat, packageDataNode);
         this.id = id;
         this.label = label;

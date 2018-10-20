@@ -37,7 +37,10 @@ import java.nio.charset.StandardCharsets;
 class DefaultReportWriter implements ReportWriter {
 
     @Override
-    public void write(final String report, final String file) throws IOException {
+    public void write(
+            final String report,
+            final String file
+    ) throws IOException {
         try (Writer writer = new OutputStreamWriter(new FileOutputStream(file), StandardCharsets.UTF_8)) {
             writer.append(report);
         }

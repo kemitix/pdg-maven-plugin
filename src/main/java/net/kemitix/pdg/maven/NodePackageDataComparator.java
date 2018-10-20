@@ -39,7 +39,10 @@ import java.util.Comparator;
 class NodePackageDataComparator implements Comparator<Node<PackageData>>, Serializable {
 
     @Override
-    public int compare(final Node<PackageData> o1, final Node<PackageData> o2) {
+    public int compare(
+            final Node<PackageData> o1,
+            final Node<PackageData> o2
+    ) {
         return o1.getData()
                  .getName()
                  .compareTo(o2.getData()

@@ -53,8 +53,10 @@ public class EdgeElement extends AbstractGraphElement {
      * @param dotFileFormat the output format
      */
     public EdgeElement(
-            final EdgeEndpoint tail, final EdgeEndpoint head, final DotFileFormat dotFileFormat
-                      ) {
+            final EdgeEndpoint tail,
+            final EdgeEndpoint head,
+            final DotFileFormat dotFileFormat
+    ) {
         super(dotFileFormat);
         this.tail = tail;
         this.head = head;

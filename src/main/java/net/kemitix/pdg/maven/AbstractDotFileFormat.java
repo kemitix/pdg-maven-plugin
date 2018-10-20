@@ -23,6 +23,7 @@ package net.kemitix.pdg.maven;
 
 import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.val;
 import net.kemitix.pdg.maven.digraph.Digraph;
 import net.kemitix.pdg.maven.digraph.EdgeElement;
@@ -36,6 +37,7 @@ import net.kemitix.pdg.maven.digraph.Subgraph;
 import net.kemitix.node.Node;
 
 import javax.annotation.concurrent.Immutable;
+import javax.inject.Inject;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -50,41 +52,22 @@ import java.util.stream.Collectors;
  * @author Paul Campbell (pcampbell@kemitix.net)
  */
 @Immutable
+@RequiredArgsConstructor(onConstructor = @__({@Inject}))
 @SuppressWarnings({"methodcount", "classfanoutcomplexity"})
 public abstract class AbstractDotFileFormat implements DotFileFormat {
 
     protected static final String CLOSE_BRACE = "]";
 
     private static final String DOUBLE_QUOTE = "\"";
-
     private static final String LINE = System.lineSeparator();
-
-    @Getter(AccessLevel.PROTECTED)
-    private final Node<PackageData> base;
-
-    private final NodePathGenerator nodePathGenerator;
-
-    private final NodePackageDataComparator nodePackageDataComparator;
 
     private final Map<Node<PackageData>, GraphElement> graphElements = new HashMap<>();
 
+    @Getter(AccessLevel.PROTECTED)
+    private final Node<PackageData> base;
+    private final NodePathGenerator nodePathGenerator;
     private final GraphFilter graphFilter;
-
-    /**
-     * Constructor.
-     *
-     * @param base              The root node
-     * @param nodePathGenerator The Node Path Generator
-     * @param graphFilter       The Exclusion factory
-     */
-    AbstractDotFileFormat(
-            final Node<PackageData> base, final NodePathGenerator nodePathGenerator, final GraphFilter graphFilter
-                         ) {
-        this.base = base;
-        this.nodePathGenerator = nodePathGenerator;
-        this.graphFilter = graphFilter;
-        this.nodePackageDataComparator = new NodePackageDataComparator();
-    }
+    private final NodePackageDataComparator nodePackageDataComparator = new NodePackageDataComparator();
 
     @Override
     public final String renderReport() {
@@ -129,8 +112,9 @@ public abstract class AbstractDotFileFormat implements DotFileFormat {
      * @return the path to of the node
      */
     private String getPath(
-            final Node<PackageData> headNode, final String delimiter
-                          ) {
+            final Node<PackageData> headNode,
+            final String delimiter
+    ) {
         return nodePathGenerator.getPath(headNode, getBase(), delimiter);
     }
 
@@ -150,9 +134,7 @@ public abstract class AbstractDotFileFormat implements DotFileFormat {
                                         .forEach(injectUsagesByChildren(container));
     }
 
-    private Consumer<Node<PackageData>> injectUsagesByChildren(
-            final ElementContainer container
-                                                              ) {
+    private Consumer<Node<PackageData>> injectUsagesByChildren(final ElementContainer container) {
         return (Node<PackageData> childNode) -> {
             childNode.findData()
                      .ifPresent(data -> data.getUses()
@@ -189,9 +171,7 @@ public abstract class AbstractDotFileFormat implements DotFileFormat {
      *
      * @return the NodeElement for the node
      */
-    private NodeElement createNodeElement(
-            final Node<PackageData> node
-                                         ) {
+    private NodeElement createNodeElement(final Node<PackageData> node) {
         return new NodeElement(node, getNodeId(node), node.getData()
                                                           .getName(), this);
     }
@@ -205,8 +185,9 @@ public abstract class AbstractDotFileFormat implements DotFileFormat {
      * @return the EdgeElement linking tail to head
      */
     private Optional<EdgeElement> createEdgeElement(
-            final Node<PackageData> tail, final Node<PackageData> head
-                                                   ) {
+            final Node<PackageData> tail,
+            final Node<PackageData> head
+    ) {
         if (graphFilter.filterNodes(tail) || graphFilter.filterNodes(head)) {
             return Optional.of(new EdgeElement(findEdgeEndpoint(tail), findEdgeEndpoint(head), this));
         }
@@ -327,8 +308,9 @@ public abstract class AbstractDotFileFormat implements DotFileFormat {
          * @param node      The node to add to the container
          */
         public abstract void injectNodes(
-                ElementContainer container, Node<PackageData> node
-                        );
+                ElementContainer container,
+                Node<PackageData> node
+        );
 
     }
 
@@ -345,8 +327,9 @@ public abstract class AbstractDotFileFormat implements DotFileFormat {
          * @param node      The node to scan to find uses
          */
         public abstract void injectUsages(
-                ElementContainer container, Node<PackageData> node
-                         );
+                ElementContainer container,
+                Node<PackageData> node
+        );
 
     }
 

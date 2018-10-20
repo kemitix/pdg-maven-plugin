@@ -48,8 +48,10 @@ class DotFileFormatSimple extends AbstractDotFileFormat {
      * @param graphFilter       The Graph Filter
      */
     DotFileFormatSimple(
-            final Node<PackageData> base, final NodePathGenerator nodePathGenerator, final GraphFilter graphFilter
-                       ) {
+            final Node<PackageData> base,
+            final NodePathGenerator nodePathGenerator,
+            final GraphFilter graphFilter
+    ) {
         super(base, nodePathGenerator, graphFilter);
     }
 

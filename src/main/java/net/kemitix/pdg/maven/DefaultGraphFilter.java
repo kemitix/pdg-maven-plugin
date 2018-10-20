@@ -37,9 +37,7 @@ class DefaultGraphFilter implements GraphFilter {
     public static final String DELIMITER = ".";
 
     private final String exclude;
-
     private final String include;
-
     private final NodePathGenerator nodePathGenerator;
 
     /**

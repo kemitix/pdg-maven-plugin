@@ -21,6 +21,7 @@
 
 package net.kemitix.pdg.maven.scan;
 
+import lombok.RequiredArgsConstructor;
 import lombok.val;
 import net.kemitix.pdg.maven.*;
 
@@ -32,36 +33,13 @@ import java.util.List;
  *
  * @author Paul Campbell (pcampbell@kemitix.net)
  */
+@RequiredArgsConstructor(onConstructor = @__({@Inject}))
 public class JavaParserPackageScanner implements PackageScanner {
 
     private final SourceDirectoryProvider directoryProvider;
-
     private final SourceFileProvider fileProvider;
-
     private final FileLoader fileLoader;
-
     private final SourceFileAnalyser fileAnalyser;
-
-    /**
-     * Constructor.
-     *
-     * @param directoryProvider    The Directory Provider
-     * @param fileProvider         The File Provider
-     * @param fileLoader           The File Loader
-     * @param fileAnalyser         The File Analyser
-     */
-    @Inject
-    public JavaParserPackageScanner(
-            final SourceDirectoryProvider directoryProvider,
-            final SourceFileProvider fileProvider,
-            final FileLoader fileLoader,
-            final SourceFileAnalyser fileAnalyser
-    ) {
-        this.directoryProvider = directoryProvider;
-        this.fileProvider = fileProvider;
-        this.fileLoader = fileLoader;
-        this.fileAnalyser = fileAnalyser;
-    }
 
     /**
      * Scans the base package.

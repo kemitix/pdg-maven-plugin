@@ -22,6 +22,7 @@
 package net.kemitix.pdg.maven;
 
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import net.kemitix.node.Node;
 
 import javax.annotation.concurrent.Immutable;
@@ -35,16 +36,12 @@ import java.util.Set;
  * @author Paul Campbell (pcampbell@kemitix.net)
  */
 @Immutable
+@RequiredArgsConstructor
 public final class PackageData {
 
     @Getter
     private final String name;
-
     private final Set<Node<PackageData>> uses = new HashSet<>();
-
-    private PackageData(final String name) {
-        this.name = name;
-    }
 
     /**
      * Static factory.

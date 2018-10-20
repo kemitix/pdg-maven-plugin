@@ -21,9 +21,9 @@
 
 package net.kemitix.pdg.maven.scan;
 
+import lombok.RequiredArgsConstructor;
 import lombok.val;
-import net.kemitix.pdg.maven.DigraphMojo;
-import net.kemitix.pdg.maven.scan.SourceFileProvider;
+import net.kemitix.pdg.maven.DigraphConfiguration;
 
 import javax.annotation.concurrent.Immutable;
 import javax.inject.Inject;
@@ -37,23 +37,14 @@ import java.util.List;
  * @author Paul Campbell (pcampbell@kemitix.net)
  */
 @Immutable
+@RequiredArgsConstructor(onConstructor = @__({@Inject}))
 class DirectoryListingProcessor implements SourceFileProvider {
 
-    private final DigraphMojo mojo;
-
-    /**
-     * Constructor.
-     *
-     * @param mojo The Maven Mojo
-     */
-    @Inject
-    DirectoryListingProcessor(final DigraphMojo mojo) {
-        this.mojo = mojo;
-    }
+    private final DigraphConfiguration configuration;
 
     @Override
     public List<File> process(final List<String> directories) {
-        val log = mojo.getLog();
+        val log = configuration.getLog();
         directories.stream()
                    .map(d -> "* " + d)
                    .forEach(log::info);

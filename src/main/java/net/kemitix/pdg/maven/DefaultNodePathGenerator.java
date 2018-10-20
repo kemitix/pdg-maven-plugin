@@ -36,8 +36,10 @@ class DefaultNodePathGenerator implements NodePathGenerator {
 
     @Override
     public String getPath(
-            final Node<PackageData> node, final Node<PackageData> base, final String delimiter
-                         ) {
+            final Node<PackageData> node,
+            final Node<PackageData> base,
+            final String delimiter
+    ) {
         val path = new StringBuilder();
         node.findData()
             .map(PackageData::getName)
