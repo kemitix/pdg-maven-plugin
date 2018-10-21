@@ -19,30 +19,45 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package net.kemitix.pdg.maven;
+package net.kemitix.pdg.maven.scan;
+
+import lombok.Getter;
 
 import javax.annotation.concurrent.Immutable;
+import javax.inject.Named;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.FileVisitResult;
+import java.nio.file.Path;
+import java.nio.file.SimpleFileVisitor;
+import java.nio.file.attribute.BasicFileAttributes;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * Factory class for Digraph objects.
+ * Implementation of the source file visitor.
  *
  * @author Paul Campbell (pcampbell@kemitix.net)
  */
+@Named
 @Immutable
-final class DigraphFactory {
-
-    private DigraphFactory() {
-    }
+class DefaultSourceFileVisitor extends SimpleFileVisitor<Path> implements SourceFileVisitor {
 
     /**
-     * Creates a new instance of DependencyData.
-     *
-     * @param basePackage The root node for the dependency data
-     *
-     * @return the DependencyData
+     * The list of Java files discovered.
      */
-    static DependencyData newDependencyData(final String basePackage) {
-        return NodeTreeDependencyData.newInstance(basePackage);
+    @Getter
+    private final List<File> javaFiles = new ArrayList<>();
+
+    @Override
+    public FileVisitResult visitFile(
+            final Path file, final BasicFileAttributes attrs
+                                    ) throws IOException {
+        if (file.toString()
+                .endsWith(".java")) {
+            javaFiles.add(file.toFile());
+        }
+        return FileVisitResult.CONTINUE;
     }
 
 }

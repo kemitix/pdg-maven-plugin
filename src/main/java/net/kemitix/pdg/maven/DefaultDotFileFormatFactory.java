@@ -26,32 +26,34 @@ import net.kemitix.node.Node;
 
 import javax.annotation.concurrent.Immutable;
 import javax.inject.Inject;
+import javax.inject.Named;
 
 /**
  * Default implementation of the {@link DotFileFormatFactory}.
  *
  * @author Paul Campbell (pcampbell@kemitix.net)
  */
+@Named
 @Immutable
 class DefaultDotFileFormatFactory implements DotFileFormatFactory {
 
     private final NodePathGenerator nodePathGenerator;
-
     private final GraphFilter graphFilter;
-
     private final TreeFilter treeFilter;
 
     /**
-     * Constructor.
+     * Constructors.
      *
-     * @param nodePathGenerator The Node Path Generator
-     * @param graphFilter       The Graph Filter
-     * @param treeFilter        The Tree Filter
+     * @param nodePathGenerator The node path generator
+     * @param graphFilter       The graph filter
+     * @param treeFilter        The tree filter
      */
     @Inject
-    DefaultDotFileFormatFactory(
-            final NodePathGenerator nodePathGenerator, final GraphFilter graphFilter, final TreeFilter treeFilter
-                               ) {
+    public DefaultDotFileFormatFactory(
+            final NodePathGenerator nodePathGenerator,
+            final GraphFilter graphFilter,
+            final TreeFilter treeFilter
+    ) {
         this.nodePathGenerator = nodePathGenerator;
         this.graphFilter = graphFilter;
         this.treeFilter = treeFilter;

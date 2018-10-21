@@ -21,28 +21,19 @@
 
 package net.kemitix.pdg.maven;
 
-import org.apache.maven.project.MavenProject;
-
-import java.util.List;
-
 /**
- * Provider for the list of source directories.
+ * Scans packages, gathering details of uses between each.
  *
  * @author Paul Campbell (pcampbell@kemitix.net)
  */
-interface SourceDirectoryProvider {
+public interface PackageScanner {
 
     /**
-     * Returns all the source directories for the project, including any
-     * modules.
+     * Scan the packages.
      *
-     * @param projects     the list of maven projects
-     * @param includeTests whether to include test sources
-     *
-     * @return the list of source directories
+     * @param configuration the mojo configuration
+     * @return the collected dependency data
      */
-    public abstract List<String> getDirectories(
-            List<MavenProject> projects, boolean includeTests
-                               );
+    public abstract DependencyData scan(DigraphConfiguration configuration);
 
 }

@@ -1,4 +1,4 @@
-package net.kemitix.pdg.maven;
+package net.kemitix.pdg.maven.scan;
 
 import org.apache.maven.model.Build;
 import org.apache.maven.model.Model;

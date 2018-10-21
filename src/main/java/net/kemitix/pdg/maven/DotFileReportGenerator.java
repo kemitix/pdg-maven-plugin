@@ -22,27 +22,16 @@
 package net.kemitix.pdg.maven;
 
 import javax.annotation.concurrent.Immutable;
-import javax.inject.Inject;
+import javax.inject.Named;
 
 /**
  * Generates a dot file as dependency report generator.
  *
  * @author Paul Campbell (pcampbell@kemitix.net)
  */
+@Named
 @Immutable
 class DotFileReportGenerator implements ReportGenerator {
-
-    private final NodePathGenerator nodePathGenerator;
-
-    /**
-     * Injected constructor.
-     *
-     * @param nodeIdGenerator the node id generator
-     */
-    @Inject
-    DotFileReportGenerator(final NodePathGenerator nodeIdGenerator) {
-        this.nodePathGenerator = nodeIdGenerator;
-    }
 
     @Override
     public String generate(final DotFileFormat dotFileFormat) {

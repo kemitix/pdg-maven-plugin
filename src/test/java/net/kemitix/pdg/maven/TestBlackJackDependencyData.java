@@ -25,6 +25,7 @@ SOFTWARE.
 package net.kemitix.pdg.maven;
 
 import lombok.val;
+import net.kemitix.pdg.maven.scan.DigraphFactory;
 
 /**
  * Test structure using the BlackJack sample structure.
@@ -42,7 +43,7 @@ class TestBlackJackDependencyData {
     private static final String MODEL = "net.kemitix.blackjack.model";
 
     static DependencyData getDependencyData() {
-        val dependencyData = NodeTreeDependencyData.newInstance("net.kemitix.blackjack");
+        val dependencyData = DigraphFactory.newDependencyData("net.kemitix.blackjack");
 
         dependencyData.addDependency(CLI, GAME);
         dependencyData.addDependency(CLI, CONSOLE);

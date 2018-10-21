@@ -31,7 +31,7 @@ interface DigraphService {
     /**
      * Executes the Digraph service.
      *
-     * @param mojo the parent mojo
+     * @param configuration the mojo configuration
      */
-    public abstract void execute(DigraphMojo mojo);
+    public abstract void execute(DigraphConfiguration configuration);
 }

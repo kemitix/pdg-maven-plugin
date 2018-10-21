@@ -19,55 +19,25 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package net.kemitix.pdg.maven;
+package net.kemitix.pdg.maven.scan;
 
-import javax.annotation.concurrent.Immutable;
-import javax.inject.Inject;
 import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
+import java.nio.file.FileVisitor;
 import java.nio.file.Path;
 import java.util.List;
 
 /**
- * Provider walks the directory and builds a list of discovered Java files.
+ * File visitor to discover Java source files.
  *
  * @author Paul Campbell (pcampbell@kemitix.net)
  */
-@Immutable
-class DefaultSourceFileProvider implements SourceFileProvider {
-
-    private final SourceFileVisitor fileVisitor;
-
-    private final DigraphMojo mojo;
+interface SourceFileVisitor extends FileVisitor<Path> {
 
     /**
-     * Constructor.
+     * Returns the list of Java source files found.
      *
-     * @param fileVisitor The File Visitor
-     * @param mojo        The Maven Mojo
+     * @return the list of Java source files
      */
-    @Inject
-    DefaultSourceFileProvider(
-            final SourceFileVisitor fileVisitor, final DigraphMojo mojo
-                             ) {
-        this.fileVisitor = fileVisitor;
-        this.mojo = mojo;
-    }
-
-    @Override
-    public List<File> process(final List<String> directories) {
-        directories.forEach((final String dir) -> {
-            try {
-                Path start = new File(dir).getAbsoluteFile()
-                                          .toPath();
-                Files.walkFileTree(start, fileVisitor);
-            } catch (IOException ex) {
-                mojo.getLog()
-                    .error(ex);
-            }
-        });
-        return fileVisitor.getJavaFiles();
-    }
+    public abstract List<File> getJavaFiles();
 
 }

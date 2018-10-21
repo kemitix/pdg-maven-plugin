@@ -19,25 +19,30 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package net.kemitix.pdg.maven;
+package net.kemitix.pdg.maven.scan;
 
-import java.io.File;
+import org.apache.maven.project.MavenProject;
+
 import java.util.List;
 
 /**
- * Interface for processing a list of directories.
+ * Provider for the list of source directories.
  *
  * @author Paul Campbell (pcampbell@kemitix.net)
  */
-interface SourceFileProvider {
+interface SourceDirectoryProvider {
 
     /**
-     * Process the list of directories and return the list of java files.
+     * Returns all the source directories for the project, including any
+     * modules.
      *
-     * @param directories the directories to process
+     * @param projects     the list of maven projects
+     * @param includeTests whether to include test sources
      *
-     * @return a list of files
+     * @return the list of source directories
      */
-    public abstract List<File> process(List<String> directories);
+    public abstract List<String> getDirectories(
+            List<MavenProject> projects, boolean includeTests
+                               );
 
 }

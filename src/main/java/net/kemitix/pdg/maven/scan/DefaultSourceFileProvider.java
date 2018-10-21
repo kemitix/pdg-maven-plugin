@@ -19,58 +19,59 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package net.kemitix.pdg.maven.digraph;
+package net.kemitix.pdg.maven.scan;
 
-import lombok.Getter;
-import net.kemitix.pdg.maven.DotFileFormat;
-import net.kemitix.pdg.maven.PackageData;
-import net.kemitix.node.Node;
+import net.kemitix.pdg.maven.DigraphConfiguration;
 
 import javax.annotation.concurrent.Immutable;
-import java.util.ArrayList;
+import javax.inject.Inject;
+import javax.inject.Named;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.List;
 
 /**
- * Represets a subgraph/cluster.
+ * Provider walks the directory and builds a list of discovered Java files.
  *
  * @author Paul Campbell (pcampbell@kemitix.net)
  */
-@Getter
+@Named("sources")
 @Immutable
-public class Subgraph extends AbstractGraphElement implements ElementContainer, HasId, HasLabel, EdgeEndpoint {
+class DefaultSourceFileProvider implements SourceFileProvider {
 
-    private final List<GraphElement> elements = new ArrayList<>();
-    private final String id;
-    private final String label;
-    private final Node<PackageData> packageDataNode;
+    private final SourceFileVisitor fileVisitor;
+    private final DigraphConfiguration digraphConfiguration;
 
     /**
      * Constructor.
      *
-     * @param packageDataNode the package data node for this subgraph
-     * @param id              the id of the subgraph
-     * @param label           the label of the subgraph
-     * @param dotFileFormat   the output format
+     * @param fileVisitor   The file visitor
+     * @param configuration The configuration
      */
-    public Subgraph(
-            final Node<PackageData> packageDataNode,
-            final String id,
-            final String label,
-            final DotFileFormat dotFileFormat
+    @Inject
+    public DefaultSourceFileProvider(
+            final SourceFileVisitor fileVisitor,
+            final DigraphConfiguration configuration
     ) {
-        super(dotFileFormat);
-        this.packageDataNode = packageDataNode;
-        this.id = id;
-        this.label = label;
+        this.fileVisitor = fileVisitor;
+        this.digraphConfiguration = configuration;
     }
 
     @Override
-    public final boolean add(final GraphElement graphElement) {
-        return elements.add(graphElement);
+    public List<File> process(final List<String> directories) {
+        directories.forEach((final String dir) -> {
+            try {
+                Path start = new File(dir).getAbsoluteFile()
+                                          .toPath();
+                Files.walkFileTree(start, fileVisitor);
+            } catch (IOException ex) {
+                digraphConfiguration.getLog()
+                    .error(ex);
+            }
+        });
+        return fileVisitor.getJavaFiles();
     }
 
-    @Override
-    public final String render() {
-        return getDotFileFormat().render(this);
-    }
 }

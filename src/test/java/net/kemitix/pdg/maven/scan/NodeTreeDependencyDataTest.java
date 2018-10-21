@@ -1,11 +1,17 @@
-package net.kemitix.pdg.maven;
+package net.kemitix.pdg.maven.scan;
 
 import net.kemitix.node.Node;
+import net.kemitix.pdg.maven.DependencyData;
+import net.kemitix.pdg.maven.PackageData;
 import org.apache.maven.plugin.logging.Log;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Consumer;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.then;

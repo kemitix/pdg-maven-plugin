@@ -1,10 +1,11 @@
-package net.kemitix.pdg.maven;
+package net.kemitix.pdg.maven.scan;
 
+import net.kemitix.pdg.maven.DigraphConfiguration;
+import net.kemitix.pdg.maven.DigraphMojo;
 import org.apache.maven.plugin.logging.Log;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 
 import java.io.File;
 import java.io.IOException;
@@ -19,6 +20,7 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.doThrow;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
+import static org.mockito.Mockito.mock;
 
 /**
  * Tests for {@link DefaultSourceFileProvider}.
@@ -27,28 +29,15 @@ import static org.mockito.BDDMockito.then;
  */
 public class DefaultSourceFileProviderTest {
 
-    private DefaultSourceFileProvider sourceFileProvider;
+    private final DigraphConfiguration digraphConfiguration = mock(DigraphConfiguration.class);
+    private final SourceFileVisitor fileVisitor = mock(SourceFileVisitor.class);
+    private final Log log = mock(Log.class);
 
-    @Mock
-    private DigraphMojo mojo;
+    private final DefaultSourceFileProvider sourceFileProvider =
+            new DefaultSourceFileProvider(fileVisitor, digraphConfiguration);
 
-    @Mock
-    private SourceFileVisitor fileVisitor;
-
-    @Mock
-    private Log log;
-
-    private List<String> directories;
-
-    private List<File> fileList;
-
-    @Before
-    public void setUp() {
-        MockitoAnnotations.initMocks(this);
-        sourceFileProvider = new DefaultSourceFileProvider(fileVisitor, mojo);
-        directories = new ArrayList<>();
-        fileList = new ArrayList<>();
-    }
+    private final List<String> directories = new ArrayList<>();
+    private final List<File> fileList = new ArrayList<>();
 
     @Test
     public void processShouldReturnDirectories() throws Exception {
@@ -96,7 +85,7 @@ public class DefaultSourceFileProviderTest {
         IOException ex = new IOException();
         doThrow(ex).when(fileVisitor)
                    .preVisitDirectory(any(), any());
-        given(mojo.getLog()).willReturn(log);
+        given(digraphConfiguration.getLog()).willReturn(log);
         //when
         sourceFileProvider.process(directories);
         //then

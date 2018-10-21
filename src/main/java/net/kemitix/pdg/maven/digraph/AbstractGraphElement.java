@@ -33,10 +33,11 @@ import javax.annotation.concurrent.Immutable;
  *
  * @author Paul Campbell (pcampbell@kemitix.net)
  */
-@RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 @Immutable
+@RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 abstract class AbstractGraphElement implements GraphElement {
 
     @Getter(AccessLevel.PROTECTED)
     private final DotFileFormat dotFileFormat;
 }
+

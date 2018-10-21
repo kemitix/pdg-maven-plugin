@@ -19,44 +19,4 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package net.kemitix.pdg.maven;
-
-import javax.annotation.concurrent.Immutable;
-import javax.inject.Inject;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
-
-/**
- * Implementation of {@link FileLoader}.
- *
- * @author Paul Campbell (pcampbell@kemitix.net)
- */
-@Immutable
-class DefaultFileLoader implements FileLoader {
-
-    private final DigraphMojo mojo;
-
-    /**
-     * Constructor.
-     *
-     * @param mojo The Maven Mojo
-     */
-    @Inject
-    DefaultFileLoader(final DigraphMojo mojo) {
-        this.mojo = mojo;
-    }
-
-    @Override
-    public InputStream asInputStream(final File file) {
-        try {
-            return new FileInputStream(file);
-        } catch (FileNotFoundException ex) {
-            mojo.getLog()
-                .error(ex);
-        }
-        return null;
-    }
-
-}
+package net.kemitix.pdg.maven.scan;

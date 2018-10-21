@@ -26,6 +26,7 @@ import net.kemitix.node.Node;
 import net.kemitix.node.Nodes;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -39,20 +40,23 @@ import java.util.stream.Stream;
  *
  * @author Paul Campbell (pcampbell@kemitix.net)
  */
+@Named
 class DefaultTreeFilter implements TreeFilter {
 
     private final GraphFilter graphFilter;
-
     private final NodePathGenerator nodePathGenerator;
 
     /**
      * Constructor.
      *
-     * @param graphFilter       The Graph Filter.
-     * @param nodePathGenerator The Node Path Generator
+     * @param graphFilter       The graph filter
+     * @param nodePathGenerator The node path generator
      */
     @Inject
-    DefaultTreeFilter(final GraphFilter graphFilter, final NodePathGenerator nodePathGenerator) {
+    public DefaultTreeFilter(
+            final GraphFilter graphFilter,
+            final NodePathGenerator nodePathGenerator
+    ) {
         this.graphFilter = graphFilter;
         this.nodePathGenerator = nodePathGenerator;
     }
@@ -72,7 +76,10 @@ class DefaultTreeFilter implements TreeFilter {
         return duplicateTree;
     }
 
-    private void fixUpUses(final Node<PackageData> target, final Node<PackageData> root) {
+    private void fixUpUses(
+            final Node<PackageData> target,
+            final Node<PackageData> root
+    ) {
         val targetMap = target.stream()
                               .collect(nodeMapCollector(target));
         target.stream()
@@ -88,18 +95,24 @@ class DefaultTreeFilter implements TreeFilter {
                                                 .getName()));
     }
 
-    private String packageName(final Node<PackageData> root, final Node<PackageData> use) {
+    private String packageName(
+            final Node<PackageData> root,
+            final Node<PackageData> use
+    ) {
         return nodePathGenerator.getPath(use, root, ".");
     }
 
     private Collector<Node<PackageData>, ?, Map<String, Node<PackageData>>> nodeMapCollector(
             final Node<PackageData> legacy
-                                                                                            ) {
+    ) {
         return Collectors.toMap(node -> packageName(legacy, node), Function.identity());
     }
 
     // get list of nodes to be included because they use an included node
-    private Stream<Node<PackageData>> users(final Node<PackageData> root, final Set<Node<PackageData>> included) {
+    private Stream<Node<PackageData>> users(
+            final Node<PackageData> root,
+            final Set<Node<PackageData>> included
+    ) {
         return root.stream()
                    .flatMap(node -> node.getData()
                                         .getUses()
@@ -118,7 +131,10 @@ class DefaultTreeFilter implements TreeFilter {
                                             .filter(use -> !graphFilter.isExcluded(use)));
     }
 
-    private Node<PackageData> duplicateNode(final Node<PackageData> source, final List<Node<PackageData>> eligible) {
+    private Node<PackageData> duplicateNode(
+            final Node<PackageData> source,
+            final List<Node<PackageData>> eligible
+    ) {
         final Node<PackageData> duplicate = Nodes.namedRoot(null, source.getName());
         duplicate.setData(source.getData());
         source.getChildren()

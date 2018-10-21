@@ -25,6 +25,7 @@ import lombok.val;
 
 import javax.annotation.concurrent.Immutable;
 import javax.inject.Inject;
+import javax.inject.Named;
 import java.io.File;
 import java.io.IOException;
 
@@ -33,46 +34,33 @@ import java.io.IOException;
  *
  * @author Paul Campbell (pcampbell@kemitix.net)
  */
+@Named
 @Immutable
 class DefaultDigraphService implements DigraphService {
 
     private static final String REPORT_FILE = "digraph.dot";
 
-    private final SourceDirectoryProvider directoryProvider;
-
-    private final SourceFileProvider fileProvider;
-
-    private final FileLoader fileLoader;
-
-    private final SourceFileAnalyser fileAnalyser;
-
+    private final PackageScanner packageScanner;
     private final ReportGenerator reportGenerator;
-
     private final ReportWriter reportWriter;
-
     private final DotFileFormatFactory dotFileFormatFactory;
 
     /**
      * Constructor.
      *
-     * @param directoryProvider    The Directory Provider
-     * @param fileProvider         The File Provider
-     * @param fileLoader           The File Loader
-     * @param fileAnalyser         The File Analyser
-     * @param reportGenerator      The Report Generator
-     * @param reportWriter         The Report Writer
-     * @param dotFileFormatFactory The Dot File Format Factory
+     * @param packageScanner       The package scanner
+     * @param reportGenerator      The report generator
+     * @param reportWriter         The report writer
+     * @param dotFileFormatFactory The DOT file format factory
      */
     @Inject
-    DefaultDigraphService(
-            final SourceDirectoryProvider directoryProvider, final SourceFileProvider fileProvider,
-            final FileLoader fileLoader, final SourceFileAnalyser fileAnalyser, final ReportGenerator reportGenerator,
-            final ReportWriter reportWriter, final DotFileFormatFactory dotFileFormatFactory
-                         ) {
-        this.directoryProvider = directoryProvider;
-        this.fileProvider = fileProvider;
-        this.fileLoader = fileLoader;
-        this.fileAnalyser = fileAnalyser;
+    public DefaultDigraphService(
+            final PackageScanner packageScanner,
+            final ReportGenerator reportGenerator,
+            final ReportWriter reportWriter,
+            final DotFileFormatFactory dotFileFormatFactory
+    ) {
+        this.packageScanner = packageScanner;
         this.reportGenerator = reportGenerator;
         this.reportWriter = reportWriter;
         this.dotFileFormatFactory = dotFileFormatFactory;
@@ -80,29 +68,25 @@ class DefaultDigraphService implements DigraphService {
 
     @Override
     @SuppressWarnings("npathcomplexity")
-    public void execute(final DigraphMojo mojo) {
-        val dependencyData = DigraphFactory.newDependencyData(mojo.getBasePackage());
-        fileProvider.process(directoryProvider.getDirectories(mojo.getProjects(), mojo.isIncludeTests()))
-                    .stream()
-                    .map(fileLoader::asInputStream)
-                    .forEach(in -> fileAnalyser.analyse(dependencyData, in));
-        dependencyData.updateNames();
-        if (mojo.isDebug()) {
-            dependencyData.debugLog(mojo.getLog());
+    public void execute(final DigraphConfiguration configuration) {
+        final DependencyData dependencyData = packageScanner.scan(configuration);
+
+        if (configuration.isDebug()) {
+            dependencyData.debugLog(configuration.getLog());
         }
         try {
-            val outputDirectory = new File(mojo.getProject()
+            val outputDirectory = new File(configuration.getProject()
                                                .getBuild()
                                                .getDirectory());
             outputDirectory.mkdirs();
             reportWriter.write(
                     reportGenerator.generate(
-                            dotFileFormatFactory.create(mojo.getFormat(), dependencyData.getBaseNode())),
+                            dotFileFormatFactory.create(configuration.getFormat(), dependencyData.getBaseNode())),
                     new File(outputDirectory, REPORT_FILE).getAbsolutePath()
                               );
         } catch (IOException ex) {
-            mojo.getLog()
-                .error(ex.getMessage());
+            configuration.getLog()
+                    .error(ex.getMessage());
         }
     }
 }

@@ -19,11 +19,13 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package net.kemitix.pdg.maven;
+package net.kemitix.pdg.maven.scan;
 
 import lombok.Getter;
 import net.kemitix.node.Node;
 import net.kemitix.node.Nodes;
+import net.kemitix.pdg.maven.DependencyData;
+import net.kemitix.pdg.maven.PackageData;
 import org.apache.maven.plugin.logging.Log;
 
 import javax.annotation.concurrent.Immutable;
@@ -96,8 +98,10 @@ final class NodeTreeDependencyData implements DependencyData {
     }
 
     private void debugLogNode(
-            final Log log, final Node<PackageData> node, final int depth
-                             ) {
+            final Log log,
+            final Node<PackageData> node,
+            final int depth
+    ) {
         String padding = IntStream.range(0, depth * 2)
                                   .mapToObj(x -> " ")
                                   .collect(Collectors.joining());

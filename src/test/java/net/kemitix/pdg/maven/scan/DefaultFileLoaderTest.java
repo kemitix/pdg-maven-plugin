@@ -1,10 +1,9 @@
-package net.kemitix.pdg.maven;
+package net.kemitix.pdg.maven.scan;
 
+import net.kemitix.pdg.maven.DigraphConfiguration;
 import org.apache.maven.plugin.logging.Log;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -17,6 +16,7 @@ import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.doReturn;
+import static org.mockito.Mockito.mock;
 
 /**
  * Tests for {@link DefaultFileLoader}.
@@ -25,33 +25,27 @@ import static org.mockito.BDDMockito.doReturn;
  */
 public class DefaultFileLoaderTest {
 
-    private DefaultFileLoader fileLoader;
+    private final DigraphConfiguration digraphConfiguration = mock(DigraphConfiguration.class);
+    private final Log log = mock(Log.class);
 
-    @Mock
-    private DigraphMojo mojo;
-
-    @Mock
-    private Log log;
+    private final DefaultFileLoader fileLoader = new DefaultFileLoader(digraphConfiguration);
 
     @Before
     public void setUp() {
-        MockitoAnnotations.initMocks(this);
-        fileLoader = new DefaultFileLoader(mojo);
-        doReturn(log).when(mojo)
-                     .getLog();
+        doReturn(log).when(digraphConfiguration).getLog();
     }
 
     @Test
     public void shouldLoadFile() throws IOException {
         //given
-        File file = new File("src/test/projects/src-only/pom.xml");
-        String expectedFirstLine = Files.lines(file.toPath(), StandardCharsets.UTF_8)
-                                        .limit(1)
-                                        .collect(Collectors.joining());
+        final File file = new File("src/test/projects/src-only/pom.xml");
+        final String expectedFirstLine = Files.lines(file.toPath(), StandardCharsets.UTF_8)
+                .limit(1)
+                .collect(Collectors.joining());
         //when
-        BufferedReader reader =
+        final BufferedReader reader =
                 new BufferedReader(new InputStreamReader(fileLoader.asInputStream(file), StandardCharsets.UTF_8));
-        String streamedFirstLine = reader.readLine();
+        final String streamedFirstLine = reader.readLine();
         //then
         assertThat(streamedFirstLine).isEqualTo(expectedFirstLine);
     }
@@ -59,9 +53,9 @@ public class DefaultFileLoaderTest {
     @Test
     public void shouldReturnNullWhenFileNotFound() {
         //given
-        File file = new File("src/test/projects/imaginary/pom.xml");
+        final File file = new File("src/test/projects/imaginary/pom.xml");
         //when
-        InputStream stream = fileLoader.asInputStream(file);
+        final InputStream stream = fileLoader.asInputStream(file);
         //then
         assertThat(stream).isNull();
     }

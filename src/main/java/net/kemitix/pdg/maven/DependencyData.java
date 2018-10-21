@@ -29,7 +29,7 @@ import org.apache.maven.plugin.logging.Log;
  *
  * @author Paul Campbell (pcampbell@kemitix.net)
  */
-interface DependencyData {
+public interface DependencyData {
 
     /**
      * Records a dependency between the user class and the imported class.

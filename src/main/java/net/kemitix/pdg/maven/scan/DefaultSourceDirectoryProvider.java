@@ -19,12 +19,13 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package net.kemitix.pdg.maven;
+package net.kemitix.pdg.maven.scan;
 
 import org.apache.maven.model.Build;
 import org.apache.maven.project.MavenProject;
 
 import javax.annotation.concurrent.Immutable;
+import javax.inject.Named;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +35,7 @@ import java.util.List;
  *
  * @author Paul Campbell (pcampbell@kemitix.net)
  */
+@Named
 @Immutable
 class DefaultSourceDirectoryProvider implements SourceDirectoryProvider {
 

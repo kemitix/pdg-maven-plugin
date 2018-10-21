@@ -25,35 +25,44 @@ import lombok.NonNull;
 import lombok.val;
 import net.kemitix.node.Node;
 
-import java.util.Objects;
+import javax.inject.Inject;
+import javax.inject.Named;
+import java.util.Optional;
 
 /**
  * Default implementation of {@link GraphFilter}.
  *
  * @author Paul Campbell (pcampbell@kemitix.net)
  */
+@Named
 class DefaultGraphFilter implements GraphFilter {
 
     public static final String DELIMITER = ".";
 
-    private final String exclude;
-
-    private final String include;
-
+    private final DigraphConfiguration configuration;
     private final NodePathGenerator nodePathGenerator;
 
     /**
      * Constructor.
      *
-     * @param exclude           The exclusion
-     * @param include           The inclusion
-     * @param nodePathGenerator The Node Path Generator
+     * @param configuration     The configuration
+     * @param nodePathGenerator The node path generator
      */
-    @SuppressWarnings("avoidinlineconditionals")
-    DefaultGraphFilter(final String exclude, final String include, final NodePathGenerator nodePathGenerator) {
-        this.exclude = exclude == null ? "" : exclude;
-        this.include = include == null ? "" : include;
+    @Inject
+    public DefaultGraphFilter(
+            final DigraphConfiguration configuration,
+            final NodePathGenerator nodePathGenerator
+    ) {
+        this.configuration = configuration;
         this.nodePathGenerator = nodePathGenerator;
+    }
+
+    private String include() {
+        return Optional.ofNullable(configuration.getInclude()).orElse("");
+    }
+
+    private String exclude() {
+        return Optional.ofNullable(configuration.getExclude()).orElse("");
     }
 
     @Override
@@ -61,29 +70,27 @@ class DefaultGraphFilter implements GraphFilter {
     public boolean filterNodes(final Node<PackageData> packageDataNode) {
         boolean result = true;
         val packageName = getPackageName(packageDataNode);
-        if (!include.isEmpty()) {
-            result = packageName.contains(include);
+        if (!include().isEmpty()) {
+            result = packageName.contains(include());
         }
-        if (result && !exclude.isEmpty()) {
-            result = !packageName.contains(exclude);
+        //FIXME - if there is an include filter, then exclude filter is completely ignored
+        if (result && !exclude().isEmpty()) {
+            result = !packageName.contains(exclude());
         }
         return result;
     }
 
     @Override
     public boolean isExcluded(@NonNull final Node<PackageData> packageDataNode) {
-        Objects.requireNonNull(exclude);
-        return !exclude.isEmpty() && getPackageName(packageDataNode).contains(exclude);
+        return !exclude().isEmpty() && getPackageName(packageDataNode).contains(exclude());
     }
 
     @Override
     public boolean isIncluded(@NonNull final Node<PackageData> packageDataNode) {
-        Objects.requireNonNull(include);
-        return include.isEmpty() || getPackageName(packageDataNode).contains(include);
+        return include().isEmpty() || getPackageName(packageDataNode).contains(include());
     }
 
     private String getPackageName(final Node<PackageData> packageDataNode) {
-        Objects.requireNonNull(nodePathGenerator, "NodePathGenerator not set in GraphFilter");
         return nodePathGenerator.getPath(packageDataNode, null, DELIMITER);
     }
 }

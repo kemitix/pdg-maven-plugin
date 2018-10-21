@@ -19,23 +19,32 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package net.kemitix.pdg.maven;
+package net.kemitix.pdg.maven.scan;
 
-import java.io.InputStream;
+import net.kemitix.pdg.maven.DependencyData;
+
+import javax.annotation.concurrent.Immutable;
 
 /**
- * Interface for a source code file analyser.
+ * Factory class for Digraph objects.
  *
  * @author Paul Campbell (pcampbell@kemitix.net)
  */
-interface SourceFileAnalyser {
+@Immutable
+public final class DigraphFactory {
+
+    private DigraphFactory() {
+    }
 
     /**
-     * Analyse the file.
+     * Creates a new instance of DependencyData.
      *
-     * @param dependencyData the dependency data
-     * @param input          the stream of the file to analyse
+     * @param basePackage The root node for the dependency data
+     *
+     * @return the DependencyData
      */
-    public abstract void analyse(DependencyData dependencyData, InputStream input);
+    public static DependencyData newDependencyData(final String basePackage) {
+        return NodeTreeDependencyData.newInstance(basePackage);
+    }
 
 }

@@ -19,43 +19,25 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package net.kemitix.pdg.maven;
+package net.kemitix.pdg.maven.scan;
 
-import lombok.val;
-
-import javax.annotation.concurrent.Immutable;
-import javax.inject.Inject;
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
+import java.io.InputStream;
 
 /**
- * Processor to list directories to console.
+ * Interface for loading a file.
  *
  * @author Paul Campbell (pcampbell@kemitix.net)
  */
-@Immutable
-class DirectoryListingProcessor implements SourceFileProvider {
-
-    private final DigraphMojo mojo;
+interface FileLoader {
 
     /**
-     * Constructor.
+     * * Opens the file as in InputStream.
      *
-     * @param mojo The Maven Mojo
+     * @param file the file to open
+     *
+     * @return the file input stream or null if file not found
      */
-    @Inject
-    DirectoryListingProcessor(final DigraphMojo mojo) {
-        this.mojo = mojo;
-    }
-
-    @Override
-    public List<File> process(final List<String> directories) {
-        val log = mojo.getLog();
-        directories.stream()
-                   .map(d -> "* " + d)
-                   .forEach(log::info);
-        return new ArrayList<>();
-    }
+    public abstract InputStream asInputStream(File file);
 
 }
