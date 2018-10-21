@@ -2,46 +2,26 @@ package net.kemitix.pdg.maven;
 
 import lombok.val;
 import net.kemitix.pdg.maven.digraph.PackageData;
-import org.junit.jupiter.api.BeforeEach;
+import org.assertj.core.api.WithAssertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashSet;
 import java.util.Set;
 
-import static org.assertj.core.api.Assertions.assertThat;
+class PackageDataTest implements WithAssertions {
 
-/**
- * Tests for {@link PackageData}.
- *
- * @author pcampbell
- */
-public class PackageDataTest {
+    private final String name = "name";
+    private final PackageData data = PackageData.newInstance(name);
 
-    private PackageData data;
-
-    private String name;
-
-    @BeforeEach
-    public void setUp() {
-        name = "name";
-        data = PackageData.newInstance(name);
-    }
-
-    /**
-     * Name is what was set.
-     */
     @Test
-    public void shouldGetName() {
+    void shouldGetName() {
         assertThat(data.getName()).isEqualTo(name);
     }
 
-    /**
-     * Two objects with different names have different hashcodes.
-     */
     @Test
-    public void shouldCreateUniqueHashCode() {
+    void shouldCreateUniqueHashCode() {
         //given
-        String name2 = "name2";
+        final String name2 = "name2";
         val data2 = PackageData.newInstance(name2);
         //then
         assertThat(data.hashCode()).isNotEqualTo(data2.hashCode());
@@ -51,7 +31,7 @@ public class PackageDataTest {
      * Two objects with the same name are equal.
      */
     @Test
-    public void shouldBeEqualWhenSameName() {
+    void shouldBeEqualWhenSameName() {
         //given
         val data2 = PackageData.newInstance(name);
         //then
@@ -64,7 +44,7 @@ public class PackageDataTest {
      * considered to be in the Set.
      */
     @Test
-    public void shouldBeInSetIfNameMatches() {
+    void shouldBeInSetIfNameMatches() {
         //given
         val data2 = PackageData.newInstance(name);
         final Set<PackageData> set = new HashSet<>();
@@ -75,7 +55,7 @@ public class PackageDataTest {
     }
 
     @Test
-    public void equalsShouldBeFalseWhenOtherIsNull() {
+    void equalsShouldBeFalseWhenOtherIsNull() {
         //given
         val data = PackageData.newInstance("name");
         //then
@@ -83,7 +63,7 @@ public class PackageDataTest {
     }
 
     @Test
-    public void equalsShouldBeFalseWhenOtherIsNotPackageData() {
+    void equalsShouldBeFalseWhenOtherIsNotPackageData() {
         //given
         val data = PackageData.newInstance("name");
         //then

@@ -1,31 +1,18 @@
 package net.kemitix.pdg.maven.digraph;
 
 import lombok.val;
-import org.junit.jupiter.api.BeforeEach;
+import org.assertj.core.api.WithAssertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
 
-/**
- * Tests for {@link PropertyElement}.
- *
- * @author pcampbell
- */
-public class PropertyElementTest {
+class PropertyElementTest implements WithAssertions {
 
-    @Mock
-    private DotFileFormat dotFileFormat;
-
-    @BeforeEach
-    public void setUp() {
-        MockitoAnnotations.initMocks(this);
-    }
+    private final DotFileFormat dotFileFormat = mock(DotFileFormat.class);
 
     @Test
-    public void shouldRender() {
+    void shouldRender() {
         //given
         val propertyElement = new PropertyElement("name", "value", dotFileFormat);
         val expected = "rendered property element";

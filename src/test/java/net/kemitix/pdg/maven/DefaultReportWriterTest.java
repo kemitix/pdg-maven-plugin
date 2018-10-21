@@ -14,7 +14,7 @@ import java.util.List;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 @EnableRuleMigrationSupport
-public class DefaultReportWriterTest implements WithAssertions {
+class DefaultReportWriterTest implements WithAssertions {
 
     private final DefaultReportWriter reportWriter = new DefaultReportWriter();
 

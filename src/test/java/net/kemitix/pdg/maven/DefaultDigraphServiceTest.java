@@ -4,6 +4,7 @@ import lombok.val;
 import org.apache.maven.model.Build;
 import org.apache.maven.plugin.logging.Log;
 import org.apache.maven.project.MavenProject;
+import org.assertj.core.api.WithAssertions;
 import org.junit.Rule;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -14,18 +15,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.*;
 import static org.mockito.Mockito.mock;
 
-/**
- * Tests for {@link DigraphService}.
- *
- * @author pcampbell
- */
 @EnableRuleMigrationSupport
-public class DefaultDigraphServiceTest {
+class DefaultDigraphServiceTest implements WithAssertions {
 
     @Rule
     public TemporaryFolder folder = new TemporaryFolder();
@@ -49,7 +44,7 @@ public class DefaultDigraphServiceTest {
     private final Log log = mock(Log.class);
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         given(configuration.getLog()).willReturn(log);
         given(configuration.getBasePackage()).willReturn("net.kemitix");
         given(configuration.getProjects()).willReturn(mavenProjects);
@@ -62,7 +57,7 @@ public class DefaultDigraphServiceTest {
     }
 
     @Test
-    public void whenExecuteThenPackagesAreScanned() {
+    void whenExecuteThenPackagesAreScanned() {
         //when
         digraphService.execute(configuration);
         //then
@@ -70,7 +65,7 @@ public class DefaultDigraphServiceTest {
     }
 
     @Test
-    public void whenIsDebugThenLogIsRequested() {
+    void whenIsDebugThenLogIsRequested() {
         //given
         given(configuration.isDebug()).willReturn(true);
         //when
@@ -80,7 +75,7 @@ public class DefaultDigraphServiceTest {
     }
 
     @Test
-    public void whenIOExceptionThenLogAnError() throws Exception {
+    void whenIOExceptionThenLogAnError() throws Exception {
         //given
         String message = "message";
         doThrow(new IOException(message)).when(reportWriter)
@@ -92,7 +87,7 @@ public class DefaultDigraphServiceTest {
     }
 
     @Test
-    public void whenTargetDirectoryDoesNotExistThenCreateIt() throws Exception {
+    void whenTargetDirectoryDoesNotExistThenCreateIt() throws Exception {
         //given
         val target = folder.newFolder();
         target.delete();

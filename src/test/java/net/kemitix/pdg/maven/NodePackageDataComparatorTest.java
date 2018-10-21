@@ -4,28 +4,15 @@ import lombok.val;
 import net.kemitix.node.EmptyNodeException;
 import net.kemitix.node.Nodes;
 import net.kemitix.pdg.maven.digraph.PackageData;
-import org.junit.jupiter.api.BeforeEach;
+import org.assertj.core.api.WithAssertions;
 import org.junit.jupiter.api.Test;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatCode;
+class NodePackageDataComparatorTest implements WithAssertions {
 
-/**
- * Tests for {@link NodePackageDataComparator}.
- *
- * @author pcampbell
- */
-public class NodePackageDataComparatorTest {
-
-    private NodePackageDataComparator comparator;
-
-    @BeforeEach
-    public void setUp() throws Exception {
-        comparator = new NodePackageDataComparator();
-    }
+    private final NodePackageDataComparator comparator = new NodePackageDataComparator();
 
     @Test
-    public void compareAlphaComesBeforeBetaWhenAlphaBeta() throws Exception {
+    void compareAlphaComesBeforeBetaWhenAlphaBeta() throws Exception {
         //given
         val alphaPackage = PackageData.newInstance("alpha");
         val alphaNode = Nodes.unnamedRoot(alphaPackage);
@@ -38,7 +25,7 @@ public class NodePackageDataComparatorTest {
     }
 
     @Test
-    public void compareAlphaComesBeforeBetaWhenBetaAlpha() throws Exception {
+    void compareAlphaComesBeforeBetaWhenBetaAlpha() throws Exception {
         //given
         val alphaPackage = PackageData.newInstance("alpha");
         val alphaNode = Nodes.unnamedRoot(alphaPackage);
@@ -51,7 +38,7 @@ public class NodePackageDataComparatorTest {
     }
 
     @Test
-    public void compareAlphaEqualsBetaWhenPackageNameNamesAreSame() throws Exception {
+    void compareAlphaEqualsBetaWhenPackageNameNamesAreSame() throws Exception {
         //given
         val alphaPackage = PackageData.newInstance("alpha");
         val alphaNode = Nodes.unnamedRoot(alphaPackage);
@@ -64,7 +51,7 @@ public class NodePackageDataComparatorTest {
     }
 
     @Test
-    public void compareShouldThrowExceptionWhenAlphaNodeIsEmpty() {
+    void compareShouldThrowExceptionWhenAlphaNodeIsEmpty() {
         //given
         val alphaNode = Nodes.unnamedRoot((PackageData) null);
         val betaPackage = PackageData.newInstance("beta");
@@ -75,7 +62,7 @@ public class NodePackageDataComparatorTest {
     }
 
     @Test
-    public void compareShouldThrowExceptionWhenBetaNodeIsEmpty() {
+    void compareShouldThrowExceptionWhenBetaNodeIsEmpty() {
         //given
         val alphaPackage = PackageData.newInstance("alpha");
         val alphaNode = Nodes.unnamedRoot(alphaPackage);
@@ -86,7 +73,7 @@ public class NodePackageDataComparatorTest {
     }
 
     @Test
-    public void compareShouldThrowExceptionWhenAlphaBetaNodesBothEmpty() {
+    void compareShouldThrowExceptionWhenAlphaBetaNodesBothEmpty() {
         //given
         val alphaNode = Nodes.unnamedRoot((PackageData) null);
         val betaNode = Nodes.unnamedRoot((PackageData) null);

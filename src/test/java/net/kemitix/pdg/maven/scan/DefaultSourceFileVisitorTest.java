@@ -1,36 +1,21 @@
 package net.kemitix.pdg.maven.scan;
 
 import lombok.val;
-import org.junit.jupiter.api.BeforeEach;
+import org.assertj.core.api.WithAssertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 
 import java.nio.file.Paths;
 import java.nio.file.attribute.BasicFileAttributes;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
 
-/**
- * Tests for {@link DefaultSourceFileVisitor}.
- *
- * @author pcampbell
- */
-public class DefaultSourceFileVisitorTest {
+class DefaultSourceFileVisitorTest implements WithAssertions {
 
-    private DefaultSourceFileVisitor fileVisitor;
-
-    @Mock
-    private BasicFileAttributes fileAttributes;
-
-    @BeforeEach
-    public void setUp() throws Exception {
-        MockitoAnnotations.initMocks(this);
-        fileVisitor = new DefaultSourceFileVisitor();
-    }
+    private final BasicFileAttributes fileAttributes = mock(BasicFileAttributes.class);
+    private final DefaultSourceFileVisitor fileVisitor = new DefaultSourceFileVisitor();
 
     @Test
-    public void visitFileAddFileWhenFileIsJava() throws Exception {
+    void visitFileAddFileWhenFileIsJava() throws Exception {
         //given
         val file = Paths.get("Main.java");
         //when
@@ -40,7 +25,7 @@ public class DefaultSourceFileVisitorTest {
     }
 
     @Test
-    public void visitFileIgnoresFileWhenFileIsNotJava() throws Exception {
+    void visitFileIgnoresFileWhenFileIsNotJava() throws Exception {
         //given
         val file = Paths.get("README.md");
         //when

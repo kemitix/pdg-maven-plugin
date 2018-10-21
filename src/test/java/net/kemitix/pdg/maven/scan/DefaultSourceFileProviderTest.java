@@ -2,6 +2,7 @@ package net.kemitix.pdg.maven.scan;
 
 import net.kemitix.pdg.maven.DigraphConfiguration;
 import org.apache.maven.plugin.logging.Log;
+import org.assertj.core.api.WithAssertions;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
@@ -11,18 +12,12 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.*;
 import static org.mockito.Mockito.mock;
 
-/**
- * Tests for {@link DefaultSourceFileProvider}.
- *
- * @author pcampbell
- */
-public class DefaultSourceFileProviderTest {
+class DefaultSourceFileProviderTest implements WithAssertions {
 
     private final DigraphConfiguration digraphConfiguration = mock(DigraphConfiguration.class);
     private final SourceFileVisitor fileVisitor = mock(SourceFileVisitor.class);
@@ -35,7 +30,7 @@ public class DefaultSourceFileProviderTest {
     private final List<File> fileList = new ArrayList<>();
 
     @Test
-    public void processShouldReturnDirectories() throws Exception {
+    void processShouldReturnDirectories() throws Exception {
         //given
         final String src = "src/test/projects/src-and-test/src/main/java";
         final String test = "src/test/projects/src-and-test/src/test/java";
@@ -73,7 +68,7 @@ public class DefaultSourceFileProviderTest {
     }
 
     @Test
-    public void processShouldLogExceptions() throws Exception {
+    void processShouldLogExceptions() throws Exception {
         //given
         final String src = "src/test/projects/src-and-test/src/main/java";
         directories.add(src);

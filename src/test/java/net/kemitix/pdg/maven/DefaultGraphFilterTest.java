@@ -5,24 +5,19 @@ import lombok.val;
 import net.kemitix.node.Nodes;
 import net.kemitix.pdg.maven.digraph.PackageData;
 import org.apache.maven.plugin.logging.Log;
+import org.assertj.core.api.WithAssertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
-/**
- * Tests for {@link DefaultGraphFilter}.
- *
- * @author Paul Campbell (pcampbell@kemitix.net)
- */
-public class DefaultGraphFilterTest {
+class DefaultGraphFilterTest implements WithAssertions {
 
     private static final String UNSET = "";
     private static final String MATCHES = "kemitix";
@@ -36,12 +31,12 @@ public class DefaultGraphFilterTest {
     private final NodePathGenerator nodePathGenerator = mock(NodePathGenerator.class);
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         given(configuration.getLog()).willReturn(logger);
     }
 
     @Test
-    public void filterNodesShouldMatchTestMatrix() {
+    void filterNodesShouldMatchTestMatrix() {
         //given
         val packageData = PackageData.newInstance(PACKAGE_NAME);
         val packageNode = Nodes.unnamedRoot(packageData);
@@ -80,7 +75,7 @@ public class DefaultGraphFilterTest {
     }
 
     @Test
-    public void isExcludedShouldBeFalseWhenNotSet() {
+    void isExcludedShouldBeFalseWhenNotSet() {
         //given
         given(configuration.getInclude()).willReturn(UNSET);
         given(configuration.getExclude()).willReturn(UNSET);
@@ -93,7 +88,7 @@ public class DefaultGraphFilterTest {
     }
 
     @Test
-    public void isExcludedShouldBeTrueWhenMatch() {
+    void isExcludedShouldBeTrueWhenMatch() {
         //given
         given(configuration.getInclude()).willReturn(UNSET);
         given(configuration.getExclude()).willReturn(MATCHES);
@@ -107,7 +102,7 @@ public class DefaultGraphFilterTest {
     }
 
     @Test
-    public void isExcludedShouldBeFalseWhenNoMatch() {
+    void isExcludedShouldBeFalseWhenNoMatch() {
         //given
         given(configuration.getInclude()).willReturn(NON_MATCH);
         given(configuration.getExclude()).willReturn(UNSET);
@@ -121,7 +116,7 @@ public class DefaultGraphFilterTest {
     }
 
     @Test
-    public void isIncludedShouldBeTrueWhenNotSet() {
+    void isIncludedShouldBeTrueWhenNotSet() {
         //given
         given(configuration.getInclude()).willReturn(UNSET);
         given(configuration.getExclude()).willReturn(UNSET);
@@ -134,7 +129,7 @@ public class DefaultGraphFilterTest {
     }
 
     @Test
-    public void isIncludedShouldBeTrueWhenMatch() {
+    void isIncludedShouldBeTrueWhenMatch() {
         //given
         given(configuration.getInclude()).willReturn(UNSET);
         given(configuration.getExclude()).willReturn(MATCHES);
@@ -148,7 +143,7 @@ public class DefaultGraphFilterTest {
     }
 
     @Test
-    public void isIncludedShouldBeFalseWhenNoMatch() {
+    void isIncludedShouldBeFalseWhenNoMatch() {
         //given
         given(configuration.getInclude()).willReturn(NON_MATCH);
         given(configuration.getExclude()).willReturn(UNSET);
@@ -163,13 +158,9 @@ public class DefaultGraphFilterTest {
 
     @RequiredArgsConstructor
     private class TestPattern {
-
         final String exclude;
-
         final String include;
-
         final boolean expected;
-
         final String name;
     }
 }

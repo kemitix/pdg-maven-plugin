@@ -2,47 +2,31 @@ package net.kemitix.pdg.maven;
 
 import org.apache.maven.model.Build;
 import org.apache.maven.project.MavenProject;
-import org.junit.jupiter.api.BeforeEach;
+import org.assertj.core.api.WithAssertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 
 import java.util.ArrayList;
 
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
 
-/**
- * Tests for {@link DigraphMojo}.
- *
- * @author pcampbell
- */
-public class DigraphMojoTest {
+class DigraphMojoTest implements WithAssertions {
 
-    private DigraphMojo mojo;
+    private final MavenProject project = mock(MavenProject.class);
+    private final Build build = mock(Build.class);
+    private final DigraphMojo mojo = new DigraphMojo();
 
-    @Mock
-    private MavenProject project;
-
-    @Mock
-    private Build build;
-
-    @BeforeEach
-    public void setUp() throws Exception {
-        MockitoAnnotations.initMocks(this);
-        mojo = new DigraphMojo();
+    @Test
+    void shouldRunWithoutErrorWhenBasePackageProvided() {
+        //given
         mojo.setProjects(new ArrayList<>());
         // set defaults
         mojo.setFormat("nested");
         mojo.setProject(project);
         given(project.getBuild()).willReturn(build);
         given(build.getDirectory()).willReturn("target");
-    }
-
-    @Test
-    public void shouldRunWithoutErrorWhenBasePackageProvided() {
-        //given
         mojo.setBasePackage("net.kemitix");
         //when
-        mojo.execute();
+        assertThatCode(mojo::execute).doesNotThrowAnyException();
     }
 }

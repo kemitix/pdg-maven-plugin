@@ -5,44 +5,31 @@ import net.kemitix.node.Node;
 import net.kemitix.pdg.maven.digraph.DotFileFormat;
 import net.kemitix.pdg.maven.digraph.PackageData;
 import net.kemitix.pdg.maven.scan.DigraphFactory;
+import org.assertj.core.api.WithAssertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.MockitoAnnotations;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
-/**
- * Tests for {@link DotFileFormatNested}.
- *
- * @author pcampbell
- */
-public class DotFileFormatNestedTest {
-
-    private DotFileFormat dotFileFormat;
-
-    private DependencyData dependencyData;
-
-    private NodePathGenerator nodePathGenerator;
+class DotFileFormatNestedTest implements WithAssertions {
 
     private final GraphFilter graphFilter = mock(GraphFilter.class);
     private final List<String> expected = new ArrayList<>();
 
-    /**
-     * Prepare each test.
-     */
+    private final DependencyData dependencyData = DigraphFactory.newDependencyData("test");
+    private final NodePathGenerator nodePathGenerator = new DefaultNodePathGenerator();
+
+    private DotFileFormat dotFileFormat =
+            new DotFileFormatNested(dependencyData.getBaseNode(), nodePathGenerator, graphFilter);
+
     @BeforeEach
-    public void setUp() {
-        MockitoAnnotations.initMocks(this);
-        dependencyData = DigraphFactory.newDependencyData("test");
-        nodePathGenerator = new DefaultNodePathGenerator();
-        dotFileFormat = new DotFileFormatNested(dependencyData.getBaseNode(), nodePathGenerator, graphFilter);
+    void setUp() {
         /// default behaviour without any filters is to include
         given(graphFilter.filterNodes(any())).willReturn(true);
     }
@@ -51,7 +38,7 @@ public class DotFileFormatNestedTest {
      * Test that the intermediary node "test" is created.
      */
     @Test
-    public void shouldCreateTestNode() {
+    void shouldCreateTestNode() {
         //given
         dependencyData.addDependency("test.nested", "test.other");
         //when
@@ -66,7 +53,7 @@ public class DotFileFormatNestedTest {
      * Test that the report is created as expected.
      */
     @Test
-    public void shouldGenerateReport() {
+    void shouldGenerateReport() {
         //given
         dependencyData.addDependency("test.nested", "test.other");
         expectedHeader();
@@ -89,7 +76,7 @@ public class DotFileFormatNestedTest {
      * outside base package.
      */
     @Test
-    public void shouldOnlyIncludeUsingPackage() {
+    void shouldOnlyIncludeUsingPackage() {
         //given
         dependencyData.addDependency("test.nested", "tested.other");
         expectedHeader();
@@ -110,7 +97,7 @@ public class DotFileFormatNestedTest {
      * outside base package.
      */
     @Test
-    public void shouldOnlyIncludeUsedPackage() {
+    void shouldOnlyIncludeUsedPackage() {
         //given
         dependencyData.addDependency("tested.nested", "test.other");
         expectedHeader();
@@ -131,7 +118,7 @@ public class DotFileFormatNestedTest {
      * cluster.
      */
     @Test
-    public void shouldNestPackages() {
+    void shouldNestPackages() {
         //given
         dependencyData.addDependency("test.nested", "test.other");
         dependencyData.addDependency("test.nested", "test.other.more");
@@ -163,7 +150,7 @@ public class DotFileFormatNestedTest {
      * id.
      */
     @Test
-    public void shouldNestGrandChildParentDummyNode() {
+    void shouldNestGrandChildParentDummyNode() {
         //given
         dependencyData.addDependency("test.one", "test.child.inter.leaf");
         expectedHeader();
@@ -193,7 +180,7 @@ public class DotFileFormatNestedTest {
      * The 'lhead' suffix is not required when the tail is a child of the head.
      */
     @Test
-    public void shouldNotIncludeLHeadWhenTailIsChildOfHead() {
+    void shouldNotIncludeLHeadWhenTailIsChildOfHead() {
         //given
         dependencyData.addDependency("test.one.two", "test.one");
         dotFileFormat = new DotFileFormatNested(dependencyData.getBaseNode(), nodePathGenerator, graphFilter);
@@ -209,7 +196,7 @@ public class DotFileFormatNestedTest {
      * tail.
      */
     @Test
-    public void shouldNotIncludeLTailWhenHeadIsChildOfTailf() {
+    void shouldNotIncludeLTailWhenHeadIsChildOfTailf() {
         //given
         dependencyData.addDependency("test.one", "test.one.two");
         dotFileFormat = new DotFileFormatNested(dependencyData.getBaseNode(), nodePathGenerator, graphFilter);
@@ -221,7 +208,7 @@ public class DotFileFormatNestedTest {
     }
 
     @Test
-    public void shouldExcludePackage() {
+    void shouldExcludePackage() {
         //given
         dependencyData.addDependency("test.one", "test.two");
         dependencyData.addDependency("test.one", "test.three");
@@ -252,7 +239,7 @@ public class DotFileFormatNestedTest {
     }
 
     @Test
-    public void shouldIncludePackage() {
+    void shouldIncludePackage() {
         //given
         dependencyData.addDependency("test.one", "test.two");
         dependencyData.addDependency("test.one", "test.three");
