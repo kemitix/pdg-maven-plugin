@@ -24,6 +24,7 @@ package net.kemitix.pdg.maven.scan;
 import lombok.Getter;
 
 import javax.annotation.concurrent.Immutable;
+import javax.inject.Named;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.FileVisitResult;
@@ -38,6 +39,7 @@ import java.util.List;
  *
  * @author Paul Campbell (pcampbell@kemitix.net)
  */
+@Named
 @Immutable
 class DefaultSourceFileVisitor extends SimpleFileVisitor<Path> implements SourceFileVisitor {
 

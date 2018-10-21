@@ -25,6 +25,7 @@ import lombok.NoArgsConstructor;
 import net.kemitix.node.Node;
 
 import javax.annotation.concurrent.Immutable;
+import javax.inject.Named;
 import java.io.Serializable;
 import java.util.Comparator;
 
@@ -33,6 +34,7 @@ import java.util.Comparator;
  *
  * @author Paul Campbell (pcampbell@kemitix.net)
  */
+@Named
 @NoArgsConstructor
 @Immutable
 @SuppressWarnings("serial")

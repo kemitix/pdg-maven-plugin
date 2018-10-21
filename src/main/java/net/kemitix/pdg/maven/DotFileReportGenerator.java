@@ -22,12 +22,14 @@
 package net.kemitix.pdg.maven;
 
 import javax.annotation.concurrent.Immutable;
+import javax.inject.Named;
 
 /**
  * Generates a dot file as dependency report generator.
  *
  * @author Paul Campbell (pcampbell@kemitix.net)
  */
+@Named
 @Immutable
 class DotFileReportGenerator implements ReportGenerator {
 

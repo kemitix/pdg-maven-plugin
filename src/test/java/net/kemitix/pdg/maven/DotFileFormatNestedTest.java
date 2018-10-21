@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
@@ -225,7 +226,10 @@ public class DotFileFormatNestedTest {
         dependencyData.addDependency("test.one", "test.three");
         dependencyData.addDependency("test.three", "test.four");
         dependencyData.addDependency("test.one", "test.four");
-        val graphFilter = new DefaultGraphFilter("three", "", nodePathGenerator);
+        final DigraphMojo digraphMojo = new DigraphMojo();
+        digraphMojo.setInclude("");
+        digraphMojo.setExclude("three");
+        val graphFilter = new DefaultGraphFilter(digraphMojo, nodePathGenerator);
         dotFileFormat = new DotFileFormatNested(
                 new DefaultTreeFilter(graphFilter, nodePathGenerator).filterTree(dependencyData.getBaseNode()),
                 nodePathGenerator, graphFilter
@@ -234,32 +238,15 @@ public class DotFileFormatNestedTest {
         val report = dotFileFormat.renderReport()
                                   .split(System.lineSeparator());
         //then
-        SoftAssertions.assertSoftly(softly -> {
-            softly.assertThat(report)
-                  .as("exclude prohibited node")
-                  .doesNotContain("\"three\"");
-            softly.assertThat(report)
-                  .as("exclude usage of prohibited node")
-                  .doesNotContain("\"one\"->\"three\"");
-            softly.assertThat(report)
-                  .as("exclude usage by prohibited node")
-                  .doesNotContain("\"three\"->\"four\"}");
-            softly.assertThat(report)
-                  .as("valid nodes: one")
-                  .contains("\"one\"");
-            softly.assertThat(report)
-                  .as("valid nodes: two")
-                  .contains("\"two\"");
-            softly.assertThat(report)
-                  .as("valid nodes: three")
-                  .contains("\"four\"");
-            softly.assertThat(report)
-                  .as("include valid usages: one -> four")
-                  .contains("\"one\"->\"four\"");
-            softly.assertThat(report)
-                  .as("include valid usages: one -> two")
-                  .contains("\"one\"->\"two\"}");
-            softly.assertThat(report);
+        assertSoftly(softly -> {
+            softly.assertThat(report).as("exclude prohibited node").doesNotContain("\"three\"");
+            softly.assertThat(report).as("exclude usage of prohibited node").doesNotContain("\"one\"->\"three\"");
+            softly.assertThat(report).as("exclude usage by prohibited node").doesNotContain("\"three\"->\"four\"}");
+            softly.assertThat(report).as("valid nodes: one").contains("\"one\"");
+            softly.assertThat(report).as("valid nodes: two").contains("\"two\"");
+            softly.assertThat(report).as("valid nodes: three").contains("\"four\"");
+            softly.assertThat(report).as("include valid usages: one -> four").contains("\"one\"->\"four\"");
+            softly.assertThat(report).as("include valid usages: one -> two").contains("\"one\"->\"two\"}");
         });
     }
 
@@ -270,7 +257,10 @@ public class DotFileFormatNestedTest {
         dependencyData.addDependency("test.one", "test.three");
         dependencyData.addDependency("test.three", "test.four");
         dependencyData.addDependency("test.one", "test.four");
-        val graphFilter = new DefaultGraphFilter("", "three", nodePathGenerator);
+        final DigraphMojo digraphMojo = new DigraphMojo();
+        digraphMojo.setInclude("three");
+        digraphMojo.setExclude("");
+        val graphFilter = new DefaultGraphFilter(digraphMojo, nodePathGenerator);
         dotFileFormat = new DotFileFormatNested(
                 new DefaultTreeFilter(graphFilter, nodePathGenerator).filterTree(dependencyData.getBaseNode()),
                 nodePathGenerator, graphFilter
@@ -279,26 +269,17 @@ public class DotFileFormatNestedTest {
         val report = dotFileFormat.renderReport()
                                   .split(System.lineSeparator());
         //then
-        SoftAssertions.assertSoftly(softly -> {
-            assertThat(report).as("don't include unrelated node")
-                              .doesNotContain("\"two\"");
-            softly.assertThat(report)
-                  .as("don't include uses by or of unrelated node2")
+        assertSoftly(softly -> {
+            assertThat(report).as("don't include unrelated node").doesNotContain("\"two\"");
+            softly.assertThat(report).as("don't include uses by or of unrelated node2")
                   .doesNotContain("\"one\"->\"four\"")
                   .doesNotContain("\"one\"->\"two\"");
-            softly.assertThat(report)
-                  .as("include required node")
-                  .contains("\"three\"");
-            softly.assertThat(report)
-                  .as("include directly related nodes")
+            softly.assertThat(report).as("include required node").contains("\"three\"");
+            softly.assertThat(report).as("include directly related nodes")
                   .contains("\"one\"")
                   .contains("\"four\"");
-            softly.assertThat(report)
-                  .as("include use of required node")
-                  .contains("\"one\"->\"three\"");
-            softly.assertThat(report)
-                  .as("include use by required node")
-                  .contains("\"three\"->\"four\"}");
+            softly.assertThat(report).as("include use of required node").contains("\"one\"->\"three\"");
+            softly.assertThat(report).as("include use by required node").contains("\"three\"->\"four\"}");
         });
     }
 

@@ -102,7 +102,11 @@
             <groupId>com.google.inject</groupId>
             <artifactId>guice</artifactId>
             <version>${guice.version}</version>
-            <classifier>no_aop</classifier>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.sisu</groupId>
+            <artifactId>org.eclipse.sisu.inject</artifactId>
+            <version>0.3.3</version>
         </dependency>
         <dependency>
             <groupId>com.github.javaparser</groupId>

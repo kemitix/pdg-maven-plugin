@@ -21,11 +21,11 @@
 
 package net.kemitix.pdg.maven;
 
-import lombok.RequiredArgsConstructor;
 import lombok.val;
 
 import javax.annotation.concurrent.Immutable;
 import javax.inject.Inject;
+import javax.inject.Named;
 import java.io.File;
 import java.io.IOException;
 
@@ -34,8 +34,8 @@ import java.io.IOException;
  *
  * @author Paul Campbell (pcampbell@kemitix.net)
  */
+@Named
 @Immutable
-@RequiredArgsConstructor(onConstructor = @__({@Inject}))
 class DefaultDigraphService implements DigraphService {
 
     private static final String REPORT_FILE = "digraph.dot";
@@ -44,6 +44,27 @@ class DefaultDigraphService implements DigraphService {
     private final ReportGenerator reportGenerator;
     private final ReportWriter reportWriter;
     private final DotFileFormatFactory dotFileFormatFactory;
+
+    /**
+     * Constructor.
+     *
+     * @param packageScanner       The package scanner
+     * @param reportGenerator      The report generator
+     * @param reportWriter         The report writer
+     * @param dotFileFormatFactory The DOT file format factory
+     */
+    @Inject
+    public DefaultDigraphService(
+            final PackageScanner packageScanner,
+            final ReportGenerator reportGenerator,
+            final ReportWriter reportWriter,
+            final DotFileFormatFactory dotFileFormatFactory
+    ) {
+        this.packageScanner = packageScanner;
+        this.reportGenerator = reportGenerator;
+        this.reportWriter = reportWriter;
+        this.dotFileFormatFactory = dotFileFormatFactory;
+    }
 
     @Override
     @SuppressWarnings("npathcomplexity")

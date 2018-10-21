@@ -25,12 +25,14 @@ import lombok.val;
 import net.kemitix.node.Node;
 
 import javax.annotation.concurrent.Immutable;
+import javax.inject.Named;
 
 /**
  * Default implementation of the Node ID Generator.
  *
  * @author Paul Campbell (pcampbell@kemitix.net)
  */
+@Named
 @Immutable
 class DefaultNodePathGenerator implements NodePathGenerator {
 

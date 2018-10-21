@@ -22,14 +22,18 @@
 package net.kemitix.pdg.maven;
 
 import com.google.inject.Guice;
+import com.google.inject.Injector;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.val;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
+import org.eclipse.sisu.space.SpaceModule;
+import org.eclipse.sisu.space.URLClassSpace;
+import org.eclipse.sisu.wire.WireModule;
 
+import javax.inject.Named;
 import java.io.File;
 import java.util.List;
 
@@ -38,6 +42,7 @@ import java.util.List;
  *
  * @author Paul Campbell (pcampbell@kemitix.net)
  */
+@Named("configuration")
 @Mojo(name = "digraph", aggregator = true)
 public class DigraphMojo extends AbstractMojo implements DigraphConfiguration {
 
@@ -75,19 +80,24 @@ public class DigraphMojo extends AbstractMojo implements DigraphConfiguration {
     private String format;
 
     @Setter
+    @Getter
     @Parameter(name = "exclude")
     private String exclude;
 
     @Setter
+    @Getter
     @Parameter(name = "include")
     private String include;
 
     @Override
     public final void execute() {
-        val graphFilter = new DefaultGraphFilter(exclude, include, new DefaultNodePathGenerator());
-        val digraphModule = new DigraphModule(this, graphFilter);
-        Guice.createInjector(digraphModule)
-             .getInstance(DigraphService.class)
-             .execute(this);
+        guiceInjector()
+                .getInstance(DefaultDigraphService.class)
+                .execute(this);
+    }
+
+    private static Injector guiceInjector() {
+        return Guice.createInjector(new WireModule(new SpaceModule(new URLClassSpace(
+                DigraphMojo.class.getClassLoader()))));
     }
 }

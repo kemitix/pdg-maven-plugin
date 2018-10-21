@@ -24,25 +24,11 @@ package net.kemitix.pdg.maven;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import lombok.val;
-import net.kemitix.pdg.maven.digraph.Digraph;
-import net.kemitix.pdg.maven.digraph.EdgeElement;
-import net.kemitix.pdg.maven.digraph.EdgeEndpoint;
-import net.kemitix.pdg.maven.digraph.ElementContainer;
-import net.kemitix.pdg.maven.digraph.GraphElement;
-import net.kemitix.pdg.maven.digraph.NodeElement;
-import net.kemitix.pdg.maven.digraph.NodeProperties;
-import net.kemitix.pdg.maven.digraph.PropertyElement;
-import net.kemitix.pdg.maven.digraph.Subgraph;
 import net.kemitix.node.Node;
+import net.kemitix.pdg.maven.digraph.*;
 
 import javax.annotation.concurrent.Immutable;
-import javax.inject.Inject;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
@@ -52,7 +38,7 @@ import java.util.stream.Collectors;
  * @author Paul Campbell (pcampbell@kemitix.net)
  */
 @Immutable
-@RequiredArgsConstructor(onConstructor = @__({@Inject}))
+@RequiredArgsConstructor
 @SuppressWarnings({"methodcount", "classfanoutcomplexity"})
 public abstract class AbstractDotFileFormat implements DotFileFormat {
 
@@ -71,7 +57,7 @@ public abstract class AbstractDotFileFormat implements DotFileFormat {
 
     @Override
     public final String renderReport() {
-        Digraph digraph = createDigraph();
+        final Digraph digraph = createDigraph();
         getNodeInjector().injectNodes(digraph, base);
         getUsageInjector().injectUsages(digraph, base);
         return render(digraph);
@@ -233,14 +219,14 @@ public abstract class AbstractDotFileFormat implements DotFileFormat {
         return new GraphNodeInjector() {
             @Override
             public void injectNodes(final ElementContainer container, final Node<PackageData> node) {
-                val children = node.getChildren();
+                final Set<Node<PackageData>> children = node.getChildren();
                 if (children.isEmpty()) {
                     container.add(findNodeElement(node));
                 } else {
-                    val subgraph = findSubgraph(node);
+                    final Subgraph subgraph = findSubgraph(node);
                     children.stream()
                             .sorted(nodePackageDataComparator)
-                            .forEach(c -> this.injectNodes(subgraph, c));
+                            .forEach(c -> injectNodes(subgraph, c));
                     container.add(subgraph);
                 }
             }

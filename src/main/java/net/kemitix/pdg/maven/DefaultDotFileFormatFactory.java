@@ -21,25 +21,43 @@
 
 package net.kemitix.pdg.maven;
 
-import lombok.RequiredArgsConstructor;
 import lombok.val;
 import net.kemitix.node.Node;
 
 import javax.annotation.concurrent.Immutable;
 import javax.inject.Inject;
+import javax.inject.Named;
 
 /**
  * Default implementation of the {@link DotFileFormatFactory}.
  *
  * @author Paul Campbell (pcampbell@kemitix.net)
  */
+@Named
 @Immutable
-@RequiredArgsConstructor(onConstructor = @__({@Inject}))
 class DefaultDotFileFormatFactory implements DotFileFormatFactory {
 
     private final NodePathGenerator nodePathGenerator;
     private final GraphFilter graphFilter;
     private final TreeFilter treeFilter;
+
+    /**
+     * Constructors.
+     *
+     * @param nodePathGenerator The node path generator
+     * @param graphFilter       The graph filter
+     * @param treeFilter        The tree filter
+     */
+    @Inject
+    public DefaultDotFileFormatFactory(
+            final NodePathGenerator nodePathGenerator,
+            final GraphFilter graphFilter,
+            final TreeFilter treeFilter
+    ) {
+        this.nodePathGenerator = nodePathGenerator;
+        this.graphFilter = graphFilter;
+        this.treeFilter = treeFilter;
+    }
 
     @Override
     public DotFileFormat create(final String format, final Node<PackageData> base) {

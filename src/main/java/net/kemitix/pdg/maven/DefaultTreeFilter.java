@@ -21,12 +21,12 @@
 
 package net.kemitix.pdg.maven;
 
-import lombok.RequiredArgsConstructor;
 import lombok.val;
 import net.kemitix.node.Node;
 import net.kemitix.node.Nodes;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -40,11 +40,26 @@ import java.util.stream.Stream;
  *
  * @author Paul Campbell (pcampbell@kemitix.net)
  */
-@RequiredArgsConstructor(onConstructor = @__({@Inject}))
+@Named
 class DefaultTreeFilter implements TreeFilter {
 
     private final GraphFilter graphFilter;
     private final NodePathGenerator nodePathGenerator;
+
+    /**
+     * Constructor.
+     *
+     * @param graphFilter       The graph filter
+     * @param nodePathGenerator The node path generator
+     */
+    @Inject
+    public DefaultTreeFilter(
+            final GraphFilter graphFilter,
+            final NodePathGenerator nodePathGenerator
+    ) {
+        this.graphFilter = graphFilter;
+        this.nodePathGenerator = nodePathGenerator;
+    }
 
     @Override
     public Node<PackageData> filterTree(final Node<PackageData> root) {

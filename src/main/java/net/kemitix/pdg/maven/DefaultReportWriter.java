@@ -22,6 +22,7 @@
 package net.kemitix.pdg.maven;
 
 import javax.annotation.concurrent.Immutable;
+import javax.inject.Named;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
@@ -33,6 +34,7 @@ import java.nio.charset.StandardCharsets;
  *
  * @author Paul Campbell (pcampbell@kemitix.net)
  */
+@Named
 @Immutable
 class DefaultReportWriter implements ReportWriter {
 

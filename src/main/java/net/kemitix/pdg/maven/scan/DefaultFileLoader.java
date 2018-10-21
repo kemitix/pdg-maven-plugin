@@ -21,11 +21,11 @@
 
 package net.kemitix.pdg.maven.scan;
 
-import lombok.RequiredArgsConstructor;
 import net.kemitix.pdg.maven.DigraphConfiguration;
 
 import javax.annotation.concurrent.Immutable;
 import javax.inject.Inject;
+import javax.inject.Named;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -36,11 +36,21 @@ import java.io.InputStream;
  *
  * @author Paul Campbell (pcampbell@kemitix.net)
  */
+@Named
 @Immutable
-@RequiredArgsConstructor(onConstructor = @__({@Inject}))
 class DefaultFileLoader implements FileLoader {
 
     private final DigraphConfiguration configuration;
+
+    /**
+     * Constructor.
+     *
+     * @param configuration The configuration
+     */
+    @Inject
+    public DefaultFileLoader(final DigraphConfiguration configuration) {
+        this.configuration = configuration;
+    }
 
     @Override
     public InputStream asInputStream(final File file) {

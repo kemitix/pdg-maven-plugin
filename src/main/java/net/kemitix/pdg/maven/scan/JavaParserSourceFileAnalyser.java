@@ -26,12 +26,12 @@ import com.github.javaparser.ParseProblemException;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.ImportDeclaration;
 import com.github.javaparser.ast.PackageDeclaration;
-import lombok.RequiredArgsConstructor;
 import net.kemitix.pdg.maven.DependencyData;
 import net.kemitix.pdg.maven.DigraphConfiguration;
 
 import javax.annotation.concurrent.Immutable;
 import javax.inject.Inject;
+import javax.inject.Named;
 import java.io.InputStream;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -41,14 +41,24 @@ import java.util.regex.Pattern;
  *
  * @author Paul Campbell (pcampbell@kemitix.net)
  */
+@Named
 @Immutable
-@RequiredArgsConstructor(onConstructor = @__({@Inject}))
 class JavaParserSourceFileAnalyser implements SourceFileAnalyser {
 
     private static final Pattern METHOD_IMPORT = Pattern.compile("^(?<package>.+)\\.(?<class>.+)\\.(?<method>.+)");
     private static final Pattern CLASS_IMPORT = Pattern.compile("^(?<package>.+)\\.(?<class>.+)");
 
     private final DigraphConfiguration digraphConfiguration;
+
+    /**
+     * Constructor.
+     *
+     * @param configuration The configuration
+     */
+    @Inject
+    public JavaParserSourceFileAnalyser(final DigraphConfiguration configuration) {
+        this.digraphConfiguration = configuration;
+    }
 
     @Override
     public void analyse(

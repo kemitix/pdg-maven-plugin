@@ -89,4 +89,18 @@ public interface DigraphConfiguration {
      * @return the Log interface
      */
     public abstract Log getLog();
+
+    /**
+     * The packages to exclude.
+     *
+     * @return the package fragments to exclude
+     */
+    public abstract String getExclude();
+
+    /**
+     * The packages to include.
+     *
+     * @return the package fragments to include
+     */
+    public abstract String getInclude();
 }
