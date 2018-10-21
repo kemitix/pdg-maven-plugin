@@ -4,7 +4,7 @@ import lombok.val;
 import net.kemitix.node.Node;
 import net.kemitix.pdg.maven.digraph.PackageData;
 import org.assertj.core.api.WithAssertions;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.*;
 import java.util.stream.Collectors;

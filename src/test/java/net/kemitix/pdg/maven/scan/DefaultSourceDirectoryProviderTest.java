@@ -3,9 +3,10 @@ package net.kemitix.pdg.maven.scan;
 import org.apache.maven.model.Build;
 import org.apache.maven.model.Model;
 import org.apache.maven.project.MavenProject;
-import org.junit.Before;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 import org.junit.rules.TemporaryFolder;
 
 import java.io.IOException;
@@ -14,16 +15,17 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@EnableRuleMigrationSupport
 public class DefaultSourceDirectoryProviderTest {
 
     private final List<MavenProject> projects = new ArrayList<>();
     private final Build build = new Build();
-    private DefaultSourceDirectoryProvider provider = new DefaultSourceDirectoryProvider();
+    private final DefaultSourceDirectoryProvider provider = new DefaultSourceDirectoryProvider();
 
     @Rule
     public TemporaryFolder folder = new TemporaryFolder();
 
-    @Before
+    @BeforeEach
     public void setUp() {
         final Model model = new Model();
         model.setBuild(build);

@@ -4,12 +4,11 @@ import lombok.val;
 import net.kemitix.node.EmptyNodeException;
 import net.kemitix.node.Nodes;
 import net.kemitix.pdg.maven.digraph.PackageData;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatCode;
 
 /**
  * Tests for {@link NodePackageDataComparator}.
@@ -18,12 +17,9 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 public class NodePackageDataComparatorTest {
 
-    @Rule
-    public ExpectedException exception = ExpectedException.none();
-
     private NodePackageDataComparator comparator;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         comparator = new NodePackageDataComparator();
     }
@@ -70,33 +66,33 @@ public class NodePackageDataComparatorTest {
     @Test
     public void compareShouldThrowExceptionWhenAlphaNodeIsEmpty() {
         //given
-        exception.expect(EmptyNodeException.class);
         val alphaNode = Nodes.unnamedRoot((PackageData) null);
         val betaPackage = PackageData.newInstance("beta");
         val betaNode = Nodes.unnamedRoot(betaPackage);
-        //when
-        comparator.compare(betaNode, alphaNode);
+        //then
+        assertThatCode(() -> comparator.compare(betaNode, alphaNode))
+                .isInstanceOf(EmptyNodeException.class);
     }
 
     @Test
     public void compareShouldThrowExceptionWhenBetaNodeIsEmpty() {
         //given
-        exception.expect(EmptyNodeException.class);
         val alphaPackage = PackageData.newInstance("alpha");
         val alphaNode = Nodes.unnamedRoot(alphaPackage);
         val betaNode = Nodes.unnamedRoot((PackageData) null);
         //when
-        comparator.compare(betaNode, alphaNode);
+        assertThatCode(() -> comparator.compare(betaNode, alphaNode))
+                .isInstanceOf(EmptyNodeException.class);
     }
 
     @Test
     public void compareShouldThrowExceptionWhenAlphaBetaNodesBothEmpty() {
         //given
-        exception.expect(EmptyNodeException.class);
         val alphaNode = Nodes.unnamedRoot((PackageData) null);
         val betaNode = Nodes.unnamedRoot((PackageData) null);
         //when
-        comparator.compare(betaNode, alphaNode);
+        assertThatCode(() -> comparator.compare(betaNode, alphaNode))
+                .isInstanceOf(EmptyNodeException.class);
     }
 
 }

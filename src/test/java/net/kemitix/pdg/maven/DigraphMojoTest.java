@@ -2,8 +2,8 @@ package net.kemitix.pdg.maven;
 
 import org.apache.maven.model.Build;
 import org.apache.maven.project.MavenProject;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
@@ -26,7 +26,7 @@ public class DigraphMojoTest {
     @Mock
     private Build build;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
         mojo = new DigraphMojo();

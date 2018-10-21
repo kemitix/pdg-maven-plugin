@@ -5,8 +5,8 @@ import net.kemitix.node.Node;
 import net.kemitix.pdg.maven.digraph.DotFileFormat;
 import net.kemitix.pdg.maven.digraph.PackageData;
 import net.kemitix.pdg.maven.scan.DigraphFactory;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
@@ -36,7 +36,7 @@ public class DotFileFormatSimpleTest {
     /**
      * Prepare each test.
      */
-    @Before
+    @BeforeEach
     public void setUp() {
         MockitoAnnotations.initMocks(this);
         dependencyData = DigraphFactory.newDependencyData("test");

@@ -5,8 +5,8 @@ import lombok.val;
 import net.kemitix.node.Nodes;
 import net.kemitix.pdg.maven.digraph.PackageData;
 import org.apache.maven.plugin.logging.Log;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 
@@ -35,7 +35,7 @@ public class DefaultGraphFilterTest {
     private final Log logger = mock(Log.class);
     private final NodePathGenerator nodePathGenerator = mock(NodePathGenerator.class);
 
-    @Before
+    @BeforeEach
     public void setUp() {
         given(configuration.getLog()).willReturn(logger);
     }

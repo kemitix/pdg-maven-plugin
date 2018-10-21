@@ -3,8 +3,8 @@ package net.kemitix.pdg.maven;
 import lombok.val;
 import net.kemitix.node.Nodes;
 import net.kemitix.pdg.maven.digraph.PackageData;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -23,7 +23,7 @@ public class DefaultNodePathGeneratorTest {
     /**
      * Prepare each test.
      */
-    @Before
+    @BeforeEach
     public void setUp() {
         generator = new DefaultNodePathGenerator();
     }

@@ -1,9 +1,7 @@
 package net.kemitix.pdg.maven.scan;
 
 import lombok.val;
-import net.kemitix.pdg.maven.scan.DigraphFactory;
-import net.kemitix.pdg.maven.scan.NodeTreeDependencyData;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static net.trajano.commons.testing.UtilityClassTestUtil.assertUtilityClassWellDefined;
 import static org.assertj.core.api.Assertions.assertThat;

@@ -3,17 +3,15 @@ package net.kemitix.pdg.maven.scan;
 import net.kemitix.pdg.maven.DependencyData;
 import net.kemitix.pdg.maven.DigraphConfiguration;
 import org.apache.maven.plugin.logging.Log;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.BDDMockito.doAnswer;
-import static org.mockito.BDDMockito.doReturn;
-import static org.mockito.BDDMockito.then;
+import static org.mockito.BDDMockito.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 
@@ -33,7 +31,7 @@ public class JavaParserSourceFileAnalyserTest {
     /**
      * Prepare each test.
      */
-    @Before
+    @BeforeEach
     public void setUp() {
         doReturn(log).when(digraphConfiguration).getLog();
         doAnswer(invocation -> null).when(log).info(any(String.class));

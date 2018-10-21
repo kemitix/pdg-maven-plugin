@@ -2,8 +2,8 @@ package net.kemitix.pdg.maven;
 
 import lombok.val;
 import net.kemitix.pdg.maven.digraph.PackageData;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -21,7 +21,7 @@ public class PackageDataTest {
 
     private String name;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         name = "name";
         data = PackageData.newInstance(name);

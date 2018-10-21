@@ -1,8 +1,8 @@
 package net.kemitix.pdg.maven.digraph;
 
 import lombok.val;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
@@ -28,7 +28,7 @@ public class EdgeElementTest {
     @Mock
     private EdgeEndpoint edgeEndpoint;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         MockitoAnnotations.initMocks(this);
     }

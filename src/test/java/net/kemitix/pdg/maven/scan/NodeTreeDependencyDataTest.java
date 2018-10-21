@@ -4,8 +4,8 @@ import net.kemitix.node.Node;
 import net.kemitix.pdg.maven.DependencyData;
 import net.kemitix.pdg.maven.digraph.PackageData;
 import org.apache.maven.plugin.logging.Log;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
@@ -24,7 +24,7 @@ public class NodeTreeDependencyDataTest {
     @Mock
     private Log log;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         MockitoAnnotations.initMocks(this);
         data = DigraphFactory.newDependencyData("net.kemitix");

@@ -2,14 +2,10 @@ package net.kemitix.pdg.maven.scan;
 
 import net.kemitix.pdg.maven.DigraphConfiguration;
 import org.apache.maven.plugin.logging.Log;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.stream.Collectors;
@@ -30,7 +26,7 @@ public class DefaultFileLoaderTest {
 
     private final DefaultFileLoader fileLoader = new DefaultFileLoader(digraphConfiguration);
 
-    @Before
+    @BeforeEach
     public void setUp() {
         doReturn(log).when(digraphConfiguration).getLog();
     }

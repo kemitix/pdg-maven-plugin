@@ -1,13 +1,13 @@
 package net.kemitix.pdg.maven;
 
 import lombok.val;
-import net.kemitix.pdg.maven.scan.*;
 import org.apache.maven.model.Build;
 import org.apache.maven.plugin.logging.Log;
 import org.apache.maven.project.MavenProject;
-import org.junit.Before;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 import org.junit.rules.TemporaryFolder;
 
 import java.io.IOException;
@@ -16,9 +16,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.BDDMockito.doThrow;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.BDDMockito.then;
+import static org.mockito.BDDMockito.*;
 import static org.mockito.Mockito.mock;
 
 /**
@@ -26,6 +24,7 @@ import static org.mockito.Mockito.mock;
  *
  * @author pcampbell
  */
+@EnableRuleMigrationSupport
 public class DefaultDigraphServiceTest {
 
     @Rule
@@ -49,7 +48,7 @@ public class DefaultDigraphServiceTest {
     private final DependencyData dependencyData = mock(DependencyData.class);
     private final Log log = mock(Log.class);
 
-    @Before
+    @BeforeEach
     public void setUp() {
         given(configuration.getLog()).willReturn(log);
         given(configuration.getBasePackage()).willReturn("net.kemitix");

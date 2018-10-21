@@ -1,6 +1,6 @@
 package net.kemitix.pdg.maven;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
