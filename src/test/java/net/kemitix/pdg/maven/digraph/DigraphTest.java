@@ -1,8 +1,6 @@
 package net.kemitix.pdg.maven.digraph;
 
 import lombok.val;
-import net.kemitix.pdg.maven.DotFileFormat;
-import net.kemitix.pdg.maven.PackageData;
 import net.kemitix.node.Node;
 import org.junit.Before;
 import org.junit.Test;

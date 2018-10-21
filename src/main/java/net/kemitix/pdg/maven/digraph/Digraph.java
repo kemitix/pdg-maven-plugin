@@ -23,7 +23,6 @@ package net.kemitix.pdg.maven.digraph;
 
 import lombok.Getter;
 import lombok.val;
-import net.kemitix.pdg.maven.DotFileFormat;
 
 import javax.annotation.concurrent.Immutable;
 import java.util.ArrayList;

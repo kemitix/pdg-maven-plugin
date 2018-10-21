@@ -21,6 +21,8 @@
 
 package net.kemitix.pdg.maven;
 
+import net.kemitix.pdg.maven.digraph.DotFileFormat;
+
 /**
  * Interface for creating dependency data report.
  *

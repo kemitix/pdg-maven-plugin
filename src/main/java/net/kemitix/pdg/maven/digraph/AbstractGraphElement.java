@@ -24,7 +24,6 @@ package net.kemitix.pdg.maven.digraph;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import net.kemitix.pdg.maven.DotFileFormat;
 
 import javax.annotation.concurrent.Immutable;
 

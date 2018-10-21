@@ -21,7 +21,6 @@
 
 package net.kemitix.pdg.maven.digraph;
 
-import net.kemitix.pdg.maven.PackageData;
 import net.kemitix.node.Node;
 
 /**

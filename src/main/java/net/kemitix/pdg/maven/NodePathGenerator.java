@@ -22,6 +22,7 @@
 package net.kemitix.pdg.maven;
 
 import net.kemitix.node.Node;
+import net.kemitix.pdg.maven.digraph.PackageData;
 
 /**
  * Interface for creating node paths.

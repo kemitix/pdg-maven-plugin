@@ -22,8 +22,6 @@
 package net.kemitix.pdg.maven.digraph;
 
 import lombok.Getter;
-import net.kemitix.pdg.maven.DotFileFormat;
-import net.kemitix.pdg.maven.PackageData;
 import net.kemitix.node.Node;
 
 import javax.annotation.concurrent.Immutable;

@@ -2,7 +2,7 @@ package net.kemitix.pdg.maven;
 
 import lombok.val;
 import net.kemitix.node.Node;
-import org.assertj.core.api.SoftAssertions;
+import net.kemitix.pdg.maven.digraph.PackageData;
 import org.assertj.core.api.WithAssertions;
 import org.junit.Test;
 
