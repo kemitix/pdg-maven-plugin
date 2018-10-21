@@ -3,7 +3,6 @@ package net.kemitix.pdg.maven;
 import lombok.val;
 import net.kemitix.node.Node;
 import net.kemitix.pdg.maven.scan.DigraphFactory;
-import org.assertj.core.api.SoftAssertions;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.MockitoAnnotations;
@@ -54,7 +53,7 @@ public class DotFileFormatNestedTest {
         //given
         dependencyData.addDependency("test.nested", "test.other");
         //when
-        Node<PackageData> baseNode = dependencyData.getBaseNode();
+        final Node<PackageData> baseNode = dependencyData.getBaseNode();
         //then
         assertThat(baseNode).isNotNull();
         assertThat(baseNode.getData()

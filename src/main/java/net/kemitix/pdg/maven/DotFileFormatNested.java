@@ -21,10 +21,10 @@
 
 package net.kemitix.pdg.maven;
 
+import net.kemitix.node.Node;
 import net.kemitix.pdg.maven.digraph.EdgeElement;
 import net.kemitix.pdg.maven.digraph.NodeElement;
 import net.kemitix.pdg.maven.digraph.Subgraph;
-import net.kemitix.node.Node;
 
 import javax.annotation.concurrent.Immutable;
 import java.util.ArrayList;
@@ -89,12 +89,8 @@ class DotFileFormatNested extends AbstractDotFileFormat {
     }
 
     private String buildAttributeTag(final List<String> attributes) {
-        String attributeTag = "";
-        if (attributes.size() > 0) {
-            attributeTag = String.format(
-                    "[%s]", String.join(",", attributes));
-        }
-        return attributeTag;
+        return ("[" + String.join(",", attributes) + "]")
+                .replace("[]", "");
     }
 
     @Override
@@ -110,14 +106,14 @@ class DotFileFormatNested extends AbstractDotFileFormat {
     public String render(
             final EdgeElement edgeElement
                         ) {
-        List<String> attributes = new ArrayList<>();
+        final List<String> attributes = new ArrayList<>();
         final Node<PackageData> tailNode = edgeElement.getTail()
                                                       .getPackageDataNode();
         final Node<PackageData> headNode = edgeElement.getHead()
                                                       .getPackageDataNode();
         addAnyLTail(tailNode, headNode, attributes);
         addAnyLHead(headNode, tailNode, attributes);
-        String attributeTag = buildAttributeTag(attributes);
+        final String attributeTag = buildAttributeTag(attributes);
         return String.format("%s->%s%s", quoted(getNodeId(tailNode)), quoted(getNodeId(headNode)), attributeTag);
     }
 
