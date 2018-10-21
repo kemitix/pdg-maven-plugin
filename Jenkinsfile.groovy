@@ -23,7 +23,7 @@ pipeline {
         }
         stage('Record Coverage (all)') {
             steps {
-                jacoco exclusionPattern: '**/*{Test|IT|Main|Application|Immutable}.class'
+                // jacoco exclusionPattern: '**/*{Test|IT|Main|Application|Immutable}.class'
                 withMaven(maven: 'maven', jdk: 'JDK 1.8') {
                     // Codacy
                     sh "${mvn} jacoco:report com.gavinmogan:codacy-maven-plugin:coverage " +
