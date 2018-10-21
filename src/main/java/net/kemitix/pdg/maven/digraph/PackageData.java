@@ -19,7 +19,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package net.kemitix.pdg.maven;
+package net.kemitix.pdg.maven.digraph;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -83,7 +83,7 @@ public final class PackageData {
         return Objects.equals(this.name, other.name);
     }
 
-    Set<Node<PackageData>> getUses() {
+    public Set<Node<PackageData>> getUses() {
         return new HashSet<>(uses);
     }
 
@@ -92,7 +92,7 @@ public final class PackageData {
      *
      * @param uses The new package used set
      */
-    void setUses(final Set<Node<PackageData>> uses) {
+    public void setUses(final Set<Node<PackageData>> uses) {
         this.uses.clear();
         this.uses.addAll(uses);
     }

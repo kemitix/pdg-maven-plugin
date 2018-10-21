@@ -3,8 +3,8 @@ package net.kemitix.pdg.maven;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
 import net.kemitix.node.Nodes;
+import net.kemitix.pdg.maven.digraph.PackageData;
 import org.apache.maven.plugin.logging.Log;
-import org.assertj.core.api.SoftAssertions;
 import org.junit.Before;
 import org.junit.Test;
 

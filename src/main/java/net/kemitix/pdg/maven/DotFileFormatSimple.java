@@ -21,10 +21,7 @@
 
 package net.kemitix.pdg.maven;
 
-import net.kemitix.pdg.maven.digraph.EdgeElement;
-import net.kemitix.pdg.maven.digraph.GraphElement;
-import net.kemitix.pdg.maven.digraph.NodeElement;
-import net.kemitix.pdg.maven.digraph.Subgraph;
+import net.kemitix.pdg.maven.digraph.*;
 import net.kemitix.node.Node;
 
 import javax.annotation.concurrent.Immutable;

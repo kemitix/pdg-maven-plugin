@@ -1,7 +1,6 @@
 package net.kemitix.pdg.maven.digraph;
 
 import lombok.val;
-import net.kemitix.pdg.maven.DotFileFormat;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;

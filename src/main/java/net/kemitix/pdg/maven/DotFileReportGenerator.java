@@ -21,6 +21,8 @@
 
 package net.kemitix.pdg.maven;
 
+import net.kemitix.pdg.maven.digraph.DotFileFormat;
+
 import javax.annotation.concurrent.Immutable;
 import javax.inject.Named;
 

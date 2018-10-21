@@ -25,7 +25,7 @@ import lombok.Getter;
 import net.kemitix.node.Node;
 import net.kemitix.node.Nodes;
 import net.kemitix.pdg.maven.DependencyData;
-import net.kemitix.pdg.maven.PackageData;
+import net.kemitix.pdg.maven.digraph.PackageData;
 import org.apache.maven.plugin.logging.Log;
 
 import javax.annotation.concurrent.Immutable;

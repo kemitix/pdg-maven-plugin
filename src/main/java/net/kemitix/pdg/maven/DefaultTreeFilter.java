@@ -24,6 +24,7 @@ package net.kemitix.pdg.maven;
 import lombok.val;
 import net.kemitix.node.Node;
 import net.kemitix.node.Nodes;
+import net.kemitix.pdg.maven.digraph.PackageData;
 
 import javax.inject.Inject;
 import javax.inject.Named;
