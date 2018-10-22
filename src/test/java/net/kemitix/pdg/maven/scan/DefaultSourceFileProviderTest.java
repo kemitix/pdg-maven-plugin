@@ -3,6 +3,7 @@ package net.kemitix.pdg.maven.scan;
 import net.kemitix.pdg.maven.DigraphConfiguration;
 import org.apache.maven.plugin.logging.Log;
 import org.assertj.core.api.WithAssertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
@@ -68,6 +69,7 @@ class DefaultSourceFileProviderTest implements WithAssertions {
     }
 
     @Test
+    @Disabled("no assert() or fail()")
     void processShouldLogExceptions() throws Exception {
         //given
         final String src = "src/test/projects/src-and-test/src/main/java";

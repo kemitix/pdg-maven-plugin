@@ -5,6 +5,7 @@ import net.kemitix.pdg.maven.DependencyData;
 import net.kemitix.pdg.maven.digraph.PackageData;
 import org.apache.maven.plugin.logging.Log;
 import org.assertj.core.api.WithAssertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static org.mockito.BDDMockito.then;
@@ -36,6 +37,7 @@ class NodeTreeDependencyDataTest implements WithAssertions {
     }
 
     @Test
+    @Disabled("no assert() or fail()")
     void shouldLogDebugTree() {
         //given
         data.addDependency("net.kemitix.alpha", "net.kemitix.beta");

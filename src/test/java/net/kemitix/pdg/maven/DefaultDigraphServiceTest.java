@@ -7,6 +7,7 @@ import org.apache.maven.project.MavenProject;
 import org.assertj.core.api.WithAssertions;
 import org.junit.Rule;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 import org.junit.rules.TemporaryFolder;
@@ -57,6 +58,7 @@ class DefaultDigraphServiceTest implements WithAssertions {
     }
 
     @Test
+    @Disabled("no assert() or fail()")
     void whenExecuteThenPackagesAreScanned() {
         //when
         digraphService.execute(configuration);
@@ -65,6 +67,7 @@ class DefaultDigraphServiceTest implements WithAssertions {
     }
 
     @Test
+    @Disabled("no assert() or fail()")
     void whenIsDebugThenLogIsRequested() {
         //given
         given(configuration.isDebug()).willReturn(true);
@@ -75,6 +78,7 @@ class DefaultDigraphServiceTest implements WithAssertions {
     }
 
     @Test
+    @Disabled("no assert() or fail()")
     void whenIOExceptionThenLogAnError() throws Exception {
         //given
         String message = "message";
@@ -87,6 +91,7 @@ class DefaultDigraphServiceTest implements WithAssertions {
     }
 
     @Test
+    @Disabled("no assert() or fail()")
     void whenTargetDirectoryDoesNotExistThenCreateIt() throws Exception {
         //given
         val target = folder.newFolder();

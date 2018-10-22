@@ -5,6 +5,7 @@ import net.kemitix.pdg.maven.DigraphConfiguration;
 import org.apache.maven.plugin.logging.Log;
 import org.assertj.core.api.WithAssertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayInputStream;
@@ -34,6 +35,7 @@ class JavaParserSourceFileAnalyserTest implements WithAssertions {
      * Should parse Src.java file.
      */
     @Test
+    @Disabled("no assert() or fail()")
     void shouldParseSrcFile() {
         //given
         String srcJava =
