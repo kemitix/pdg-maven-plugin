@@ -5,43 +5,25 @@ import net.kemitix.node.Node;
 import net.kemitix.pdg.maven.digraph.DotFileFormat;
 import net.kemitix.pdg.maven.digraph.PackageData;
 import net.kemitix.pdg.maven.scan.DigraphFactory;
-import org.junit.Before;
-import org.junit.Test;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.assertj.core.api.WithAssertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
 
-/**
- * Tests for {@link DotFileFormatSimple}.
- *
- * @author pcampbell
- */
-public class DotFileFormatSimpleTest {
+class DotFileFormatSimpleTest implements WithAssertions {
 
-    /**
-     * Class under test.
-     */
-    private DotFileFormat dotFileFormat;
+    private final GraphFilter graphFilter = mock(GraphFilter.class);
+    private final DependencyData dependencyData = DigraphFactory.newDependencyData("test");
+    private final DotFileFormat dotFileFormat =
+            new DotFileFormatSimple(dependencyData.getBaseNode(), new DefaultNodePathGenerator(), graphFilter);
 
-    private DependencyData dependencyData;
-
-    @Mock
-    private GraphFilter graphFilter;
-
-    /**
-     * Prepare each test.
-     */
-    @Before
-    public void setUp() {
-        MockitoAnnotations.initMocks(this);
-        dependencyData = DigraphFactory.newDependencyData("test");
-        dotFileFormat =
-                new DotFileFormatSimple(dependencyData.getBaseNode(), new DefaultNodePathGenerator(), graphFilter);
+    @BeforeEach
+    void setUp() {
         /// default behaviour without any filters is to include
         given(graphFilter.filterNodes(any())).willReturn(true);
     }
@@ -50,7 +32,7 @@ public class DotFileFormatSimpleTest {
      * Test that the intermediary node "test" is created.
      */
     @Test
-    public void shouldCreateTestNode() {
+    void shouldCreateTestNode() {
         //given
         dependencyData.addDependency("test.nested", "test.other");
         //when
@@ -65,7 +47,7 @@ public class DotFileFormatSimpleTest {
      * Test that the report is created as expected.
      */
     @Test
-    public void shouldGenerateReport() {
+    void shouldGenerateReport() {
         //given
         dependencyData.addDependency("test.nested", "test.other");
         val expected = Arrays.asList("digraph{", "compound=\"true\"", "node[shape=\"box\"]", "\"nested\"", "\"other\"",
@@ -83,7 +65,7 @@ public class DotFileFormatSimpleTest {
      * outside base package.
      */
     @Test
-    public void shouldOnlyIncludeUsingPackage() {
+    void shouldOnlyIncludeUsingPackage() {
         //given
         dependencyData.addDependency("test.nested", "tested.other");
         val expected = Arrays.asList("digraph{", "compound=\"true\"", "node[shape=\"box\"]", "\"nested\"}");
@@ -99,7 +81,7 @@ public class DotFileFormatSimpleTest {
      * outside base package.
      */
     @Test
-    public void shouldOnlyIncludeUsedPackage() {
+    void shouldOnlyIncludeUsedPackage() {
         //given
         dependencyData.addDependency("tested.nested", "test.other");
         val expected = Arrays.asList("digraph{", "compound=\"true\"", "node[shape=\"box\"]", "\"other\"}");
@@ -114,7 +96,7 @@ public class DotFileFormatSimpleTest {
      * Test that nested packages are included.
      */
     @Test
-    public void shouldHandleNestedPackages() {
+    void shouldHandleNestedPackages() {
         //given
         dependencyData.addDependency("test.nested", "test.other");
         dependencyData.addDependency("test.nested", "test.other.more");

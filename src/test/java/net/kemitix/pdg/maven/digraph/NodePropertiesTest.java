@@ -1,31 +1,18 @@
 package net.kemitix.pdg.maven.digraph;
 
 import lombok.val;
-import org.junit.Before;
-import org.junit.Test;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.assertj.core.api.WithAssertions;
+import org.junit.jupiter.api.Test;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
 
-/**
- * Tests for {@link NodeProperties}.
- *
- * @author pcampbell
- */
-public class NodePropertiesTest {
+class NodePropertiesTest implements WithAssertions {
 
-    @Mock
-    private DotFileFormat dotFileFormat;
-
-    @Before
-    public void setUp() {
-        MockitoAnnotations.initMocks(this);
-    }
+    private final DotFileFormat dotFileFormat = mock(DotFileFormat.class);
 
     @Test
-    public void shouldRender() {
+    void shouldRender() {
         //given
         val nodeProperties = new NodeProperties(dotFileFormat);
         val expected = "rendered node properties";

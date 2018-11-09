@@ -2,49 +2,30 @@ package net.kemitix.pdg.maven.digraph;
 
 import lombok.val;
 import net.kemitix.node.Node;
-import org.junit.Before;
-import org.junit.Test;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import net.kemitix.node.Nodes;
+import org.assertj.core.api.WithAssertions;
+import org.junit.jupiter.api.Test;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
 
-/**
- * Tests for {@link DigraphTest}.
- */
-public class DigraphTest {
+class DigraphTest implements WithAssertions {
 
-    private Digraph digraph;
+    private final DotFileFormat dotFileFormat = mock(DotFileFormat.class);
+    private final Digraph digraph = new Digraph(dotFileFormat);
 
-    @Mock
-    private Node<PackageData> testNode;
-
-    @Mock
-    private Node<PackageData> alphaNode;
-
-    @Mock
-    private Node<PackageData> betaNode;
-
-    @Mock
-    private Node<PackageData> gammaNode;
-
-    @Mock
-    private DotFileFormat dotFileFormat;
-
-    @Before
-    public void setUp() {
-        MockitoAnnotations.initMocks(this);
-        digraph = new Digraph(dotFileFormat);
-    }
+    private final Node<PackageData> testNode = Nodes.unnamedRoot(new PackageData("test"));
+    private final Node<PackageData> alphaNode = Nodes.unnamedRoot(new PackageData("alpha"));
+    private final Node<PackageData> betaNode = Nodes.unnamedRoot(new PackageData("beta"));
+    private final Node<PackageData> gammaNode = Nodes.unnamedRoot(new PackageData("gamma"));
 
     @Test
-    public void shouldGetDotFileFormat() {
+    void shouldGetDotFileFormat() {
         assertThat(digraph.getDotFileFormat()).isSameAs(dotFileFormat);
     }
 
     @Test
-    public void shouldRenderDigraph() {
+    void shouldRenderDigraph() {
         //given
         val expected = "rendered digraph";
         given(dotFileFormat.render(digraph)).willReturn(expected);
@@ -53,7 +34,7 @@ public class DigraphTest {
     }
 
     @Test
-    public void shouldConstructDigraphModel() {
+    void shouldConstructDigraphModel() {
         //given
         digraph.add(new PropertyElement("compound", "true", dotFileFormat));
 

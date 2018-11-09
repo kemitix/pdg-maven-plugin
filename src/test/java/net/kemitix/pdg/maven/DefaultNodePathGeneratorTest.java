@@ -3,36 +3,18 @@ package net.kemitix.pdg.maven;
 import lombok.val;
 import net.kemitix.node.Nodes;
 import net.kemitix.pdg.maven.digraph.PackageData;
-import org.junit.Before;
-import org.junit.Test;
+import org.assertj.core.api.WithAssertions;
+import org.junit.jupiter.api.Test;
 
-import static org.assertj.core.api.Assertions.assertThat;
+class DefaultNodePathGeneratorTest implements WithAssertions {
 
-/**
- * Tests for {@link DefaultNodePathGenerator}.
- *
- * @author Paul Campbell
- */
-public class DefaultNodePathGeneratorTest {
-
-    /**
-     * Class under test.
-     */
-    private NodePathGenerator generator;
-
-    /**
-     * Prepare each test.
-     */
-    @Before
-    public void setUp() {
-        generator = new DefaultNodePathGenerator();
-    }
+    private final NodePathGenerator generator = new DefaultNodePathGenerator();
 
     /**
      * Test path for root node.
      */
     @Test
-    public void testGetPathForRoot() {
+    void testGetPathForRoot() {
         //given
         val rootData = PackageData.newInstance("root");
         val root = Nodes.unnamedRoot(rootData);
@@ -46,7 +28,7 @@ public class DefaultNodePathGeneratorTest {
      * Test path for child of root.
      */
     @Test
-    public void testGetPathForChild() {
+    void testGetPathForChild() {
         //given
         // root
         val rootData = PackageData.newInstance("root");
@@ -65,7 +47,7 @@ public class DefaultNodePathGeneratorTest {
      * Test path for grandchild of root.
      */
     @Test
-    public void testGetPathForGrandchild() {
+    void testGetPathForGrandchild() {
         //given
         // root
         val rootData = PackageData.newInstance("root");

@@ -21,13 +21,13 @@
 
 package net.kemitix.pdg.maven.digraph;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import net.kemitix.node.Node;
 
 import javax.annotation.concurrent.Immutable;
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -37,10 +37,13 @@ import java.util.Set;
  */
 @Immutable
 @RequiredArgsConstructor
+@EqualsAndHashCode
 public final class PackageData {
 
     @Getter
     private final String name;
+
+    @EqualsAndHashCode.Exclude
     private final Set<Node<PackageData>> uses = new HashSet<>();
 
     /**
@@ -52,35 +55,6 @@ public final class PackageData {
      */
     public static PackageData newInstance(final String name) {
         return new PackageData(name);
-    }
-
-    @Override
-    @SuppressWarnings("magicnumber")
-    public int hashCode() {
-        int result = 17;
-        result = 31 * result + Objects.hashCode(this.name);
-        return result;
-    }
-
-    /**
-     * Checks whether two {@code PackageData} objects are "equal".
-     *
-     * <p>They are considered to be equal if they have the same name.</p>
-     *
-     * @param obj the other object to compare against
-     *
-     * @return {@code true} if this object is the same as the obj argument; {@code false} otherwise.
-     */
-    @Override
-    public boolean equals(final Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (!(obj instanceof PackageData)) {
-            return false;
-        }
-        final PackageData other = (PackageData) obj;
-        return Objects.equals(this.name, other.name);
     }
 
     public Set<Node<PackageData>> getUses() {

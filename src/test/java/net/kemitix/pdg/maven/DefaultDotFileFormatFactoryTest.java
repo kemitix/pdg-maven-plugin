@@ -4,65 +4,51 @@ import net.kemitix.node.Node;
 import net.kemitix.node.Nodes;
 import net.kemitix.pdg.maven.digraph.DotFileFormat;
 import net.kemitix.pdg.maven.digraph.PackageData;
-import org.junit.Before;
-import org.junit.Test;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.assertj.core.api.WithAssertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
 
-/**
- * Tests for {@link DefaultDotFileFormatFactory}.
- *
- * @author pcampbell
- */
-public class DefaultDotFileFormatFactoryTest {
+class DefaultDotFileFormatFactoryTest implements WithAssertions {
 
-    private DefaultDotFileFormatFactory factory;
+    private final NodePathGenerator nodePathGenerator = mock(NodePathGenerator.class);
+    private final Node<PackageData> base = Nodes.unnamedRoot(null);
+    private final GraphFilter graphFilter = mock(GraphFilter.class);
+    private final TreeFilter treeFilter = mock(TreeFilter.class);
 
-    @Mock
-    private NodePathGenerator nodePathGenerator;
+    private final DefaultDotFileFormatFactory factory =
+            new DefaultDotFileFormatFactory(nodePathGenerator, graphFilter, treeFilter);
 
-    private Node<PackageData> base;
-
-    @Mock
-    private GraphFilter graphFilter;
-
-    @Mock
-    private TreeFilter treeFilter;
-
-    @Before
-    public void setUp() throws Exception {
-        MockitoAnnotations.initMocks(this);
-        factory = new DefaultDotFileFormatFactory(nodePathGenerator, graphFilter, treeFilter);
-        base = Nodes.unnamedRoot(null);
+    @BeforeEach
+    void setUp() throws Exception {
         /// default behaviour without any filters is to include
         given(graphFilter.filterNodes(any())).willReturn(true);
         given(treeFilter.filterTree(base)).willReturn(base);
     }
 
     @Test
-    public void createSimple() {
+    void createSimple() {
         //when
-        DotFileFormat result = factory.create("simple", base);
+        final DotFileFormat result = factory.create("simple", base);
         //then
         assertThat(result).isInstanceOf(DotFileFormatSimple.class);
     }
 
     @Test
-    public void createNested() {
+    void createNested() {
         //when
-        DotFileFormat result = factory.create("nested", base);
+        final DotFileFormat result = factory.create("nested", base);
         //then
         assertThat(result).isInstanceOf(DotFileFormatNested.class);
     }
 
     @Test
-    public void createDefault() {
+    void createDefault() {
         //when
-        DotFileFormat result = factory.create("default", base);
+        final DotFileFormat result = factory.create("default", base);
         //then
         assertThat(result).isInstanceOf(DotFileFormatNested.class);
     }

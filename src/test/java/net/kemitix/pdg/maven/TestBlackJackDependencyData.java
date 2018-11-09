@@ -35,24 +35,18 @@ import net.kemitix.pdg.maven.scan.DigraphFactory;
 class TestBlackJackDependencyData {
 
     private static final String CLI = "net.kemitix.blackjack.cli";
-
     private static final String GAME = "net.kemitix.blackjack.game";
-
     private static final String CONSOLE = "net.kemitix.blackjack.cli.console";
-
     private static final String MODEL = "net.kemitix.blackjack.model";
 
     static DependencyData getDependencyData() {
         val dependencyData = DigraphFactory.newDependencyData("net.kemitix.blackjack");
-
         dependencyData.addDependency(CLI, GAME);
         dependencyData.addDependency(CLI, CONSOLE);
         dependencyData.addDependency(CLI, MODEL);
         dependencyData.addDependency(GAME, CONSOLE);
         dependencyData.addDependency(GAME, MODEL);
-
         dependencyData.updateNames();
-
         return dependencyData;
     }
 }

@@ -1,40 +1,21 @@
 package net.kemitix.pdg.maven.digraph;
 
 import lombok.val;
-import org.junit.Before;
-import org.junit.Test;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.assertj.core.api.WithAssertions;
+import org.junit.jupiter.api.Test;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
 
-/**
- * Tests for {@link EdgeElement}.
- *
- * @author pcampbell
- */
-public class EdgeElementTest {
+class EdgeElementTest implements WithAssertions {
 
-    @Mock
-    private EdgeEndpoint head;
-
-    @Mock
-    private EdgeEndpoint tail;
-
-    @Mock
-    private DotFileFormat dotFileFormat;
-
-    @Mock
-    private EdgeEndpoint edgeEndpoint;
-
-    @Before
-    public void setUp() {
-        MockitoAnnotations.initMocks(this);
-    }
+    private final EdgeEndpoint head = mock(EdgeEndpoint.class);
+    private final EdgeEndpoint tail = mock(EdgeEndpoint.class);
+    private final DotFileFormat dotFileFormat = mock(DotFileFormat.class);
+    private final EdgeEndpoint edgeEndpoint = mock(EdgeEndpoint.class);
 
     @Test
-    public void shouldRender() {
+    void shouldRender() {
         //given
         val edgeElement = new EdgeElement(edgeEndpoint, edgeEndpoint, dotFileFormat);
         val expected = "rendered edge element";
@@ -44,7 +25,7 @@ public class EdgeElementTest {
     }
 
     @Test
-    public void shouldSetAndReturnHeadAndTail() {
+    void shouldSetAndReturnHeadAndTail() {
         //when
         val edgeElement = new EdgeElement(tail, head, dotFileFormat);
         //then

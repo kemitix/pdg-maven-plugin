@@ -1,27 +1,21 @@
 package net.kemitix.pdg.maven;
 
-import org.junit.Test;
+import org.assertj.core.api.WithAssertions;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-/**
- * Tests to confirm the behaviour of the Deque implementation.
- *
- * @author pcampbell
- */
-public class QueueTest {
+class QueueTest implements WithAssertions {
 
     /**
      * When pulling the contents from a Queue using forEach, then the order
      * should be in the reverse to which they were added.
      */
     @Test
-    public void shouldDequeInReverseOrderToThatAdded() {
+    void shouldDequeInReverseOrderToThatAdded() {
         //given
         final String item1 = "First Item";
         final String item2 = "Second Item";

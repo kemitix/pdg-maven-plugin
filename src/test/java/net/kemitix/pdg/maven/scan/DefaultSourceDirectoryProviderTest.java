@@ -3,28 +3,29 @@ package net.kemitix.pdg.maven.scan;
 import org.apache.maven.model.Build;
 import org.apache.maven.model.Model;
 import org.apache.maven.project.MavenProject;
-import org.junit.Before;
+import org.assertj.core.api.WithAssertions;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.migrationsupport.rules.EnableRuleMigrationSupport;
 import org.junit.rules.TemporaryFolder;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-public class DefaultSourceDirectoryProviderTest {
+@EnableRuleMigrationSupport
+public class DefaultSourceDirectoryProviderTest implements WithAssertions {
 
     private final List<MavenProject> projects = new ArrayList<>();
     private final Build build = new Build();
-    private DefaultSourceDirectoryProvider provider = new DefaultSourceDirectoryProvider();
+    private final DefaultSourceDirectoryProvider provider = new DefaultSourceDirectoryProvider();
 
     @Rule
     public TemporaryFolder folder = new TemporaryFolder();
 
-    @Before
-    public void setUp() {
+    @BeforeEach
+    void setUp() {
         final Model model = new Model();
         model.setBuild(build);
         projects.add(new MavenProject(model));
@@ -36,7 +37,7 @@ public class DefaultSourceDirectoryProviderTest {
      * @throws java.io.IOException if error creating directory
      */
     @Test
-    public void shouldGetSourceDirectoryAfterSettingIt() throws IOException {
+    void shouldGetSourceDirectoryAfterSettingIt() throws IOException {
         //given
         final String directory = folder.newFolder().toString();
         //when
@@ -55,7 +56,7 @@ public class DefaultSourceDirectoryProviderTest {
      * @throws java.io.IOException if error creating directory
      */
     @Test
-    public void shouldAddSourcesAndTests() throws IOException {
+    void shouldAddSourcesAndTests() throws IOException {
         //given
         final String sources = folder.newFolder().toString();
         build.setSourceDirectory(sources);
@@ -73,7 +74,7 @@ public class DefaultSourceDirectoryProviderTest {
      * @throws java.io.IOException if error creating directory
      */
     @Test
-    public void shouldAddSourcesAndNoTestsWhenTestsDoNotExist() throws IOException {
+    void shouldAddSourcesAndNoTestsWhenTestsDoNotExist() throws IOException {
         //given
         final String sources = folder.newFolder().toString();
         build.setSourceDirectory(sources);
@@ -92,7 +93,7 @@ public class DefaultSourceDirectoryProviderTest {
      * @throws java.io.IOException if error creating directory
      */
     @Test
-    public void shouldAddSourcesAndNoTests() throws IOException {
+    void shouldAddSourcesAndNoTests() throws IOException {
         //given
         final String sources = folder.newFolder().toString();
         build.setSourceDirectory(sources);
@@ -106,7 +107,7 @@ public class DefaultSourceDirectoryProviderTest {
      * add project - src does not exists - without tests.
      */
     @Test
-    public void shouldNotAddAnySources() {
+    void shouldNotAddAnySources() {
         //given
         final String sources = "does not exist";
         build.setSourceDirectory(sources);

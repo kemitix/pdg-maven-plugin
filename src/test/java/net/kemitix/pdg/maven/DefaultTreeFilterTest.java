@@ -4,7 +4,7 @@ import lombok.val;
 import net.kemitix.node.Node;
 import net.kemitix.pdg.maven.digraph.PackageData;
 import org.assertj.core.api.WithAssertions;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -13,10 +13,7 @@ import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
-/**
- * Tests for {@link DefaultTreeFilter}
- */
-public class DefaultTreeFilterTest implements WithAssertions {
+class DefaultTreeFilterTest implements WithAssertions {
 
     private final DigraphConfiguration configuration = mock(DigraphConfiguration.class);
     private final NodePathGenerator nodePathGenerator = new DefaultNodePathGenerator();
@@ -42,7 +39,7 @@ public class DefaultTreeFilterTest implements WithAssertions {
     }
 
     @Test
-    public void shouldGenerateDefaultTree() {
+    void shouldGenerateDefaultTree() {
         //given
         final DependencyData dependencyData = TestBlackJackDependencyData.getDependencyData();
         final Node<PackageData> baseNode = dependencyData.getBaseNode();
@@ -77,7 +74,7 @@ public class DefaultTreeFilterTest implements WithAssertions {
     }
 
     @Test
-    public void shouldExcludeGame() {
+    void shouldExcludeGame() {
         //given
         final DependencyData dependencyData = TestBlackJackDependencyData.getDependencyData();
         final Node<PackageData> baseNode = dependencyData.getBaseNode();
@@ -122,7 +119,7 @@ public class DefaultTreeFilterTest implements WithAssertions {
     }
 
     @Test
-    public void shouldExcludeModel() {
+    void shouldExcludeModel() {
         //given
         final DependencyData dependencyData = TestBlackJackDependencyData.getDependencyData();
         final Node<PackageData> baseNode = dependencyData.getBaseNode();
@@ -164,7 +161,7 @@ public class DefaultTreeFilterTest implements WithAssertions {
     }
 
     @Test
-    public void shouldExcludeConsole() {
+    void shouldExcludeConsole() {
         //given
         final DependencyData dependencyData = TestBlackJackDependencyData.getDependencyData();
         final Node<PackageData> baseNode = dependencyData.getBaseNode();
@@ -206,7 +203,7 @@ public class DefaultTreeFilterTest implements WithAssertions {
     }
 
     @Test
-    public void shouldExcludeCli() {
+    void shouldExcludeCli() {
         //given
         final DependencyData dependencyData = TestBlackJackDependencyData.getDependencyData();
         final Node<PackageData> baseNode = dependencyData.getBaseNode();
@@ -245,7 +242,7 @@ public class DefaultTreeFilterTest implements WithAssertions {
 
     // shouldIncludeGame -- includes everything as game touches everything else
     @Test
-    public void shouldIncludeGame() {
+    void shouldIncludeGame() {
         //given
         final DependencyData dependencyData = TestBlackJackDependencyData.getDependencyData();
         final Node<PackageData> baseNode = dependencyData.getBaseNode();
@@ -288,7 +285,7 @@ public class DefaultTreeFilterTest implements WithAssertions {
 
     // shouldIncludeCli -- includes everything as cli touches everything else
     @Test
-    public void shouldIncludeCli() {
+    void shouldIncludeCli() {
         //given
         final DependencyData dependencyData = TestBlackJackDependencyData.getDependencyData();
         final Node<PackageData> baseNode = dependencyData.getBaseNode();
@@ -333,7 +330,7 @@ public class DefaultTreeFilterTest implements WithAssertions {
 
     // shouldIncludeModel -- excludes console
     @Test
-    public void shouldIncludeModel() {
+    void shouldIncludeModel() {
         //given
         final DependencyData dependencyData = TestBlackJackDependencyData.getDependencyData();
         final Node<PackageData> baseNode = dependencyData.getBaseNode();
@@ -378,7 +375,7 @@ public class DefaultTreeFilterTest implements WithAssertions {
 
     // shouldIncludeConsole -- excludes model
     @Test
-    public void shouldIncludeConsole() {
+    void shouldIncludeConsole() {
         //given
         final DependencyData dependencyData = TestBlackJackDependencyData.getDependencyData();
         final Node<PackageData> baseNode = dependencyData.getBaseNode();
@@ -425,7 +422,7 @@ public class DefaultTreeFilterTest implements WithAssertions {
      * shouldExcludeCliIncludeModel -- exclude cli, console, but include game and model
      */
     @Test
-    public void shouldExcludeCliIncludeModel() {
+    void shouldExcludeCliIncludeModel() {
         //given
         final DependencyData dependencyData = TestBlackJackDependencyData.getDependencyData();
         final Node<PackageData> baseNode = dependencyData.getBaseNode();
@@ -463,7 +460,7 @@ public class DefaultTreeFilterTest implements WithAssertions {
     }
 
     @Test
-    public void usesInFilteredTreeShouldShareNewRoot() {
+    void usesInFilteredTreeShouldShareNewRoot() {
         //given
         final DependencyData dependencyData = TestBlackJackDependencyData.getDependencyData();
         final Node<PackageData> baseNode = dependencyData.getBaseNode();
