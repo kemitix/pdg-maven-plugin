@@ -20,14 +20,14 @@
 
     <inceptionYear>2016</inceptionYear>
 
-    <url>https://github.com/kemitix/digraph-dependency-maven-plugin</url>
+    <url>https://github.com/kemitix/pdg-maven-plugin</url>
     <issueManagement>
-        <url>https://github.com/kemitix/digraph-dependency-maven-plugin/issues</url>
+        <url>https://github.com/kemitix/pdg-maven-plugin/issues</url>
     </issueManagement>
     <scm>
-        <connection>scm:git:git@github.com:kemitix/digraph-dependency-maven-plugin.git</connection>
-        <developerConnection>scm:git:git@github.com:kemitix/digraph-dependency-maven-plugin.git</developerConnection>
-        <url>git@github.com:kemitix/digraph-dependency-maven-plugin.git</url>
+        <connection>scm:git:git@github.com:kemitix/pdg-maven-plugin.git</connection>
+        <developerConnection>scm:git:git@github.com:kemitix/pdg-maven-plugin.git</developerConnection>
+        <url>git@github.com:kemitix/pdg-maven-plugin.git</url>
     </scm>
 
     <properties>
@@ -54,8 +54,8 @@
         <lombok.version>1.18.2</lombok.version>
 
         <digraph-dependency.basePackage>net.kemitix.pdg.maven</digraph-dependency.basePackage>
-        <jacoco-class-line-covered-ratio>80%</jacoco-class-line-covered-ratio>
-        <jacoco-class-instruction-covered-ratio>81%</jacoco-class-instruction-covered-ratio>
+        <jacoco-class-line-covered-ratio>50%</jacoco-class-line-covered-ratio>
+        <jacoco-class-instruction-covered-ratio>45%</jacoco-class-instruction-covered-ratio>
         <guice.version>4.2.0</guice.version>
         <plexus-utils.version>3.1.0</plexus-utils.version>
         <javax.inject.version>1</javax.inject.version>
