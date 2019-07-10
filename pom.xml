@@ -56,7 +56,7 @@
         <digraph-dependency.basePackage>net.kemitix.pdg.maven</digraph-dependency.basePackage>
         <jacoco-class-line-covered-ratio>50%</jacoco-class-line-covered-ratio>
         <jacoco-class-instruction-covered-ratio>45%</jacoco-class-instruction-covered-ratio>
-        <guice.version>4.2.0</guice.version>
+        <guice.version>4.2.1</guice.version>
         <plexus-utils.version>3.1.0</plexus-utils.version>
         <javax.inject.version>1</javax.inject.version>
         <maven-dependency-plugin.version>3.1.1</maven-dependency-plugin.version>
